@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MengD平台_登录</title>
+    <meta name="description" content="mobile first, app, web app, responsive, admin dashboard, flat, flat ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__PUBLIC__/css/bootstrap.css">
+    <link rel="stylesheet" href="__PUBLIC__/js/toastr/toastr.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/style.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/plugin.css">
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/ie/respond.min.js"></script>
+    <script src="__PUBLIC__/js/ie/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- header -->
+<header id="header" class="navbar bg bg-black">
+    <a href="docs.html" class="btn btn-link pull-right"><i class="icon-question icon-xlarge text-default"></i></a>
+    <a class="navbar-brand" href="#">MengD</a>
+</header>
+<!-- / header -->
+<section id="content">
+    <div class="main padder">
+        <div class="row">
+            <div class="col-lg-4 col-offset-4 m-t-large">
+                <section class="panel">
+                    <header class="panel-heading text-center">
+                        用户登录
+                    </header>
+                    <form action="{:url('/user/Login/login')}" class="padder" data-validate="parsley" id="loginForm" >
+                        <div class="block">
+                            <label class="control-label">账号</label>
+                            <input type="text" name="username" placeholder="请输入账号/手机号" class="form-control bg-focus parsley-validated" data-required="true" data-parsley-required-message="账号不可为空">
+                        </div>
+                        <div class="block">
+                            <label class="control-label">密码</label>
+                            <input type="password" name="password" id="inputPassword" placeholder="请输入密码" class="form-control bg-focus parsley-validated" data-required="true" data-parsley-required-message="密码不可为空">
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="rememberMe" > 记住密码
+                            </label>
+                        </div>
+                        <a  id="login" class="btn btn-info">登录</a>
+                        <a href="#" class="pull-right m-t-mini">
+                            <small>忘记密码?</small>
+                        </a>
+
+                        <!--第三方登录暂时不开放-->
+                        <!--<div class="line line-dashed"></div><a href="#" class="btn btn-facebook btn-block m-b-small"><i class="icon-facebook pull-left"></i>Sign in with Facebook</a>
+                        <a href="#" class="btn btn-twitter btn-block"><i class="icon-twitter pull-left"></i>Sign in with Twitter</a>
+                        <div class="line line-dashed"></div>-->
+                        <p class="text-muted text-center">
+                            <small>没有账号?</small>
+                        </p>
+                        <a href="{:url('/user/Login/register')}" class="btn btn-white btn-block">去注册</a>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer id="footer">
+    <div class="text-center padder clearfix">
+        <p>
+            <small>&copy; MengD平台管理系统</small>
+            <!--<a href="#" class="btn btn-mini btn-circle btn-twitter"><i class="icon-twitter"></i></a>
+            <a href="#" class="btn btn-mini btn-circle btn-facebook"><i class="icon-facebook"></i></a>
+            <a href="#" class="btn btn-mini btn-circle btn-gplus"><i class="icon-google-plus"></i></a>
+        --></p>
+    </div>
+</footer>
+<!-- footer -->
+<script src="__PUBLIC__/js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="__PUBLIC__/js/bootstrap.js"></script>
+<!-- Bootstrap -->
+<script src="__PUBLIC__/js/toastr/toastr.min.js"></script>
+<!-- app -->
+<script src="__PUBLIC__/js/app.js"></script>
+<script src="__PUBLIC__/js/app.plugin.js"></script>
+<script src="__PUBLIC__/js/app.data.js"></script>
+<!--表单校验-->
+<script src="__PUBLIC__/js/parsley/parsley.min.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#login").click(function(){
+            var _this = $(this);
+            md_btnEvent(_this,function(res){
+                console.log(res.data.url)
+                location.href=res.data.url;
+            });
+        });
+    });
+</script>
+</body>
+</html>

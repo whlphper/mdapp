@@ -1,0 +1,63 @@
+<!-- header -->
+<header id="header" class="navbar">
+    <ul class="nav navbar-nav navbar-avatar pull-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="hidden-sm-only">{$Think.session.user.nick_name|default=''}</span>
+                <span class="thumb-small avatar inline"><img src="__PUBLIC__{$Think.session.user.avatar|default='/images/avatar.jpg'}" alt="{$Think.session.user.nick_name|default='为设置昵称'}" class="img-circle"></span>
+                <b class="caret hidden-sm-only"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">设置</a></li>
+                <li><a href="#">资料</a></li>
+                <li><a href="#"><span class="badge bg-danger pull-right">3</span>通知</a></li>
+                <li class="divider"></li>
+                <li><a href="#">帮助</a></li>
+                <li><a href="{:url('/user/Login/logout')}">退出</a></li>
+            </ul>
+        </li>
+    </ul>
+    <a class="navbar-brand" href="#">MengD</a>
+    <button type="button" class="btn btn-link pull-left nav-toggle hidden-lg" data-toggle="class:slide-nav slide-nav-left" data-target="body">
+        <i class="icon-reorder icon-xlarge text-default"></i>
+    </button>
+    <ul class="nav navbar-nav hidden-sm">
+        <li><div class="m-t-small"><a class="btn btn-small btn-info" data-toggle="modal" href="#modal"><i class="icon-plus"></i> POST</a></div></li>
+        <li class="dropdown shift" data-toggle="shift:appendTo" data-target=".nav-primary .nav">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-xlarge visible-sm visible-sm-inline"></i>菜单颜色 <b class="caret hidden-sm-only"></b></a>
+            <ul class="dropdown-menu">
+                <!-- <li>
+                     <a href="#" data-toggle="class:navbar-fixed" data-target='body'>Navbar
+                         <span class="text-active">auto</span>
+                         <span class="text">fixed</span>
+                     </a>
+                 </li>
+                 <li class="visible-lg">
+                     <a href="#" data-toggle="class:nav-vertical" data-target="#nav">Nav
+                         <span class="text-active">vertical</span>
+                         <span class="text">horizontal</span>
+                     </a>
+                 </li>
+                 <li class="divider hidden-sm"></li>
+                 <li class="dropdown-header">Colors</li>-->
+                <li>
+                    <a href="#" data-toggle="class:bg bg-black" data-target='.navbar'>顶部菜单
+                        <span class="text-active">white</span>
+                        <span class="text">inverse</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-toggle="class:bg-light" data-target='#nav'>左侧菜单
+                        <span class="text-active">inverse</span>
+                        <span class="text">light</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <form class="navbar-form pull-left shift" action="" data-toggle="shift:appendTo" data-target=".nav-primary">
+        <i class="icon-search text-muted"></i>
+        <input type="text" class="input-small form-control" placeholder="请输入搜索内容">
+    </form>
+</header>
+<!-- / header -->

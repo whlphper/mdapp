@@ -1,0 +1,24 @@
+<script>
+    $(document).ready(function(){
+        $("#bootstrap-search").click(function(){
+            var form = $(this).closest("form").eq(0);
+            var refreshTable = $(this).attr("refreshTableID");
+            var formId = form.attr("id");
+            var data = $("#"+formId).serializeArray();
+            var d = {};
+            $.each(data, function() {
+                d[this.name] = this.value;
+            });
+            $("#"+refreshTable).bootstrapTable('refresh',{
+                query: d
+            });
+        });
+        $("#bootstrap-reset").click(function(){
+            var form = $(this).closest("form").eq(0);
+            var formId = form.attr("id");
+            $("#"+formId)[0].reset();
+            var refreshTable = $(this).attr("refreshTableID");
+            $("#"+refreshTable).bootstrapTable('refresh');
+        });
+    });
+</script>

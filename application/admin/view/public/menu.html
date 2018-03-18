@@ -1,0 +1,29 @@
+<!-- nav -->
+<nav id="nav" class="nav-primary visible-lg nav-vertical">
+    <ul class="nav" data-spy="affix" data-offset-top="50">
+        {foreach $menuList as $k=>$v}
+        <li class="{if condition=" $k eq 0
+        "} active {/if}{if condition="isset($v.subMenus)"} dropdown-submenu {/if}">
+        <a href="{$v.url}"><i class="{$v.flag} icon-xlarge"></i>{$v.name}</a>
+        {if condition="isset($v.subMenus)"}
+        <ul class="dropdown-menu">
+            {foreach $v.subMenus as $k2=>$v2}
+            {if condition="isset($v2.subMenus)"}
+            <li class="dropdown-submenu"><a href="{$v2.url}">{$v2.name}</a>
+                <ul class="dropdown-menu">
+                    {foreach $v2.subMenus as $k3=>$v3}
+                    <li><a href="{$v3.url}">{$v3.name}</a></li>
+                    {/foreach}
+                </ul>
+            </li>
+            {else}
+            <li><a href="{$v2.url}">{$v2.name}</a></li>
+            {/if}
+            {/foreach}
+        </ul>
+        {/if}
+        </li>
+        {/foreach}
+    </ul>
+</nav>
+<!-- / nav -->

@@ -1,0 +1,128 @@
+{include file="admin@public/header"}
+{include file="admin@public/search"}
+
+
+<script src="__PUBLIC__/js/bootstraptable/bootstrap-table.js"></script>
+<script src="__PUBLIC__/js/bootstraptable/locale/bootstrap-table-zh-CN.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/bootstraptable/bootstrap-table.css">
+<script>
+    $(document).ready(function () {
+        //新增
+        $("#addData").click(function () {
+            bootstrapAdd('sysMenuTable', $(this).attr("data-url"));
+        });
+
+        //删除
+        $("#deleteData").click(function () {
+            bootstrapDelete('sysMenuTable', $(this).attr("data-url"));
+        });
+    });
+
+    //每行操作渲染
+    function actionFormatter() {
+    }
+
+    //每行操作对应事件
+    window.actionEvents = {
+        'click .delete': function (e, value, row, index) {
+            var url = "{:url('/platform/Syscore/deleteMenu/id/" + row.id + "')}";
+            showConfirmModel('提示', '确认删除吗', url, 'sysMenuTable');
+        },
+        'click .edit': function (e, value, row, index) {
+            var url = "{:url('/platform/Syscore/addMenu')}";
+            bootstrapEdit('sysMenuTable', url, row.id);
+        },
+    };
+</script>
+<body>
+{include file="admin@public/nav"}
+{include file="admin@public/menu"}
+<section id="content">
+    <section class="main padder" style="margin-top: 1%">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- .breadcrumb -->
+                <ul class="breadcrumb">
+                    <li><a href="#"><i class="icon-home"></i>Home</a></li>
+                    <li><a href="#"><i class="icon-list-ul"></i>Elements</a></li>
+                    <li class="active">Components</li>
+                </ul>
+                <!-- / .breadcrumb -->
+            </div>
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        菜单列表
+                    </header>
+                    <div class="row text-small">
+                        <div id="toolbar" style="width: 80%;">
+                            <form id="sysMenuSearchForm">
+                                <div class="col-lg-3 m-b-mini">
+                                    <label class="btn btn-small btn-white active">
+                                        所属身份
+                                    </label>
+                                    <select class="input-small inline form-control" style="width:130px">
+                                        <option value="0">Bulk action</option>
+                                        <option value="1">Delete selected</option>
+                                        <option value="2">Bulk edit</option>
+                                        <option value="3">Export</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label class="btn btn-small btn-white active">
+                                        菜单名称
+                                    </label>
+                                    <input type="text" name="name" style="width:130px" class="input-small form-control inline" placeholder="Search">
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-small btn-primary" id="bootstrap-search" type="button" refreshTableID="sysMenuTable"><i class="icon-search"></i>搜索</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-small btn btn-info" id="bootstrap-reset" type="button" refreshTableID="sysMenuTable"><i class="icon-refresh"></i>重置</button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-small btn btn-success" type="button"><i class="icon-share-alt"></i>导出</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="pull-out m-t-small">
+                        <table class="table table-striped b-t text-small" id="sysMenuTable" data-toggle="table"
+                               data-url="{:url('/admin/Core/getMenus')}" data-show-refresh="true"
+                               data-toolbar="#toolbar" data-show-columns="true" data-pagination="true"
+                               data-page-list="[5, 10, 20, 50, 100, 200]" data-striped="true"
+                               data-side-pagination="server">
+                            <thead>
+                            <tr>
+                                <th data-checkbox="true"></th>
+                                <th data-field="name" data-sortable="true" data-formatter="">菜单名称</th>
+                                <th data-field="url" data-sortable="true">菜单地址</th>
+                                <th data-field="flag">标识</th>
+                                <th data-field="sort" data-sortable="true">排序</th>
+                                <th data-field="parentName">父级菜单</th>
+                                <th data-formatter="actionFormatter"
+                                    data-events="actionEvents">操作
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</section>
+{include file="admin@public/footer"}
+<!-- fuelux -->
+<script src="__PUBLIC__/js/fuelux/fuelux.js"></script>
+<script src="__PUBLIC__/js/underscore-min.js"></script>
+<!-- datatables -->
+<script src="__PUBLIC__/js/datatables/jquery.dataTables.min.js"></script>
+<!-- Sparkline Chart -->
+<script src="__PUBLIC__/js/charts/sparkline/jquery.sparkline.min.js"></script>
+<!-- Easy Pie Chart -->
+<script src="__PUBLIC__/js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+</body>
+</html>
