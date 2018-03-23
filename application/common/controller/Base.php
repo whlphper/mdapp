@@ -21,7 +21,6 @@ class Base extends Controller
             return;
         }else{
             $list = $this->initMenu($userInfo['roles_id']);
-            //dump($list);exit;
             $this->assign('menuList',$list);
         }
     }

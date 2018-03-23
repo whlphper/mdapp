@@ -1,0 +1,166 @@
+{include file="admin@public/header"}
+<link href="__PUBLIC__/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+<link href="__PUBLIC__/vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
+<link href="__PUBLIC__/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="__PUBLIC__/vendors/farbtastic/farbtastic.css" rel="stylesheet">
+<link href="__PUBLIC__/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+<link href="__PUBLIC__/vendors/summernote/dist/summernote.css" rel="stylesheet">
+
+
+<!-- CSS -->
+<link href="__PUBLIC__/css/app.min.1.css" rel="stylesheet">
+<link href="__PUBLIC__/css/app.min.2.css" rel="stylesheet">
+
+<!-- Following CSS are used only for the Demp purposes thus you can remove this anytime. -->
+<style type="text/css">
+    .toggle-switch .ts-label {
+        min-width: 130px;
+    }
+</style>
+<body>
+{include file="admin@public/nav"}
+<section id="main" data-layout="layout-1">
+    {include file="admin@public/menu"}
+    <!--主体内容-->
+    <section id="content">
+        <div class="container">
+            <div class="block-header">
+                <h2>Form Components</h2>
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="card">
+                <div class="card-header">
+                    <h2>{if isset($current.id) && $current.id}编辑{else}新增{/if}菜单<small></small></h2>
+                </div>
+                <div class="card-body card-padding">
+                    <form class="form-horizontal" role="form" id="sysMenusForm" action="{:url('/admin/Core/saveMenu')}">
+                        <input type="hidden" name="id" value="{$current.id|default=''}">
+                        <div class="card-body card-padding">
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">菜单名称</label>
+                                <div class="col-sm-4">
+                                    <div class="fg-line">
+                                        <input type="text" name="name" class="form-control input-sm"  placeholder="请输入菜单名称" value="{$current.name|default=''}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">父级菜单</label>
+                                <div class="col-sm-4">
+                                    <div class="fg-line">
+                                        <select class="form-control" name="pid">
+                                            <option value="0">顶级菜单</option>
+                                            {:widget('common/Widgets/initSelect',['table'=>'Menus','condition'=>[],'field'=>'id,pid,name,level','order'=>'sort desc','pField'=>'id','cField'=>'pid','default'=>isset($current.pid) ? $current.pid : ''])}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单地址</label>
+                                <div class="col-sm-4">
+                                    <div class="fg-line">
+                                        <input type="text" name="url" class="form-control input-sm" placeholder="模块/控制器/方法" value="{$current.url|default=''}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">菜单排序</label>
+                                <div class="col-sm-4">
+                                    <div class="fg-line">
+                                        <input type="number" name="sort" class="form-control input-sm"  placeholder="数字越大越靠前" value="{$current.sort|default=''}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">菜单图标</label>
+                                <div class="col-sm-4">
+                                    <div class="fg-line">
+                                        <input type="text" name="flag" class="form-control input-sm" placeholder="只有一级菜单可显示" value="{$current.flag|default=''}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">是否开启</label>
+                                <div class="col-sm-10" style="margin-top: 1%">
+                                    <div class="toggle-switch" data-ts-color="blue">
+                                        <input id="lock" name="is_open" type="checkbox" {if isset($current.is_open) && $current.is_open eq 1} checked {/if} hidden="hidden" value="1">
+                                        <label for="lock" class="ts-helper"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" class="btn btn-primary btn-sm form-submit"><i class="zmdi zmdi-file-text">&nbsp;&nbsp;</i>保存&nbsp;&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-sm bgm-teal waves-effect form-back"><i class="zmdi zmdi-long-arrow-return">&nbsp;&nbsp;</i>返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+</section>
+{include file="admin@public/footer"}
+{include file="admin@public/store"}
+<script>
+    $(document).ready(function(){
+        getOldFormData('sysMenusForm');
+    });
+</script>
+<!-- Javascript Libraries -->
+<script src="__PUBLIC__/vendors/bower_components/moment/min/moment.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js "></script>
+<script src="__PUBLIC__/vendors/bower_components/Waves/dist/waves.min.js"></script>
+<script src="__PUBLIC__/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<script src="__PUBLIC__/vendors/summernote/dist/summernote-updated.min.js"></script>
+
+
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+<script src="__PUBLIC__/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<script src="__PUBLIC__/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+<script src="__PUBLIC__/vendors/fileinput/fileinput.min.js"></script>
+<script src="__PUBLIC__/vendors/input-mask/input-mask.min.js"></script>
+<script src="__PUBLIC__/vendors/farbtastic/farbtastic.min.js"></script>
+
+</body>
+</html>

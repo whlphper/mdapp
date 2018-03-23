@@ -1,375 +1,670 @@
 {include file="admin@public/header"}
 <body>
 {include file="admin@public/nav"}
-{include file="admin@public/menu"}
-<section id="content">
-    <section class="main padder">
-        <div class="row">
-            <div class="col-lg-12">
-                <section class="toolbar clearfix m-t-large m-b">
-                    <a href="mail.html" class="btn btn-white btn-circle"><i class="icon-envelope-alt"></i>Inbox <b class="badge bg-white">5</b></a>
-                    <a href="#" class="btn btn-primary btn-circle active"><i class="icon-lightbulb"></i>Projects</a>
-                    <a href="#" class="btn btn-success btn-circle"><i class="icon-check"></i>Tasks</a>
-                    <a href="#" class="btn btn-info btn-circle active"><i class="icon-time"></i>Timeline<b class="badge bg-info"><i class="icon-plus"></i></b></a>
-                    <a href="#" class="btn btn-inverse btn-circle"><i class="icon-bar-chart"></i>Stats</a>
-                    <a href="calendar.html" class="btn btn-warning btn-circle"><i class="icon-calendar-empty"></i>Calendar</a>
-                    <a href="#" class="btn btn-danger btn-circle"><i class="icon-group"></i>Groups</a>
-                    <a href="#" class="btn btn-circle"><i class="icon-plus"></i>More</a>
-                </section>
-            </div>
-            <div class="col-lg-6">
-                <div class="row">
-                    <!-- easypiechart -->
-                    <div class="col-6">
-                        <section class="panel">
-                            <header class="panel-heading bg-white">
-                                <div class="text-center h5">Play/Pause pie</div>
-                            </header>
-                            <div class="pull-in text-center">
-                                <div class="inline">
-                                    <div class="easypiechart" data-percent="55" data-loop="true">
-                                        <span class="h2" style="margin-left:10px;margin-top:10px;display:inline-block">55</span>%
-                                        <div class="easypie-text"><button class="btn btn-link m-t-n-small" data-toggle="class:pie"><i class="icon-play text-active text-muted"></i><i class="icon-pause text text-muted"></i></button></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-6">
-                        <section class="panel">
-                            <header class="panel-heading bg-white">
-                                <div class="text-center h5">Total: <strong>5,000</strong></div>
-                            </header>
-                            <div class="pull-in text-center">
-                                <div class="inline">
-                                    <div class="easypiechart" data-percent="75" data-bar-color="#576879">
-                                        <span class="h2" style="margin-left:10px;margin-top:10px;display:inline-block">75</span>%
-                                        <div class="easypie-text text-muted">new visits</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!-- easypiechart end-->
-                </div>
-                <section class="panel">
-                    <div class="text-muted l-h-2x">
-                        <span class="badge">3,3121</span>
-                        <span class="m-r-small">Orders</span>
-                        <span class="badge bg-success">25,129</span>
-                        <span class="m-r-small">Selling Items</span>
-                        <span class="badge">59,973</span>
-                        <span class="m-r-small">Items</span>
-                        <span class="badge">3,141</span> Customers
-                    </div>
-                </section>
-            </div>
-            <div class="col-lg-6">
-                <!-- sparkline stats -->
-                <section class="panel">
-                    <header class="panel-heading">
-                        <ul class="nav nav-pills pull-right">
-                            <li><a href="#" data-loading-text="loading..."><i class="icon-retweet"></i></a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <span class="text">Day</span> <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li class="active"><a href="#">Day</a></li>
-                                    <li><a href="#">Week</a></li>
-                                    <li><a href="#">Month</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <span>Snapshot</span>
-                    </header>
-                    <ul class="list-group list-group-flush m-t-n">
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="pull-left text-center media-large">
-                                    <div class="h4 m-t-mini"><strong>890</strong></div>
-                                    <small class="text-muted">Total views</small>
-                                </div>
-                                <div class="pull-right hidden-sm text-right m-t">
-                                    <b class="badge bg-info" data-toggle="tooltip" data-title="New">250</b>
-                                </div>
-                                <div class="media-body">
-                                    <div class="sparkline" data-type="bar" data-bar-color="#8e98a9" data-bar-width="10" data-height="28"><!--20,10,15,21,12,5,21,30,24,15,8,19--></div>
-                                    <ul class="list-inline text-muted axis"><li>12<br>a</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li><li>12<br>p</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li></ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="pull-left text-center media-large">
-                                    <div class="h4 m-t-mini"><strong>$4,800</strong></div>
-                                    <small class="text-muted">Revenue</small>
-                                </div>
-                                <div class="pull-right hidden-sm text-right m-t">
-                                    <b class="badge bg-success" data-toggle="tooltip" data-title="Captured">$4,000</b>
-                                </div>
-                                <div class="media-body">
-                                    <div class="sparkline" data-type="bar" data-bar-color="#13c4a5" data-bar-width="10" data-height="28"><!--200,400,500,100,90,1200,1500,1000,800,500,80,50--></div>
-                                    <ul class="list-inline text-muted axis"><li>12<br>a</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li><li>12<br>p</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li></ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="pull-left text-center media-large">
-                                    <div class="h4 m-t-mini"><strong>595</strong></div>
-                                    <small class="text-muted">Orders</small>
-                                </div>
-                                <div class="pull-right hidden-sm text-right m-t">
-                                    <b class="badge" data-toggle="tooltip" data-title="Awaiting">120<i class="icon-plane"></i></b>
-                                </div>
-                                <div class="media-body">
-                                    <div class="sparkline" data-type="bar" data-bar-color="#61a1e1" data-bar-width="10" data-height="28"><!--15,21,30,24,15,8,19,20,10,15,21,12--></div>
-                                    <ul class="list-inline text-muted axis"><li>12<br>a</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li><li>12<br>p</li><li>2</li><li>4</li><li>6</li><li>8</li><li>10</li></ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-                <!-- sparkline stats end -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <!-- scrollable inbox widget -->
-                <section class="panel">
-                    <header class="panel-heading">
-                        <ul class="nav nav-pills pull-right">
+<section id="main" data-layout="layout-1">
+    {include file="admin@public/menu"}
+    <!--主体内容-->
+    <section id="content">
+        <div class="container">
+            <div class="block-header">
+                <h2>Dashboard</h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
                             <li>
-                                <a href="#" class="panel-toggle text-muted"><i class="icon-caret-down icon-large text-active"></i><i class="icon-caret-up icon-large text"></i></a>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
                             </li>
                         </ul>
-                        <span class="label label-large bg-default">15</span> Inbox
-                    </header>
-                    <section style="height:214px" class="panel-content scrollbar scroll-y">
-                        <article class="media">
-                            <span class="pull-left thumb-small"><img src="__PUBLIC__/images/avatar.jpg" alt="John said" class="img-circle"></span>
-                            <div class="media-body">
-                                <div class="pull-right media-mini text-center text-muted">
-                                    <strong class="h4">12:18</strong><br>
-                                    <small class="label bg-light">pm</small>
-                                </div>
-                                <a href="#" class="h4">Bootstrap 3.0 is comming</a>
-                                <small class="block"><a href="#" class="">John Smith</a> <span class="label label-success">Circle</span></small>
-                                <small class="block">Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</small>
-                            </div>
-                        </article>
-                        <div class="line pull-in"></div>
-                        <article class="media">
-                            <span class="pull-left thumb-small"><i class="icon-user icon-2x text-muted"></i></span>
-                            <div class="media-body">
-                                <div class="pull-right media-mini text-center text-muted">
-                                    <strong class="h4">17</strong><br>
-                                    <small class="label bg-light">feb</small>
-                                </div>
-                                <a href="#" class="h4">Bootstrap documents</a>
-                                <small class="block"><a href="#" class="">John Smith</a> <span class="label label-info">Friends</span></small>
-                                <small class="block">There are a few easy ways to quickly get started with Bootstrap, each one appealing to a different skill level and use case. Read through to see what suits your particular needs.</small>
-                            </div>
-                        </article>
-                        <div class="line pull-in"></div>
-                        <article class="media">
-                            <div class="media-body">
-                                <div class="pull-right media-mini text-center text-muted">
-                                    <strong class="h4">09</strong><br>
-                                    <small class="label bg-light">jan</small>
-                                </div>
-                                <a href="#" class="h4 text-success">Mobile first html/css framework</a>
-                                <small class="block">Bootstrap, Ratchet</small>
-                            </div>
-                        </article>
-                    </section>
-                </section>
-                <!-- / scrollable inbox widget-->
+                    </li>
+                </ul>
+
             </div>
-            <div class="col-lg-6">
-                <!-- task -->
-                <section class="panel">
-                    <header class="panel-heading">
-                        <a class="btn btn-link pull-right nav"><i class="icon-search text-default icon-large"></i></a>
-                        Tasks
-                    </header>
-                    <ul class="panel-content list-group list-group-flush m-t-n">
-                        <li class="list-group-item" data-toggle="class:active" data-target="#todo-1">
-                            <div class="media">
-                  <span class="pull-left thumb-small m-t-mini">
-                    <i class="icon-code icon-xlarge text-default"></i>
-                  </span>
-                                <div id="todo-1" class="pull-right text-primary m-t-small">
-                                    <i class="icon-circle icon-large text text-default"></i>
-                                    <i class="icon-ok-sign icon-large text-active text-primary"></i>
-                                </div>
-                                <div class="media-body">
-                                    <div><a href="#" class="h5">Coding on app</a></div>
-                                    <small class="text-muted">9:30 am every day</small>
-                                </div>
-                            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Sales Statistics <small>Vestibulum purus quam scelerisque, mollis nonummy metus</small></h2>
+
+                    <ul class="actions">
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-refresh-alt"></i>
+                            </a>
                         </li>
-                        <li class="list-group-item bg" data-toggle="class:active" data-target="#todo-2">
-                            <div class="media">
-                  <span class="pull-left thumb-small m-t-mini">
-                    <i class="icon-reply icon-xlarge text-default"></i>
-                  </span>
-                                <div id="todo-2" class="pull-right text-primary m-t-small">
-                                    <i class="icon-circle icon-large text text-default"></i>
-                                    <i class="icon-ok-sign icon-large text-active text-primary"></i>
-                                </div>
-                                <div class="media-body">
-                                    <div><a href="#" class="h5">Reply email</a></div>
-                                    <small class="text-muted">Check Gmail and reply</small>
-                                </div>
-                            </div>
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-download"></i>
+                            </a>
                         </li>
-                        <li class="list-group-item" data-toggle="class:active" data-target="#todo-3">
-                            <div class="media">
-                  <span class="pull-left thumb-small m-t-mini">
-                    <i class="icon-coffee icon-xlarge text-default"></i>
-                  </span>
-                                <div id="todo-3" class="pull-right text-primary m-t-small">
-                                    <i class="icon-circle icon-large text text-default"></i>
-                                    <i class="icon-ok-sign icon-large text-active text-primary"></i>
-                                </div>
-                                <div class="media-body">
-                                    <div><a href="#" class="h5">Coffee time</a></div>
-                                    <small class="text-muted">Freetime as you want</small>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item bg" data-toggle="class:active" data-target="#todo-4">
-                            <div class="media">
-                  <span class="pull-left thumb-small m-t-mini">
-                    <i class="icon-music icon-xlarge text-default"></i>
-                  </span>
-                                <div id="todo-4" class="pull-right text-primary m-t-small">
-                                    <i class="icon-circle icon-large text text-default"></i>
-                                    <i class="icon-ok-sign icon-large text-active text-primary"></i>
-                                </div>
-                                <div class="media-body">
-                                    <div><a href="#" class="h5">Listen music</a></div>
-                                    <small class="text-muted">Listening and finding</small>
-                                </div>
-                            </div>
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Change Date Range</a>
+                                </li>
+                                <li>
+                                    <a href="">Change Graph Type</a>
+                                </li>
+                                <li>
+                                    <a href="">Other Settings</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-                </section>
-                <!-- / task-->
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-edge">
+                        <div id="curved-line-chart" class="flot-chart "></div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-12">
-                <!-- .comment-list -->
-                <section class="comment-list block">
-                    <article id="comment-id-1" class="comment-item media arrow arrow-left">
-                        <a class="pull-left thumb-small avatar"><img src="__PUBLIC__/images/avatar.jpg" class="img-circle"></a>
-                        <section class="media-body panel">
-                            <header class="panel-heading clearfix">
-                                <a href="#">John smith</a><label class="label bg-info m-l-mini">Editor</label> <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>24 minutes ago</span>
-                            </header>
-                            <div>Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</div>
-                            <div class="comment-action m-t-small">
-                                <a href="#" data-toggle="class" class="btn btn-white btn-mini active"><i class="icon-star-empty text-muted text"></i><i class="icon-star text-danger text-active"></i>Like</a>
-                                <a href="#comment-form" class="btn btn-white btn-mini"><i class="icon-mail-reply text-muted"></i>Reply</a>
-                            </div>
-                        </section>
-                    </article>
-                    <!-- .comment-reply -->
-                    <article id="comment-id-2" class="comment-item comment-reply media arrow arrow-left">
-                        <a class="pull-left thumb-small"><span class="btn btn-circle btn-white btn-mini"><i class="icon-user"></i></span></a>
-                        <section class="media-body panel text-small">
-                            <a href="#">Mika Sam</a><label class="label bg-inverse m-l-mini">Admin</label> Report this comment is helpful <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>10 minutes ago</span>
-                        </section>
-                    </article>
-                    <!-- / .comment-reply -->
-                    <article id="comment-id-3" class="comment-item media arrow arrow-left">
-                        <a class="pull-left thumb-small avatar"><img src="__PUBLIC__/images/avatar.jpg" class="img-circle"></a>
-                        <section class="media-body panel">
-                            <header class="panel-heading clearfix">
-                                <a href="#">By me</a><label class="label bg-default m-l-mini">User</label> <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>about 1 hour ago</span>
-                            </header>
-                            <div>This comment was posted by you.</div>
-                            <div class="comment-action m-t-small">
-                                <a href="#comment-id-3" data-dismiss="alert" class="btn btn-white btn-mini"><i class="icon-trash text-muted"></i>Remove</a>
-                            </div>
-                        </section>
-                    </article>
-                    <article id="comment-id-4" class="comment-item media arrow arrow-left">
-                        <a class="pull-left thumb-small avatar"><img src="__PUBLIC__/images/avatar.jpg" class="img-circle"></a>
-                        <section class="media-body panel">
-                            <header class="panel-heading clearfix">
-                                <a href="#">Peter</a><label class="label bg-primary m-l-mini">Vip</label> <span class="text-muted m-l-small pull-right"><i class="icon-time"></i>2 hours ago</span>
-                            </header>
-                            <blockquote>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
-                            </blockquote>
-                            <div>Lorem ipsum dolor sit amet, consecteter adipiscing elit...</div>
-                            <div class="comment-action m-t-small">
-                                <a href="#" data-toggle="class" class="btn btn-white btn-mini"><i class="icon-star-empty text-muted text"></i><i class="icon-star text-danger text-active"></i>Like</a>
-                                <a href="#comment-form" class="btn btn-white btn-mini"><i class="icon-mail-reply text-muted"></i>Reply</a>
-                            </div>
-                        </section>
-                    </article>
-                    <!-- comment form -->
-                    <article class="comment-item media" id="comment-form">
-                        <a class="pull-left thumb-small avatar"><img src="__PUBLIC__/images/avatar.jpg" class="img-circle"></a>
-                        <section class="media-body">
-                            <form action="" class="m-b-none">
-                                <div class="input-group">
-                                    <input type="text" placeholder="Input your comment here" class="form-control">
-                                    <span class="input-group-btn">
-                      <button class="btn btn-primary" type="button">POST</button>
-                    </span>
+
+            <div class="mini-charts">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="mini-charts-item bgm-cyan">
+                            <div class="clearfix">
+                                <div class="chart stats-bar"></div>
+                                <div class="count">
+                                    <small>Website Traffics</small>
+                                    <h2>987,459</h2>
                                 </div>
-                            </form>
-                        </section>
-                    </article>
-                </section>
-                <!-- / .comment-list -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="mini-charts-item bgm-lightgreen">
+                            <div class="clearfix">
+                                <div class="chart stats-bar-2"></div>
+                                <div class="count">
+                                    <small>Website Impressions</small>
+                                    <h2>356,785K</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="mini-charts-item bgm-orange">
+                            <div class="clearfix">
+                                <div class="chart stats-line"></div>
+                                <div class="count">
+                                    <small>Total Sales</small>
+                                    <h2>$ 458,778</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="mini-charts-item bgm-bluegray">
+                            <div class="clearfix">
+                                <div class="chart stats-line-2"></div>
+                                <div class="count">
+                                    <small>Support Tickets</small>
+                                    <h2>23,856</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="dash-widgets">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div id="site-visits" class="dash-widget-item bgm-teal">
+                            <div class="dash-widget-header">
+                                <div class="p-20">
+                                    <div class="dash-widget-visits"></div>
+                                </div>
+
+                                <div class="dash-widget-title">For the past 30 days</div>
+
+                                <ul class="actions actions-alt">
+                                    <li class="dropdown">
+                                        <a href="" data-toggle="dropdown">
+                                            <i class="zmdi zmdi-more-vert"></i>
+                                        </a>
+
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a href="">Refresh</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Manage Widgets</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Widgets Settings</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="p-20">
+
+                                <small>Page Views</small>
+                                <h3 class="m-0 f-400">47,896,536</h3>
+
+                                <br/>
+
+                                <small>Site Visitors</small>
+                                <h3 class="m-0 f-400">24,456,799</h3>
+
+                                <br/>
+
+                                <small>Total Clicks</small>
+                                <h3 class="m-0 f-400">13,965</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div id="pie-charts" class="dash-widget-item">
+                            <div class="bgm-pink">
+                                <div class="dash-widget-header">
+                                    <div class="dash-widget-title">Email Statistics</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="text-center p-20 m-t-25">
+                                    <div class="easy-pie main-pie" data-percent="75">
+                                        <div class="percent">45</div>
+                                        <div class="pie-title">Total Emails Sent</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-t-20 p-b-20 text-center">
+                                <div class="easy-pie sub-pie-1" data-percent="56">
+                                    <div class="percent">56</div>
+                                    <div class="pie-title">Bounce Rate</div>
+                                </div>
+                                <div class="easy-pie sub-pie-2" data-percent="84">
+                                    <div class="percent">84</div>
+                                    <div class="pie-title">Total Opened</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="dash-widget-item bgm-lime">
+                            <div id="weather-widget"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div id="best-selling" class="dash-widget-item">
+                            <div class="dash-widget-header">
+                                <div class="dash-widget-title">Best Sellings</div>
+                                <img src="__PUBLIC__/img/widgets/alpha.jpg" alt="">
+                                <div class="main-item">
+                                    <small>Samsung Galaxy Alpha</small>
+                                    <h2>$799.99</h2>
+                                </div>
+                            </div>
+
+                            <div class="listview p-t-5">
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/widgets/note4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Samsung Galaxy Note 4</div>
+                                            <small class="lv-small">$850.00 - $1199.99</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/widgets/mate7.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Huawei Ascend Mate</div>
+                                            <small class="lv-small">$649.59 - $749.99</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/widgets/535.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Nokia Lumia 535</div>
+                                            <small class="lv-small">$189.99 - $250.00</small>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a class="lv-footer" href="">
+                                    View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Recent Items -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Recent Items <small>Phasellus condimentum ipsum id auctor imperdie</small></h2>
+                            <ul class="actions">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Settings</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Other Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body m-t-0">
+                            <table class="table table-inner table-vmiddle">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th style="width: 60px">Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="f-500 c-cyan">2569</td>
+                                    <td>Samsung Galaxy Mega</td>
+                                    <td class="f-500 c-cyan">$521</td>
+                                </tr>
+                                <tr>
+                                    <td class="f-500 c-cyan">9658</td>
+                                    <td>Huawei Ascend P6</td>
+                                    <td class="f-500 c-cyan">$440</td>
+                                </tr>
+                                <tr>
+                                    <td class="f-500 c-cyan">1101</td>
+                                    <td>HTC One M8</td>
+                                    <td class="f-500 c-cyan">$680</td>
+                                </tr>
+                                <tr>
+                                    <td class="f-500 c-cyan">6598</td>
+                                    <td>Samsung Galaxy Alpha</td>
+                                    <td class="f-500 c-cyan">$870</td>
+                                </tr>
+                                <tr>
+                                    <td class="f-500 c-cyan">4562</td>
+                                    <td>LG G3</td>
+                                    <td class="f-500 c-cyan">$690</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="recent-items-chart" class="flot-chart"></div>
+                    </div>
+
+                    <!-- Todo Lists -->
+                    <div id="todo-lists">
+                        <div class="tl-header">
+                            <h2>Todo Lists</h2>
+                            <small>Add, edit and manage your Todo Lists</small>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="tl-body">
+                            <div id="add-tl-item">
+                                <i class="add-new-item zmdi zmdi-plus"></i>
+
+                                <div class="add-tl-body">
+                                    <textarea placeholder="What you want to do..."></textarea>
+
+                                    <div class="add-tl-actions">
+                                        <a href="" data-tl-action="dismiss"><i class="zmdi zmdi-close"></i></a>
+                                        <a href="" data-tl-action="save"><i class="zmdi zmdi-check"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>Duis vitae nibh molestie pharetra augue vitae</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>In vel imperdiet leoorbi mollis leo sit amet quam fringilla varius mauris orci turpis</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>Suspendisse quis sollicitudin erosvel dictum nunc</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>Curabitur egestas finibus sapien quis faucibusras bibendum ut justo at sagittis. In hac habitasse platea dictumst</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>Suspendisse potenti. Cras dolor augue, tincidunt sit amet lorem id, blandit rutrum libero</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="checkbox media">
+                                <div class="pull-right">
+                                    <ul class="actions actions-alt">
+                                        <li class="dropdown">
+                                            <a href="" data-toggle="dropdown">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="">Delete</a></li>
+                                                <li><a href="">Archive</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="media-body">
+                                    <label>
+                                        <input type="checkbox">
+                                        <i class="input-helper"></i>
+                                        <span>Proin luctus dictum nisl id auctor. Nullam lobortis condimentum arcu sit amet gravida</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <!-- Calendar -->
+                    <div id="calendar-widget"></div>
+
+                    <!-- Recent Posts -->
+                    <div class="card">
+                        <div class="card-header ch-alt m-b-20">
+                            <h2>Recent Posts <small>Phasellus condimentum ipsum id auctor imperdie</small></h2>
+                            <ul class="actions">
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-refresh-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-download"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Change Date Range</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Change Graph Type</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Other Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <button class="btn bgm-cyan btn-float"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="listview">
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/profile-pics/1.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">David Belle</div>
+                                            <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/profile-pics/2.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Jonathan Morris</div>
+                                            <small class="lv-small">Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/profile-pics/3.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Fredric Mitchell Jr.</div>
+                                            <small class="lv-small">Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Glenn Jecobs</div>
+                                            <small class="lv-small">Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="__PUBLIC__/img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Bill Phillips</div>
+                                            <small class="lv-small">Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-footer" href="">View All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </section>
-<!-- .modal -->
-<div id="modal" class="modal fade">
-    <form class="m-b-none">
-        <div class="modal-dialog pos-abt" style="margin-top:-235px; top:50%">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
-                    <h4 class="modal-title" id="myModalLabel">Post your first idea</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="block">
-                        <label class="control-label">Title</label>
-                        <input type="text" class="form-control" placeholder="Post title">
-                    </div>
-                    <div class="block">
-                        <label class="control-label">Content</label>
-                        <textarea class="form-control" placeholder="Content" rows="5"></textarea>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"> Share with all memebers of first
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-small btn-default" data-dismiss="modal">Save</button>
-                    <button type="button" class="btn btn-small btn-primary" data-loading-text="Publishing...">Publish</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div>
-    </form>
-</div>
-<!-- / .modal -->
 {include file="admin@public/footer"}
-<!-- Sparkline Chart -->
-<script src="__PUBLIC__/js/charts/sparkline/jquery.sparkline.min.js"></script>
-<!-- Easy Pie Chart -->
-<script src="__PUBLIC__/js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
-<script src="__PUBLIC__/js/ie/excanvas.js"></script>
+<!-- Javascript Libraries -->
+<script src="__PUBLIC__/vendors/bower_components/flot/jquery.flot.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/flot/jquery.flot.resize.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
+<script src="__PUBLIC__/vendors/sparklines/jquery.sparkline.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+
+<script src="__PUBLIC__/vendors/bower_components/moment/min/moment.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js "></script>
+<script src="__PUBLIC__/vendors/bower_components/Waves/dist/waves.min.js"></script>
+<script src="__PUBLIC__/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+<script src="__PUBLIC__/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+<script src="__PUBLIC__/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<script src="__PUBLIC__/js/flot-charts/curved-line-chart.js"></script>
+<script src="__PUBLIC__/js/flot-charts/line-chart.js"></script>
+<script src="__PUBLIC__/js/charts.js"></script>
 </body>
 </html>

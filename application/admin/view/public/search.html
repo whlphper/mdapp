@@ -1,11 +1,13 @@
 <script>
     $(document).ready(function(){
-        $("#bootstrap-search").click(function(){
+        // 搜索
+        $(".bootstrap-search").click(function(){
             var form = $(this).closest("form").eq(0);
             var refreshTable = $(this).attr("refreshTableID");
             var formId = form.attr("id");
             var data = $("#"+formId).serializeArray();
             var d = {};
+            d._tm = new Date();
             $.each(data, function() {
                 d[this.name] = this.value;
             });
@@ -13,7 +15,8 @@
                 query: d
             });
         });
-        $("#bootstrap-reset").click(function(){
+        // 重置
+        $(".bootstrap-reset").click(function(){
             var form = $(this).closest("form").eq(0);
             var formId = form.attr("id");
             $("#"+formId)[0].reset();

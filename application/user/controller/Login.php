@@ -13,7 +13,11 @@ class Login extends Controller {
 
     public function index(Request $request)
     {
-        return view();
+        // 判断是否存在cookie
+        if(cookie('md_remember_username') && cookie('md_remember_userpass')){
+            $rememberInfo = ['username'=>cookie('md_remember_username'),'password'=>cookie('md_remember_userpass')];
+        }
+        return view('',isset($rememberInfo) ? ['rememberInfo'=>$rememberInfo] : []);
     }
 
     public function login(Request $request)

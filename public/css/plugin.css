@@ -950,7 +950,7 @@ table.fc-border-separate {
 
 /*parsely*/
 .parsley-error-list{margin:0;padding: 0;list-style: none;margin-top: 6px;font-size: 12px}
-.parsley-error{border-color: #ff5f5f !important;color: #ff5f5f;}
+.parsley-error{border-color: #ff5f5f !important}
 
 /*datatable*/
 .dataTables_wrapper{position: relative;}

@@ -1,0 +1,13 @@
+<script src="__PUBLIC__/js/global.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".form-submit").click(function(){
+            mdBtnEvent($(this),function(){
+                window.history.back();
+            });
+        });
+        $(".form-back").click(function(){
+            window.history.back();
+        });
+    });
+</script>
