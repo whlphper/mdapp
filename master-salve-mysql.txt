@@ -1,0 +1,68 @@
+#   MYSQL 之 主从复制  读写分离
+#0
+    PS:当设置主从复制的时候,要同步的主服务器master上的库-表,在对应从服务器slave中要存在
+    否则会保报错的
+#1
+    主服务器 配置my.ini
+    [mysqld]
+    log-bin=mysql-bin #开启二进制日志
+    server-id=1 #设置server-id
+
+#2
+    主服务器 创建账号
+    create user 'aaa'@'%' identified by 'mima';
+    分配权限
+    grant replication slave on *.* to 'aaa'@'%';
+    刷新权限
+    flush privileges
+
+#3
+    主服务器 查看master状态,记录二进制文件名/位置
+    show master status
+    record File/Position
+           mysql-bin.000001/433
+#4
+    从服务器 上添加server-id
+    [mysqld]
+    server-id=2 #设置server-id，必须唯一
+#5
+    从服务器 重启 执行同步SQL语句(需要主服务器主机名，登陆凭据，二进制文件的名称和位置)：
+    change master to
+        master_host='192.168.0.120',
+        master_user='slave1',
+        master_password='slave1',
+        master_log_file='mysql-bin.000003',
+        master_log_pos=780;
+#6
+    从服务器 启动slave同步进程
+    start slave;
+#7
+    从服务器 查看slave状态
+    show slave status\G;
+    当Slave_IO_Running和Slave_SQL_Running都为YES的时候就表示主从同步设置成功了
+
+
+    /*******
+    mysql> show slave status\G;
+    *************************** 1. row ***************************
+                   Slave_IO_State: Waiting for master to send event
+                      Master_Host: 192.168.0.120
+                      Master_User: slave1
+                      Master_Port: 3306
+                    Connect_Retry: 60
+                  Master_Log_File: mysql-bin.000001
+              Read_Master_Log_Pos: 914283
+                   Relay_Log_File: SC-201711281432-relay-bin.000002
+                    Relay_Log_Pos: 253
+            Relay_Master_Log_File: mysql-bin.000001
+                 Slave_IO_Running: Yes
+                Slave_SQL_Running: Yes
+    *******/
+#7
+      开始验证
+      在主服务器插入数据到指定表,然后查看从服务器是否有数据新增
+      是在master新增同步到slave
+      在slave新增不会同步到master
+      所以就是 master（写）slave（读）
+      读写分离(TP5在配置文件中配置即可)
+

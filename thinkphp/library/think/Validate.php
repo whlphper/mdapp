@@ -20,7 +20,7 @@ class Validate
 
     // 自定义的验证类型
     protected static $type = [];
-
+    public $data = [];
     // 验证类型别名
     protected $alias = [
         '>' => 'gt', '>=' => 'egt', '<' => 'lt', '<=' => 'elt', '=' => 'eq', 'same' => 'eq',
@@ -253,7 +253,7 @@ class Validate
     public function check($data, $rules = [], $scene = '')
     {
         $this->error = [];
-
+        $this->data  = $data;
         if (empty($rules)) {
             // 读取验证规则
             $rules = $this->rule;

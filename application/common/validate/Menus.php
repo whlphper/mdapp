@@ -11,7 +11,7 @@ class Menus extends Validate
 {
     protected $rule =   [
         'name|菜单名称'  => 'require|unique:Menus',
-        'url|菜单地址'   => 'require',
+        //'url|菜单地址'   => '',//require
         'sort|菜单排序'   => 'require|number',
         'pid|父级菜单'   => 'require|number',
     ];
@@ -21,7 +21,7 @@ class Menus extends Validate
     ];
 
     protected $scene = [
-        'insert'  =>  ['name'=>'require|unique:Menus','url','sort','pid'],
-        'update'  =>  ['name'=>'require|unique:Menus,name^id','url','sort','pid'],
+        'insert'  =>  ['name'=>'require|unique:Menus','sort','pid'],//'url',
+        'update'  =>  ['name'=>'require|unique:Menus,name^id','sort','pid'],//,'url'
     ];
 }

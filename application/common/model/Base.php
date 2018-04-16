@@ -1,9 +1,7 @@
 <?php
 namespace app\common\model;
 use think\Model;
-use think\Request;
 use think\Db;
-
 /*
  * Created by PhpStorm.
  * User: Administrator
@@ -70,6 +68,7 @@ class Base extends Model
             });
             return ['total'=>count($total),'rows'=>$collection];
         }catch(\Exception $e){
+            mdLog($e);
             return ['total'=>0,'rows'=>[],'error'=>$e->getMessage()];
         }
     }
@@ -78,7 +77,7 @@ class Base extends Model
     /*
      * 查询集合-公共
      */
-    public function getCommonCollection($condition,$field,$order,$join=[])
+    public function getCommonCollection($condition,$field='id',$order='',$join=[])
     {
         try{
             if(empty($condition['a.deleted_at'])){
@@ -91,7 +90,7 @@ class Base extends Model
             foreach($list as $k=>$v){
                 $collection[] = $v->data;
             }
-            return ['code'=>1,'msg'=>'ok','data'=>$collection];
+            return ['code'=>1,'msg'=>'','data'=>$collection];
         }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage()];
@@ -103,7 +102,7 @@ class Base extends Model
      * @return boolean
      * @param $condition 删除条件
      */
-    public function deleteData($idStr,$name,$code,$old=[],$new=[])
+    public function deleteData($idStr,$table,$name,$code,$old=[],$new=[])
     {
         Db::startTrans();
         try{
@@ -112,11 +111,22 @@ class Base extends Model
                 $query->where($condition);
             });
             if($result){
+                $request = \think\Request::instance();
+                $curAction = model("Menus")->getRow(['url'=>$request->path()],'id,url,name');
+                if($curAction){
+                    $curAction = $curAction->toArray();
+                    $logData['name'] = $curAction['name'];
+                    $logData['code'] = $curAction['id'];
+                }else{
+                    $logData['name'] = $name;
+                    $logData['code'] = $code;
+                }
                 // 记录删除日志
                 $logData['created_user'] = session("userId");
                 $logData['data_id'] = $idStr;
-                $logData['name'] = $name;
-                $logData['code'] = $code;
+                $logData['table']= $table;
+                $logData['url'] = $request->path();
+                $logData['ip'] = $request->ip();
                 $logData['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
                 if(!empty($old)){
                     $logData['old'] = serialize($old);
@@ -150,14 +160,34 @@ class Base extends Model
      * @param $old  旧字段
      * @param $new  新字段
      */
-    public function saveData($data,$name,$code,$old=[],$new=[])
+    public function saveData($data,$table,$name,$code,$old=[],$new=[])
     {
         Db::startTrans();
         try{
+            if (isset($data['old']) || isset($data['new'])) {
+                $old = $data['old'];
+                $new = $data['new'];
+                // 要unset掉
+                unset($data['old']);
+                unset($data['new']);
+            } else {
+                $old = [];
+                $new = [];
+            }
+            $request = \think\Request::instance();
             // 当数据操作成功 记录日志
             $logData['created_user'] = session("userId");
-            $logData['name'] = $name;
-            $logData['code'] = $code;
+            $curAction = model("Menus")->getRow(['url'=>$request->path()],'id,url,name');
+            if($curAction){
+                $curAction = $curAction->toArray();
+                $logData['code'] = $curAction['id'];
+            }else{
+                $logData['code'] = $code;
+            }
+            $logData['table']= strtolower($table);
+            $logData['name']= $name;
+            $logData['url'] = $request->path();
+            $logData['ip'] = $request->ip();
             $logData['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
             if(empty($data['id'])){
                 $result = self::create($data);
@@ -166,6 +196,7 @@ class Base extends Model
                 }
                 $dataId = $result->data['id'];
             }else{
+                $data['updated_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
                 $result = self::allowField(true)->save($data,['id'=>$data['id']]);
                 if(!$result){
                     throw new \Exception($name.'失败，没有可以更改的数据');
@@ -173,8 +204,10 @@ class Base extends Model
                 $dataId = $data['id'];
                 // 判断是否含有差异  记录差异字段
                 if($old && $new){
-                    $logData['old'] = serialize($old);
-                    $logData['new'] = serialize($new);
+                    // 获取字段的注释
+                    $diffInfo = $this->getSqlComment($table,$old,$new);
+                    $logData['old'] = serialize($diffInfo['old']);
+                    $logData['new'] = serialize($diffInfo['new']);
                 }
             }
             $logData['data_id'] = $dataId;
@@ -187,6 +220,98 @@ class Base extends Model
             return $return;
         }catch(\Exception $e){
             Db::rollback();
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
+
+    /* 获取字段的注释
+     * 当创建表的时候要写清楚每个字段的注释  example：字段含义-其他备注
+     * @param $table     表名称
+     * @param $old       旧字段数组
+     * @param $new       新字段数组
+     */
+    public function getSqlComment($table='',$old=[],$new=[])
+    {
+        if($old && $new){
+            // 处理为完整表名称
+            $tableArr = preg_split("/(?=[A-Z])/", $table);
+            $prefix = config('database.prefix');
+            foreach($tableArr as $k=>$v){
+                if(empty($v)){
+                    unset($tableArr[$k]);
+                }else{
+                    $tableArr[$k] = strtolower($v);
+                }
+            }
+            $fulltTable = $prefix.implode("_",$tableArr);
+            $fieldArr = array_keys($old);
+            $fieldToComment = [];
+            // 只获取字段名称数组
+            $query = self::query("show full fields from ".$fulltTable);
+            foreach($query as $k=>$v){
+                $curField = $v['Field'];
+                $curComment = explode('-',$v['Comment']);
+                if(in_array($curField,$fieldArr)){
+                    $fieldToComment[$curField] = $curComment[0];
+                }
+            }
+            // 声明新旧数组 以注释作为key
+            $comOld = [];
+            $comNew = [];
+            foreach($fieldToComment as $k=>$v){
+                foreach($old as $k2=>$v2){
+                    if($k == $k2){
+                        $comOld[$v] = $v2;
+                    }
+                }
+                foreach($new as $k2=>$v2){
+                    if($k == $k2){
+                        $comNew[$v] = $v2;
+                    }
+                }
+            }
+            $return['old'] = $comOld;
+            $return['new'] = $comNew;
+            return $return;
+        }
+    }
+
+    /**
+     * 获取一条数据
+     * @param array $condition
+     * @param $field
+     * @param array $order
+     * @param array $join
+     * @return null|static
+     */
+    public function getRow($condition=[],$field,$order='',$join=[]){
+        if(empty($condition['a.deleted_at'])){
+            $condition = array_merge($condition,['a.deleted_at'=>null]);
+        }
+        $list = self::get(function($query)use($condition,$field,$order,$join){
+            $query->alias('a')->where($condition)->order($order)->join($join)->field($field)->limit(1);
+        });
+        return $list;
+    }
+
+    /**
+     * 获取一个字段值
+     * @param array $condition
+     * @param $field
+     * @param string $order
+     * @param array $join
+     * @return array
+     */
+    public function getField($condition=[],$field,$order='',$join=[])
+    {
+        try{
+            if(empty($condition['a.deleted_at'])){
+                $condition = array_merge($condition,['a.deleted_at'=>null]);
+            }
+            $result = self::where($condition)->alias('a')->order($order)->join($join)->value($field);
+            return ['code'=>1,'msg'=>'success','data'=>$result];
+        }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage()];
         }

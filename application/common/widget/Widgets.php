@@ -16,7 +16,7 @@ class Widgets extends Controller{
      * @param $cField    子级字段名称
      * @param $default   初始化值
      * */
-    public function initSelect($table,$condition,$field,$order,$pField,$cField,$default)
+    public function initSelect($table,$condition,$field,$order,$pField,$cField,$default='')
     {
         $list = model($table)->getCommonCollection($condition,$field,$order);
         if($list['code'] == 0){

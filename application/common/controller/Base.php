@@ -6,6 +6,8 @@ use think\Controller;
  * */
 class Base extends Controller
 {
+    public $roleId = null;
+    public $menuIds= null;
     // 用户权限全局检查
     public function _initialize()
     {
@@ -20,41 +22,12 @@ class Base extends Controller
             $this->redirect($loginUrl);
             return;
         }else{
-            $list = $this->initMenu($userInfo['roles_id']);
-            $this->assign('menuList',$list);
+            $this->roleId = session("user.roles_id");
+            $menus = model("Roles")::get(session("user.roles_id"))->toArray();
+            $this->menuIds = $menus['menu_ids'];
         }
     }
 
-    /*
-     * 初始化菜单
-     * @param  $rolesId 用户角色ID
-     * @return array
-     * */
-    private function initMenu($rolesId)
-    {
-        try{
-            if(empty($rolesId)){
-                throw new \think\Exception('用户角色ID不能为空');
-            }
-            // 获取用户下menu集
-            $menuInfo = model('Roles')->getMenuStr($rolesId);
-            if(isset($menuInfo['code']) && $menuInfo['code'] == 0){
-                throw new \think\Exception($menuInfo['msg']);
-            }
-            if(empty($menuInfo['menu_ids'])){
-                throw new \think\Exception($menuInfo['name'].'下尚未配置菜单');
-            }
-            // 获取真正的菜单数组
-            $menuList = model('Menus')->getList($menuInfo['menu_ids']);
-            if(empty($menuList)){
-                throw new \think\Exception('菜单不存在或者已经删除');
-            }
-            return list_to_tree($menuList,'id','pid','subMenus',0);
-        }catch(\Exception $e){
-          ecpLog($e);
-          return ['code'=>0,'msg'=>$e->getMessage(),'data'=>[]];
-        }
-    }
 
     public function _empty($name)
     {

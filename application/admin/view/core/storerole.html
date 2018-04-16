@@ -1,0 +1,161 @@
+{include file="admin@public/store"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<link rel="stylesheet" href="__PUBLIC__/plugins/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/plugins/zTree/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="__PUBLIC__/plugins/zTree/js/jquery.ztree.excheck.js"></script>
+<!--ickeck-->
+<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
+<script type="text/javascript">
+    var setting = {
+        check: {
+            enable: true
+        },
+        callback: {
+            onCheck: zTreeOnCheck
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        }
+    };
+    function zTreeOnCheck(event, treeId, treeNode) {
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
+            nodes = treeObj.getCheckedNodes(true),
+            v = [];
+        for (var i = 0; i < nodes.length; i++) {
+            v.push(nodes[i].id);
+
+        }
+        $("#menuIds").val(v.join(","));
+    };
+
+    $(document).ready(function () {
+        // 获取所有权限菜单
+        var authUrl = "{:url('user/Login/getAllMenu')}";
+        var id = session("mdRoleId")
+        var data = {};
+        data.id = id ? id : '';
+        mdAjax(false, authUrl, data, function (res) {
+            var zNodes = res.data;
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+        if (id) {
+            var url = "{:url('admin/Core/getRoleRow')}";
+            var data = {};
+            data.id = id;
+            mdAjax(false, url, data, function (res) {
+                assign(res.data, 'mdRolesForm');
+                layer.closeAll("loading");
+            });
+        } else {
+            layer.closeAll("loading");
+        }
+
+    });
+
+    // 切换店铺下角色 可多级联动
+    function changeLevel(obj)
+    {
+        var curFrand = obj.val();
+        var url = '{:url("admin/Html/changeLevel")}';
+        var data = {};
+        var con = {};
+        if(obj.parent('div').find('select').length == 1){
+            con['a.franchisee'] = curFrand;
+            con['a.level'] = 1;
+        }else{
+            con['a.pid'] = curFrand;
+            con['a.level'] = obj.parent('div').find('select').length++;
+        }
+        data.table = 'Roles';
+        data.field = 'id,name';
+        data.order = 'a.sort desc';
+        data.condition = con;
+        mdAjax(false, url, data, function (res) {
+            var html = '<select style="width: 20%;float: left;margin-left: 10px;" class="form-control Rolelist" type="select" name="morelevel" required onchange="changeLevel($(this))">';
+            if(res.data.length > 0){
+                for(var i=0;i<res.data.length;i++){
+                    html = html + '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+                }
+                html = html + '</select>';
+                obj.parent('div').append(html);
+            }else{
+                obj.parent('div').find('select').eq(obj.index()).nextAll('select').remove();
+            }
+            layer.closeAll("loading");
+        });
+    }
+
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+<body>
+<!-- Main content -->
+<!--主体内容-->
+<div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{:url('admin/Core/saveRole')}" id="mdRolesForm">
+            <input type="hidden" name="id" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新增用户组</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>组名称:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 no-padding">
+                        <label class="control-label">所属组:</label>
+                    </div>
+
+                    <div class="form-group col-lg-12 no-padding morelevel">
+                        <select style="width: 20%;float: left;" class="form-control Rolelist" type="select" name="morelevel" required onchange="changeLevel($(this))">
+                            <option value="">请选择</option>
+                            <option value="0">平台运营</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>角色排序:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="number" name="sort" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>权限设置:</label>
+                        <input type="hidden" id="menuIds" name="menu_ids" required>
+                        <div class="zTreeDemoBackground " style="border: 1px solid #eee;">
+                            <ul id="treeDemo" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
+                            class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sysRoleTable"><i
+                            class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->\
+</div>
+</body>
+<!-- /.content -->
+</html>

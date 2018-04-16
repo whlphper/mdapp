@@ -17,10 +17,11 @@ class Menus extends Base
     {
 
         $list = Menus::all(function($query)use($idStr){
+            //->where('level','<',2)
             if(session("user.type") == '1001001'){
-                $query->alias('a')->where('a.deleted_at',null)->where('is_open',1)->order('sort', 'desc')->field('a.id,a.name,a.flag,a.url,a.pid');
+                $query->alias('a')->where('a.deleted_at',null)->where('is_open',1)->where('is_menu',1)->order('sort', 'desc')->field('a.id,a.name,a.flag,a.url,a.pid');
             }else{
-                $query->alias('a')->where('a.deleted_at',null)->where('a.id','in',$idStr)->where('is_open',1)->order('sort', 'desc')->field('a.id,a.name,a.flag,a.url,a.pid');
+                $query->alias('a')->where('a.deleted_at',null)->where('a.id','in',$idStr)->where('is_open',1)->where('is_menu',1)->order('sort', 'desc')->field('a.id,a.name,a.flag,a.url,a.pid');
             }
         });
         $collection = array();

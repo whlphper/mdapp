@@ -10,6 +10,33 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+function WebService($uri,$class_name='',$namespace='controller',$persistence = false){
+    $class = 'index\\'. $namespace .'\\'. $class_name;
+    $class = 'app\index\controller\Web';
+    $serv = new \SoapServer(null,array("uri"=>$uri));
+    $serv->setClass($class);
+    if($persistence)
+        $serv->setPersistence(SOAP_PERSISTENCE_SESSION);//默认是SOAP_PERSISTENCE_REQUEST
+    $serv->handle();
+    return $serv;
+
+}
+
+
+function WebClient($url='',array $options=array()){
+    if(stripos($url,'?wsdl')!== false)
+    {
+        return new \SoapClient($url,array_merge(array('encoding'=>'utf-8'),$options));//WSDL
+    }
+    else
+    {
+        $location = "http://127.0.0.1/mdapp";
+        $uri = "index/Index/test1";
+        $options = array_merge(array('location'=>$location,'uri'=>$uri,'encoding'=>'utf-8'),$options);
+        return new \SoapClient(null,$options);//non-WSDL
+    }
+}
+
 
 // 异常记录log
 function mdLog($e)
@@ -74,6 +101,23 @@ function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root 
         }
     }
     return $tree;
+}
+
+/*
+ * 把tree还原为二维数组
+ * @param $arrTmp    数据
+ * @param $child     子节点字段名
+ * @param $parent_id root 0
+ * @param $res       结果集
+*/
+function tree_to_list($arrTmp, $child='children' , $parent_id=0, &$ret=null) {
+    foreach($arrTmp as $k => $v) {
+        $ret[$v['id']] = array('id'=>$v['id'], 'layer'=>$v['layer'], 'parentId'=>$parent_id,'name'=>$v['text'],'level'=>$v['level'],'url'=>$v['url']);
+        if(!empty($v[$child])) {
+            tree_to_list($v[$child],$child, $v['id'], $ret);
+        }
+    }
+    return $ret;
 }
 
 /**

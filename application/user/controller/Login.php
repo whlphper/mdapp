@@ -1,5 +1,6 @@
 <?php
 namespace app\user\controller;
+use app\common\controller\Base;
 use think\Request;
 use think\Controller;
 
@@ -53,7 +54,7 @@ class Login extends Controller {
             $indexUrl = url('/admin/Index/index');
             return ['code'=>1,'msg'=>'登陆成功','data'=>['url'=>$indexUrl]];
         }catch(\Exception $e){
-            ecpLog($e);
+            mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage(),'data'=>[]];
         }
     }
@@ -67,4 +68,78 @@ class Login extends Controller {
         $indexUrl = url('/user/Login/index');
         $this->redirect($indexUrl);
     }
+
+    /*
+      * 初始化菜单
+      * @param  $rolesId 用户角色ID
+      * @return array
+      * */
+    public function initMenu($rolesId='')
+    {
+        $rolesId = session('user.roles_id');
+        try{
+            if(empty($rolesId)){
+                throw new \think\Exception('用户角色ID不能为空');
+            }
+            // 获取用户下menu集
+            $menuInfo = model('Roles')->getMenuStr($rolesId);
+            if(isset($menuInfo['code']) && $menuInfo['code'] == 0){
+                throw new \think\Exception($menuInfo['msg']);
+            }
+            if(empty($menuInfo['menu_ids']) && session("user.type") != '1001001'){
+                throw new \think\Exception($menuInfo['name'].'下尚未配置菜单');
+            }
+            // 获取真正的菜单数组
+            $menuList = model('Menus')->getList($menuInfo['menu_ids']);
+            if(empty($menuList)){
+                throw new \think\Exception('菜单不存在或者已经删除');
+            }
+            return list_to_tree($menuList,'id','pid','subMenus',0);
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage(),'data'=>[]];
+        }
+    }
+
+    public function getAllMenu()
+    {
+        $menus = model("Roles")::get(session("user.roles_id"))->toArray();
+        $menuIds = $menus['menu_ids'];
+        $list = model('Menus')->getList($menuIds);
+        if($menuId = $this->request->param('id')){
+            $idStr = model('Roles')->getField(['id'=>$menuId],'menu_ids');
+            if($idStr['code'] == 0){
+                return ['code'=>0,'msg'=>'角色权限获取失败'];
+            }
+            $idStr = explode(',',$idStr['data']);
+            foreach ($list as $k => $v) {
+                \think\Log::notice($v['id']);
+                \think\Log::notice($idStr);
+                if (in_array($v['id'], $idStr)) {
+                    $list[$k]['checked'] = true;
+                }
+            }
+        }
+        return ['code'=>1,'msg'=>'','data'=>$this->getMenuSubs($list,0,1,'pid')];
+    }
+
+    public function getMenuSubs($categorys, $catId = 0, $level = 1, $filed)
+    {
+        $subs = array();
+        foreach ($categorys as $item) {
+            if ($item[$filed] == $catId) {
+                $item['level'] = $level;
+                $item['pId'] = $item['pid'];
+                $item['open'] = false;
+                unset($item['icon']);
+                unset($item['url']);
+                $subs[] = $item;
+                $subs = array_merge($subs, $this->getMenuSubs($categorys, $item['id'], $level + 1, $filed));
+            }
+        }
+        return $subs;
+    }
+
+
+
 }

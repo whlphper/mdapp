@@ -1,9 +1,11 @@
-<script src="__PUBLIC__/js/global.js"></script>
 <script>
     $(document).ready(function(){
         $(".form-submit").click(function(){
-            mdBtnEvent($(this),function(){
-                window.history.back();
+            var table = $(this).attr("data-table");
+            mdBtnEvent($(this),function(res){
+                $("#"+table).bootstrapTable('refresh');
+                $("#mdFormModal").modal("hide");
+                layer.closeAll("loading");
             });
         });
         $(".form-back").click(function(){
