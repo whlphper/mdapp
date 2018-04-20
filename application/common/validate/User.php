@@ -10,8 +10,9 @@ use think\Validate;
 class User extends Validate
 {
     protected $rule =   [
-        'username|账号或者手机号'  => 'require|max:25',
+        'mobile|账号或者手机号'  => 'require|max:25',
         'password|登陆密码'   => 'require|length:3,25',
+        'repassword|确认登陆密码'   => 'confirm:password',
     ];
 
     protected $message  =   [
@@ -19,6 +20,7 @@ class User extends Validate
     ];
 
     protected $scene = [
-        'login'  =>  ['username','password'],
+        'insert'  =>  ['username'=>'require|unique:User','mobile'=>'require|unique:User','password','repassword'],//'url',
+        'update'  =>  ['username'=>'require|unique:User,name^id','mobile'=>'require|unique:User,mobile^id','password','repassword'],//,'url'
     ];
 }

@@ -7,6 +7,8 @@
 </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+<!--summernote上传图片uri-->
+<input type="hidden" id="summernoteUpUrl" value="{:url('admin/Index/uploadImage')}">
 <div class="wrapper">
     <!-- top nav-->
     {include file="admin@public/topnav"}
@@ -21,7 +23,7 @@
         <div class="content-iframe" style="overflow: hidden;">
             {include file="admin@public/breadcrumb"}
             <div class="mainContent" id="content-main" >
-                <iframe class="LRADMS_iframe col-lg-12" style="margin-top: -2%;" width="100%"  src="{:url('/admin/Index/welcome')}" frameborder="0" data-id="default.html" ></iframe>
+                <iframe class="LRADMS_iframe col-lg-12" style="margin-top: -2%;" width="100%;overflow:auto;"  src="{:url('/admin/Index/welcome')}" frameborder="0" data-id="default.html" ></iframe>
             </div>
         </div>
     </div>

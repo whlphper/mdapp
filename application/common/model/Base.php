@@ -2,6 +2,8 @@
 namespace app\common\model;
 use think\Model;
 use think\Db;
+use think\Request;
+
 /*
  * Created by PhpStorm.
  * User: Administrator
@@ -10,6 +12,18 @@ use think\Db;
  */
 class Base extends Model
 {
+    // 表对应需要处理图片的字段
+    public function imgField($table='Advertisement')
+    {
+        $imgField = [
+            'Product'=>['album'],
+            'Advertisement'=>['poster'],
+            'Brand'=>['poster'],
+            'Category'=>['poster'],
+            'User'=>['avatar'],
+        ];
+        return isset($imgField[$table]) ? $imgField[$table] : [];
+    }
     /*
      * 获取表格数据
      * @ $CurrentCon 查询条件
@@ -70,6 +84,59 @@ class Base extends Model
         }catch(\Exception $e){
             mdLog($e);
             return ['total'=>0,'rows'=>[],'error'=>$e->getMessage()];
+        }
+    }
+
+    /**
+     * @param array $CurrentCon
+     * @param string $field
+     * @param array $join
+     * @param string $curOrder
+     * @return array
+     */
+    public function getDataList($CurrentCon = array(), $field = '*', $join = [], $curOrder = '',$limit=false)
+    {
+        try{
+            if (!$join || $join == '') {
+                $join = array();
+            }
+            $condition = array_merge($CurrentCon, array('a.deleted_at' => null));
+            $order = 'a.created_at desc';
+            if (!empty($curOrder)) {
+                $order = $curOrder . ',' . $order;
+            }
+            if($limit){
+                $list = self::all(function($query)use($condition,$field,$join,$order,$limit){
+                    $query->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($limit);
+                });
+            }else{
+                $list = self::all(function($query)use($condition,$field,$join,$order){
+                    $query->alias('a')->where($condition)->join($join)->order($order)->field($field);
+                });
+            }
+            $collection = array();
+            /******当必要时候,需要处理数据中的图片 start*******/
+            foreach($list as $k=>$v){
+                // 是否处理图片 暂时写了单张图片
+                $curModelImg = $this->imgField($this->name);
+                if(!empty($curModelImg)){
+                    $docRoot = str_replace('/index.php','/public',Request::instance()->root());
+                    foreach($curModelImg as $key=>$value){
+                        if(strpos($field,$value) !== false && $v->data[$value] && isset($v->data[$value.'Path'])){
+                            $v->data[$value.'Array'][] = ['id'=>$v->data[$value],'path'=>$v->data[$value.'Path']];
+                        }
+                    }
+                }
+                $collection[] = $v->data;
+            }
+            /******当必要时候,需要处理数据中的图片 end*******/
+            $total = self::all(function($query)use($condition,$join){
+                $query->alias('a')->where($condition)->join($join)->field('a.id')->count();
+            });
+            return ['code'=>1,'total'=>count($total),'data'=>$collection];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'total'=>0,'data'=>[],'msg'=>$e->getMessage()];
         }
     }
 
@@ -178,8 +245,8 @@ class Base extends Model
             // 当数据操作成功 记录日志
             $logData['created_user'] = session("userId");
             $curAction = model("Menus")->getRow(['url'=>$request->path()],'id,url,name');
-            if($curAction){
-                $curAction = $curAction->toArray();
+            if($curAction['code'] == 1){
+                $curAction = $curAction['data']['name'];
                 $logData['code'] = $curAction['id'];
             }else{
                 $logData['code'] = $code;
@@ -190,6 +257,16 @@ class Base extends Model
             $logData['ip'] = $request->ip();
             $logData['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
             if(empty($data['id'])){
+                $data['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+                if($this->name == 'User'){
+                    $data['account_number'] = $data['mobile'];
+                    $data['password'] = md5($data['password']);
+                    $curModule = Request::instance()->module();
+                    switch($curModule){
+                        case 'pcshop':
+                            $data['type'] = '1001004';
+                    }
+                }
                 $result = self::create($data);
                 if(empty($result->data['id'])){
                     throw new \Exception($name.'失败');
@@ -285,14 +362,37 @@ class Base extends Model
      * @param array $join
      * @return null|static
      */
-    public function getRow($condition=[],$field,$order='',$join=[]){
-        if(empty($condition['a.deleted_at'])){
-            $condition = array_merge($condition,['a.deleted_at'=>null]);
+    public function getRow($condition=[],$field,$join=[],$order=''){
+        try{
+            if(empty($condition['a.deleted_at'])){
+                $condition = array_merge($condition,['a.deleted_at'=>null]);
+            }
+            $list = self::get(function($query)use($condition,$field,$order,$join){
+                $query->alias('a')->where($condition)->order($order)->join($join)->field($field)->limit(1);
+            });
+            if(!$list){
+                throw new \think\Exception('数据不存在');
+            }
+            $list = $list->data;
+            /******当必要时候,需要处理数据中的图片 start*******/
+            foreach($list as $k=>$v){
+                // 是否处理图片 暂时写了单张图片
+                $curModelImg = $this->imgField($this->name);
+                if(!empty($curModelImg)){
+                    $docRoot = str_replace('/index.php','/public',Request::instance()->root());
+                    foreach($curModelImg as $key=>$value){
+                        if(strpos($field,$value) !== false && $list[$k] && $k == $value){
+                            $list[$value.'Array'][] = ['id'=>$list[$value],'path'=>$list[$value.'Path']];
+                        }
+                    }
+                }
+            }
+            /******当必要时候,需要处理数据中的图片 end*******/
+            return ['code'=>1,'msg'=>'','data'=>$list];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
         }
-        $list = self::get(function($query)use($condition,$field,$order,$join){
-            $query->alias('a')->where($condition)->order($order)->join($join)->field($field)->limit(1);
-        });
-        return $list;
     }
 
     /**
@@ -310,6 +410,26 @@ class Base extends Model
                 $condition = array_merge($condition,['a.deleted_at'=>null]);
             }
             $result = self::where($condition)->alias('a')->order($order)->join($join)->value($field);
+            return ['code'=>1,'msg'=>'success','data'=>$result];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
+
+    /**
+     * 获取一列值
+     * @param array $condition
+     * @param $field
+     * @return array
+     */
+    public function getColumn($condition=[],$field)
+    {
+        try{
+            if(empty($condition['a.deleted_at'])){
+                $condition = array_merge($condition,['a.deleted_at'=>null]);
+            }
+            $result = self::where($condition)->alias('a')->column($field);
             return ['code'=>1,'msg'=>'success','data'=>$result];
         }catch(\Exception $e){
             mdLog($e);

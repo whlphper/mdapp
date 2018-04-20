@@ -1,0 +1,165 @@
+<!--最顶部导航-->
+<div class="top_nav ui-border-b">
+    <div class="wrap">
+        <div class="top-right">
+            {if $Think.session.pcshopUserId}
+            <a href="{:url('/pcshop/User/logout')}" rel="nofollow">退出登录</a>
+            <a href="{:url('/pcshop/User/uCenter')}" rel="nofollow">个人中心</a>
+            {/if}
+            <a href="{:url('/pcshop/User/help')}">帮助中心</a>
+            <span>咨询电话：<b>0871-65885399</b></span>
+        </div>
+        <div class="top-left">
+            <b>美橙互联商城 -</b> O2O实力派
+            <span id="loginbar">
+                {if $Think.session.pcshopUserId}
+                <a href="javascript:void(0);" style="color:red;" rel="nofollow">{$Think.session.pcshopUser.nick_name|default='未设定昵称'}</a>
+                {else}
+                <a href="{:url('/pcshop/User/login')}" rel="nofollow">登录</a>
+                <a href="{:url('/pcshop/User/register')}">免费注册</a>
+                {/if}
+            </span>
+        </div>
+    </div>
+</div>
+<!--搜索区域-->
+<div class="header">
+    <div class="wrap clearfloat">
+        <div class="top-ad" adname="ad12i20" adid="12i20">
+            <a href="{:url('/pcshop')}"> <img src="__PUBLIC__/pcshop/images/201512090247580.jpg" /></a>
+            <i>&times;</i>
+        </div>
+        <div class="top_logo clearfloat">
+            <div class="logo">
+                <a href="{:url('/pcshop')}"><img src="__PUBLIC__/pcshop/images/logo1.png" title="三九妈咪商城" /></a>
+            </div>
+            <div class="search-box">
+                <form action="" method="get">
+                    <input type="text" id="wkeyword" name="w" class="search-kuang" placeholder="奶粉" value="" autocomplete="off" maxlength="30" />
+                    <input class="search-btn" data-url="{:url('/pcshop/Search/byKeyword')}" type="button" value="搜 索"/>
+                </form>
+                <p>热门搜索：
+                    <a href="{:url('pcshop/Search/hot/id/5')}">天然世家</a>
+                </p>
+            </div>
+            <!--cms部分-->
+            <div class="top_btn">
+                <a href="{:url('pcshop/article/index')}" target="_blank"><i class="iconfont"></i>新闻中心<em>&gt;</em></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧导航-->
+<!--<div class="mami-cart" style="right: 0px;">
+    <div class="mami-cart-view">
+        <div style="right: -18px;" class="baby-dangan">
+            <a href="__PUBLIC__/pcshop/member_index.htmlmember_info.html"><img src="__PUBLIC__/pcshop/images/baby.png" /></a>
+        </div>
+        <div class="mami-cart-center">
+            <a class="mami-cart-float" href="__PUBLIC__/pcshop/member_index.htmlIndex.aspx"><i class="iconfont"></i><span>会员中心<em></em></span></a>
+            <a id="end" class="mami-cart-btn" href="javascript:;"><i class="iconfont"></i>购物车<em id="rightcartcount">2</em></a>
+            <a class="mami-cart-float" href="__PUBLIC__/pcshop/member_index.htmlmember_collect.html"><i class="iconfont"></i><span>我的收藏<em></em></span></a>
+            <a class="mami-cart-float" href="__PUBLIC__/pcshop/news_detail.htmlTousu.aspx"><i style="font-size: 24px" class="iconfont"></i><span>投诉建议<em></em></span></a>
+        </div>
+        <div class="mami-cart-bottom">
+            <a class="mami-cart-float" href="javascript:;"><i class="iconfont"></i><span><img src="__PUBLIC__/pcshop/images/erweima.jpg" /><em></em></span></a>
+            <a class="mami-cart-float" target="_blank" href="__PUBLIC__/pcshop/http://wpa.qq.com/msgrd?v=3&amp;uin=800058139&amp;site=qq&amp;menu=yes"><i class="iconfont"></i><span>咨询客服<em></em></span></a>
+            <a title="返回顶部" class="mami-cart-top" href="javascript:go_top(0);"><i class="iconfont"></i><p>TOP</p> <span></span></a>
+        </div>
+    </div>
+    <div class="mami-cart-box" style="width: 0px; display: none;">
+        <div class="mami-cart-box-view" style="display: none;">
+            <h3 class="ui-border-b"><i id="close-cart">&times;</i><em class="iconfont"></em><a href="__PUBLIC__/pcshop/cart.html">购物车</a></h3>
+            <div class="mami-cart-box-body">
+                <h4><a href="__PUBLIC__/pcshop//index.aspx"><img src="__PUBLIC__/pcshop/images/cart_empty_bg.jpg?v=2" /></a></h4>
+                <ul id="tableCart">
+                </ul>
+                {literal}
+                <script id="cartInfoTmpl" type="text/html">
+                    {{each}}
+                    {{each $value.result1 as product}}
+                    &lt;li class="clearfloat"&gt;
+                    &lt;a href="__PUBLIC__/pcshop//product/{{product.ppid}}.html"&gt;
+                    &lt;img src="__PUBLIC__/pcshop/{{product.img}}" /&gt;&lt;/a&gt;
+                    &lt;h2&gt;&lt;a href="__PUBLIC__/pcshop//product/{{product.ppid}}.html"&gt;{{product.name}}&lt;/a&gt;&lt;/h2&gt;
+                    &lt;strong&gt;￥&lt;em class="cart-money"&gt;{{product.cartPrice}}.00&lt;/em&gt;&lt;/strong&gt;
+                    &lt;div class="num-btn" data-id="{{product.id}}"&gt;&lt;span class="cart-jian" onclick="cartN.updateCartNum(this,'-1',{{product.id}})"&gt;-&lt;/span&gt;&lt;input class="cart-input" type="text" value="{{product.basket_count}}" onchange="cartN.updateCartNum(this,'0',{{product.id}})" /&gt;&lt;span class="cart-add" onclick="cartN.updateCartNum(this,'1',{{product.id}})"&gt;+&lt;/span&gt;&lt;/div&gt;
+                    &lt;a href="__PUBLIC__/pcshop/javascript:cartN.delCar({{product.id}});" class="cart-delrow" data-id="{{product.id}}"&gt;删除&lt;/a&gt;
+                    &lt;/li&gt;
+                    {{/each}}
+                    {{/each}}
+                </script>
+                {/literal}
+            </div>
+            <div class="cart-footer">
+                <p><strong>￥<em id="cart-heji">0.00</em></strong>共<b id="cart-number">0</b>件商品<a href="__PUBLIC__/pcshop/javascript:cartN.clearCart()">清空</a></p>
+                <div class="cart-submit">
+                    <a href="__PUBLIC__/pcshop/cart.html">去结算</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!--类目导航-->
+<div class="nav">
+    <div class="nav-list nav-wrap">
+        <strong>商品分类</strong>
+        <div class="nav-box">
+            <!--分类左侧-->
+            <div class="nav-list-down">
+                {foreach $category as $k=>$v}
+                <ul>
+                    <li>
+                        <dl>
+                            <dt>
+                                <em>&gt;</em>
+                                <a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a>
+                            </dt>
+                            {if isset($v.subCategory) && $v.subCategory}
+                                {foreach $v.subCategory as $k2=>$v2}
+                                    <dd>
+                                        <a title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}">{$v2.name}</a>
+                                    </dd>
+                                {/foreach}
+                            {/if}
+                        </dl>
+                    </li>
+                </ul>
+                {/foreach}
+            </div>
+            <!--分类详情-->
+            <div class="nav-list-info-box" style="display: none;">
+                <div class="nav-list-down-info clearfloat">
+                    <ul>
+                        <li>
+                            <b><a title="特殊奶粉" href="__PUBLIC__/pcshop//list/197.html">特殊奶粉</a></b>
+                            <em>
+                                <a target="_blank" href="__PUBLIC__/pcshop//list/255.html">早产儿奶粉</a>
+                            </em>
+                        </li>
+                    </ul>
+                    <!--<div class="nav-list-paiming">
+                        <h4>销量前十名</h4>
+                        <a href="__PUBLIC__/pcshop//list/2.html">牛栏</a>
+                        <div class="nav-list-down-ad">
+                            <a title="德国爱他美" href="__PUBLIC__/pcshop//product/4707.html"> <img width="190" height="223" src="__PUBLIC__/pcshop/images/naifeng1.jpg?t=6" /></a>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <!--导航部分 暂时拉取分类-->
+        <ul class="nav-index">
+            <li><a title="首页" href="{:url('/pcshop')}">首页</a></li>
+            {foreach $navCategory as $k=>$v}
+                {if $k <= 7}
+                    <li><a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a></li>
+                {/if}
+            {/foreach}
+        </ul>
+        <!--购物车数量提醒-->
+        <div class="cart">
+            <a title="购物车" href="__PUBLIC__/pcshop/cart.html">购物车<i id="cartcount">{$Think.session.pcshopUser.cartCount|default=0}</i></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,677 @@
+{include file="pcshop@public/header"}
+<script src="__PUBLIC__/pcshop/js/jquery.fly.min.js"></script>
+<script src="__PUBLIC__/pcshop/js/requestAnimationFrame.js"></script>
+<body>
+<link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+{include file="pcshop@public/top"}
+<div class="city-wrap" style="margin-top:3px;">
+    <a href="javascript:;" class="close" onclick="closeCt()"></a>
+</div>
+<div class="wrap">
+    <!--导航部分-->
+    <div class="now-addr">
+        <i class="iconfont"></i>当前位置：
+        <a href="{:url('/pcshop')}">首页</a>
+        <a href="#"></a> &gt; {$pageInfo.proInfo.name}
+        <span style="margin-right: 8px">在线咨询：<a href="javascript:void(0)" id="qqOline" onclick="window.open(" http:=""
+                                                b.qq.com=""
+                                                ebc.htm?new="0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=&quot;+document.location,&quot;_blank&quot;,&quot;height=544,"
+                                                width="644,toolbar=no,scrollbars=no,menubar=no,status=no&quot;);&quot;"><img
+                style="CURSOR: pointer" border="0" src="__PUBLIC__/pcshop/images/qq.gif"/>800058139</a></span>
+    </div>
+    <!--放大镜部分-->
+    <div class="detail-top clearfloat">
+        <div class="detail-img clearfloat">
+            <div class="detail-img-box clearfloat">
+                {foreach $pageInfo.proInfo.albumArray as $k=>$v}
+                <div class="detail-img-bd">
+                    <img src="__PUBLIC__{$v.path}"
+                         big="__PUBLIC__{$v.path}" class="big-img"/>
+                </div>
+                {/foreach}
+                <div class="detail-arrow">
+                    <a href="javascript:;" class="detail-prev ui-border">&lt;</a>
+                    <a href="javascript:;" class="detail-next ui-border">&gt;</a>
+                </div>
+                <!--图片小图滚动区域-->
+                <div class="detail-img-hd clearfloat">
+                    <ul id="smallpics">
+                        {foreach $pageInfo.proInfo.albumArray as $k=>$v}
+                        <li class="ui-border detail-img-on">
+                            <img width="60" height="60" src="__PUBLIC__{$v.path}"  rel="__PUBLIC__/{$v.path}"
+                                                                 big="__PUBLIC__{$v.path}"/>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            <a href="javascript:like(438,this);" class="detail-shoucang"><i class="iconfont"></i><b>收藏宝贝</b></a>
+            <!--分享区域-->
+            <div class="bdsharebuttonbox" style="margin:15px 5px;">
+                <a href="#" class="bds_more" data-cmd="more"></a>
+                <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+            </div>
+            <script>window._bd_share_config = {
+                "common": {
+                    "bdSnsKey": {},
+                    "bdText": "",
+                    "bdMini": "2",
+                    "bdMiniList": false,
+                    "bdPic": "",
+                    "bdStyle": "0",
+                    "bdSize": "16"
+                }, "share": {}
+            };
+            with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+        </div>
+        <!--商品信息区域-->
+        <div class="detail-info">
+            <h1>{$pageInfo.proInfo.name}</h1>
+            <h2 class="ui-border-b"> {$pageInfo.proInfo.desc|default=$pageInfo.proInfo.name}</h2>
+            <div class="detail-info-list">
+                <dl class="clearfloat" style="position:relative;">
+                    <dt>
+                        市场价：
+                    </dt>
+                    <dd>
+                        <s>
+                            {$pageInfo.proInfo.marketPrice} 元
+                        </s>
+                        <span style="position:absolute;right:10px;color:#999">商品编号：{$pageInfo.proInfo.id}</span>
+                    </dd>
+                </dl>
+                <dl class="clearfloat">
+                    <dt>
+                         店内价：
+                    </dt>
+                    <dd>
+                        <span class="red">&yen; <b class="nowPrice price" ppid="{$pageInfo.proInfo.id}">{$pageInfo.proInfo.shopPrice}</b></span>
+                    </dd>
+                </dl>
+                <dl class="clearfloat" style="display:none">
+                    <dt>
+                        促销信息：
+                    </dt>
+                    <dd id="promoteinformation"></dd>
+                </dl>
+                <dl class="clearfloat">
+                    <dt>
+                        支付服务：
+                    </dt>
+                    <dd>
+                        <div class="detail-server">
+                            <a href="#" id="sxsId" class="detail-server-hover" style="display: block;" target="_blank"
+                               data-title="3小时极速达"
+                               data-con="三九手机网物流部承诺：现货商品可享受当日下午17:00前提交的现货订单，昆明主城主要区域3小时内免费送达，支持货到满意后再付款；当日17:00以后提交订单，次日12:00前可免费送达，如有延时可进行电话投诉。"><i
+                                    class="fw1">闪</i>3小时极速达</a>
+                            <a href="#1" id="jiajiId" class="detail-server-hover" style="display: block; "
+                               target="_blank" data-title="加急配送"
+                               data-con="三九手机网物流部承诺：现货商品可享受当日18:00前提交的现货订单，昆明三环以内将安排专人2小时内为您送达，支持货到满意后再付款；当日18:00至次日09:00前提交订单，次日安排专人11:00前送达。注：加急配送将加收20元/单的服务费用。"><i
+                                    class="fw2">急</i>加急配送</a>
+                            <a href="#2" id="myfId" class="detail-server-hover" style="display: block;" target="_blank"
+                               data-title="免运费"
+                               data-con="三九手机网承诺：所售的全部商品可享受全国免运费配送服务，除加急配送以外的配送服务不以任何形式收取运费。免运费包括：自营物流费、自提点费、第三方邮寄费、第三方配送费、维修往返邮寄费及退换货产生的物流费。"><i
+                                    class="fw3">免</i>免运费</a>
+                            <a href="#3" id="kuaidiId" class="detail-server-hover" style="display: block;"
+                               target="_blank" data-title="快递运输"
+                               data-con="三九手机网承诺：所售的全部商品可享受全国免运费配送服务，除加急配送以外的配送服务不以任何形式收取运费。免运费包括：自营物流费、自提点费、第三方邮寄费、第三方配送费、维修往返邮寄费及退换货产生的物流费。"><i
+                                    class="fw4">运</i>快递运输</a>
+                            <div class="detail-server-view ui-border" style="display:none;">
+                                <h3 class="ui-border-b"></h3>
+                                <p></p>
+                                <h4>投诉热线：<b>400-008-3939</b></h4>
+                                <a href="#">查看详情 &gt;</a>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+                <!--<dl class="clearfloat">
+                    <dt>
+                        配送至：
+                    </dt>
+                    <dd>
+                        <p class="ck_kucun"><em id="kc_cityname" class="shop-peisong">云南 昆明市 全国 ( <span
+                                style="color:#f9484e; font-weight:bold;" id="lblProductKcState">预定</span> )</em></p>
+                        <b id="lblTextKcState"> </b>
+                    </dd>
+                </dl>-->
+                <dl class="clearfloat" id="lblShop" style="display:none">
+                    <dt>
+                        门店自取：
+                    </dt>
+                    <dd class="detail-ziqu">
+                        <em class="kc-ziqu"><span style="font-weight:bold; color:#f9484e;">库存</span></em>
+                        <div class="detail-ziqu-down ui-border" style="display:none;">
+                            <ul id="lblShopList"></ul>
+                        </div>
+                    </dd>
+                </dl>
+                <div class="ui-border-b" style="margin:15px 0 5px"></div>
+                <dl class="clearfloat">
+                    <dt>
+                        购买数量：
+                    </dt>
+                    <dd>
+                        <div class="num-btn">
+                            <span class="cart-jian">-</span>
+                            <input class="cart-input" id="buy_count" type="text" value="1"/>
+                            <span class="cart-add">+</span>
+                        </div>
+                    </dd>
+                </dl>
+                <div class="detail-buy">
+                    <a  href="javascript:buyNow('{:url("/pcshop/Order/checkoutOrder")}',{$pageInfo.proInfo.id});">立即购买</a>
+                    <a href="javascript:;" class="add-cart" data-ppid="{$pageInfo.proInfo.id}"><i class="iconfont"></i>加入购物车</a>
+                </div>
+            </div>
+        </div>
+        <!--当前商品所属品牌- 品牌信息以及品牌下商品-->
+        <div class="detail-pinpai">
+            <div class="detail-pinpai-list ui-border clearfloat">
+                <a href="#" title="{$pageInfo.brandInfo.name}"><span
+                        style="background:url(__PUBLIC__/{$pageInfo.brandInfo.posterPath|default='/pcshop/images/20157171018525245.jpg'}) no-repeat center;background-size:100%;"></span></a>
+                <h2>{$pageInfo.brandInfo.name}</h2>
+                <p><a href="#" title="{$pageInfo.brandInfo.name}">{$pageInfo.brandInfo.name}品牌所有商品 &gt;&gt;</a></p>
+            </div>
+            <div class="detail-pinpai-box ui-border-lrb">
+                <ul class="clearfloat ui-border-t">
+                    {foreach $pageInfo.brandProList as $k=>$v}
+                    <li><span><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}"><img src="__PUBLIC__/{$v.albumPath|default='pcshop/images/201549142507503.jpg'}" width="70" height="70"/></a></span>
+                        <h3><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}">{$v.name}</a></h3><h4><strong class="nowPrice"
+                                                                                                                   isy="1" ppid="{$v.id}">&yen;
+                            {$v.shopPrice}</strong><a href="/order/cartapi.aspx?ppid=447">立即购买</a></h4></li>
+                    {/foreach}
+
+                </ul>
+            </div>
+            <div class="detail-ad">
+                <a rel="nofollow" href="/ad?aid=10" target="_blank"><img src="__PUBLIC__/pcshop/images/201509240209410.jpg" dis="true"
+                                                                         border="0" width="260" height="130"/></a>
+            </div>
+        </div>
+    </div>
+    <div class="detail-sale ui-border clearfloat">
+        <h1 class="ui-border-b">相关推荐</h1>
+        <ul>
+        </ul>
+    </div>
+    <div class="list-left detail-left">
+        <h1>全部商品分类</h1>
+        <ul class="list-menu">
+            <!--全部分类-->
+            {foreach $category as $k=>$v}
+            <li class="ui-border-lrb">
+                <a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}" target="_blank">{$v.name}</a><i>+</i>
+                {if isset($v.subCategory) && $v.subCategory}
+                {foreach $v.subCategory as $k2=>$v2}
+                <div class="list-menu-down ui-border-t">
+                    <dl class="clearfloat">
+                        <dt>
+                            <a title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}" target="_blank">{$v2.name}</a>
+                        </dt>
+                    </dl>
+                </div>
+                {/foreach}
+                {/if}
+            </li>
+            {/foreach}
+
+            <!--全部分类-->
+        </ul>
+        <!--商品详情页页面广告位-->
+        <div class="list-ad">
+            <div class="list-ad-hd">
+                <ul>
+                    {foreach $pageInfo.adList as $k=>$v}
+                    <li {if $k eq 0}class="list-ad-on"{/if}>{$k+1}</li>
+                    {/foreach}
+                </ul>
+            </div>
+            <div class="list-ad-bd">
+                <ul>
+                    {foreach $pageInfo.adList as $k=>$v}
+                    <li><a href="#" targer="_blank"><img src="__PUBLIC__{$v.posterPath}"/></a></li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+        <!--推荐区域 暂时没拉去-->
+        <div class="list-tab ui-border-lrb">
+            <ul class="list-tab-btn clearfloat">
+                <li class="ui-border-rb list-tab-on">热卖商品</li>
+                <li class="ui-border-b">热评商品</li>
+            </ul>
+            <div class="list-tab-view">
+                <ul style="display:block">
+                    {foreach $pageInfo.brandProList as $k=>$v}
+                    <li><span><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank"><img
+                            data-url="__PUBLIC__/{$v.albumPath}"
+                            src="__PUBLIC__/{$v.albumPath}"/></a></span>
+                        <h3><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank">{$v.name}</a></h3><strong class="nowPrice" isy="1"
+                                                                                               ppid="1310">&yen;
+                            {$v.shopPrice}</strong></li>
+                    {/foreach}
+                </ul>
+                <ul>
+                    {foreach $pageInfo.brandProList as $k=>$v}
+                    <li><span><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank"><img
+                            data-url="__PUBLIC__/{$v.albumPath}"
+                            src="__PUBLIC__/{$v.albumPath}"/></a></span>
+                        <h3><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank">{$v.name}</a></h3><strong class="nowPrice" isy="1"
+                                                                                                               ppid="1310">&yen;
+                            {$v.shopPrice}</strong></li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="detail-right">
+        <div class="detail-right-tab">
+            <div class="detail-info-kefu">
+                <span style="margin-right: 8px">在线咨询：<a href="javascript:void(0)" id="qqOline" onclick="window.open("
+                                                        http:="" b.qq.com=""
+                                                        ebc.htm?new="0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=&quot;+document.location,&quot;_blank&quot;,&quot;height=544,"
+                                                        width="644,toolbar=no,scrollbars=no,menubar=no,status=no&quot;);&quot;"><img
+                        style="CURSOR: pointer" border="0" src="__PUBLIC__/pcshop/images/qq.gif"/>800058139</a></span>
+            </div>
+            <ul class="detail-right-tab-btn ui-border clearfloat">
+                <li class="detail-right-tab-on ui-border-r" onclick="go_top($('.detail-left').offset().top - 45);">
+                    商品详情
+                </li>
+                <li class="ui-border-r" onclick="go_top($('#detail-pingjia').offset().top - 45)">商品评价</li>
+            </ul>
+        </div>
+        <div class="detail-tab-view">
+            <!--商品详情部分 下面还会细分-->
+            <div class="detail-shop" style="display: block;">
+                <table border="0" width="100%" cellpadding="0" cellspacing="1" class="product">
+
+                </table>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                <div style="width:750px;margin:auto;">
+                    {$pageInfo.proInfo.detail}
+                </div>
+            </div>
+            <div class="detail-shop">
+                <p><strong>三九妈咪网实体店</strong></p>
+                <p>三九妈咪网在昆明建有实体店，位于白云路滨江俊园3栋03号商铺，手续齐全，环境清爽、优雅，是云南地区O2O（线上线下）母婴用品店的代表，深受妈妈们的喜爱，欢迎进店选购。</p>
+                <p><img src="__PUBLIC__/pcshop/images/1.jpg" alt="三九妈咪网实体店图一"/></p>
+            </div>
+        </div>
+        <!--关联购买此商品用户同时购买了什么-->
+        <div class="detail-like ui-border clearfloat">
+            <h1 class="ui-border-b">购买过此商品的人还买过</h1>
+            <ul>
+                {foreach $pageInfo.brandProList as $k=>$v}
+                <li><span><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank"><img
+                        data-url="__PUBLIC__/{$v.albumPath}"
+                        src="__PUBLIC__/{$v.albumPath}"/></a></span>
+                    <h3><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank">{$v.name}</a></h3><strong class="nowPrice" isy="1"
+                                                                                                           ppid="1310">&yen;
+                        {$v.shopPrice}</strong></li>
+                {/foreach}
+            </ul>
+        </div>
+
+        <div class="detail-pingjia" id="detail-pingjia">
+            <input type="hidden" id="pagepid" value="438"/>
+            <input type="hidden" id="pageprductid" value="100390"/>
+            <input type="hidden" id="comPageSize" value="20"/>
+            <input type="hidden" id="revPageSize" value="8"/>
+            <input type="hidden" id="imgBasePath" value="http://imgma.ch999img.com/"/>
+            <div id="divPjContainer">
+                <h2 class="pjnzx_tit"><a name="pjmao"></a>商品评价</h2>
+                <!--<div class="pinglun_01" id="pingjiamao">
+                    <div class="ping01_box">
+                        <h4 class="manyidu">满意度：<strong>100%</strong></h4>
+                        <div class="xhbfb">
+                            <font>很喜欢</font>
+                            <span> <p class="p01" style="width: 100%"></p> </span>100%
+                        </div>
+                        <div class="xhbfb">
+                            <font>一般</font>
+                            <span> <p class="p02" style="width: 0%"></p> </span>0%
+                        </div>
+                        <div class="xhbfb">
+                            <font>不喜欢</font>
+                            <span> <p class="p03" style="width: 0%"></p> </span>0%
+                        </div>
+                    </div>
+                    <div class="ping02_box">
+                        <span>标签：</span>
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="ping03_box">
+                        <p style="margin-top: 10px;">喜欢这件商品？快告诉大家</p>
+                        <h3 class="yp_btn"><a href="member_index.htmlmypingjiaform.aspx?pjtype=1&amp;ppid=438">写商品评价</a>
+                        </h3>
+                        <h3 class="yp_btn" style="border-radius: 3px; background: #32b4e8; margin-top: 10px;"><a
+                                target="_blank" href="news_detail.htmlTousu.aspx">投诉建议</a></h3>
+                    </div>
+                    <div class="clear"></div>
+                </div>-->
+                <div id="divpj" class="pinglun_02">
+                    <dl class="tab pinglun_02_tab">
+                        <dt class="tabt4" tit="pj">
+                            <span id="Span1" tit="1" onclick="GetReviewsType(this,0)" class="current">全部心得（0）</span>
+                            <span id="Span2" onclick="GetReviewsType(this,1)" tit="2">很喜欢(0)</span>
+                            <span id="Span3" onclick="GetReviewsType(this,2)" tit="3">一般(0)</span>
+                            <span id="Span4" onclick="GetReviewsType(this,3)" tit="4">不喜欢(0)</span>
+                            <span id="Span5" onclick="GetReviewsType(this,4)" tit="5">有晒单评价(0)</span>
+                        </dt>
+                        <dd class="t1 sppjbd" style="display: block">
+                            <div id="reviewContent">
+                                <!--评价区域-->
+                                <!--评价人信息-->
+                                {foreach $pageInfo.commentList as $k=>$v}
+                                <div class="y_pj_pjbox plBox clearfloat">
+                                    <div class="touxiang pl_touxiang">
+                                        <a href="javascript:;" name="userImg" userid="{$v.created_user|default='匿名用户'}"> <img
+                                                src="__PUBLIC__/{$v.avatarPath|default='pcshop/images/touxiang.jpg'}"/></a>
+                                        <b>会员</b>
+                                    </div>
+                                    <div class="y_pl_box">
+                                        <div class="arrow_left">
+                                            <img src="__PUBLIC__/pcshop/images/arrow.gif"/>
+                                        </div>
+                                        <div class="y_pl_pf">
+                                            <span class="pl_date"></span>
+                                            <span title="5" class="xing{$v.score|default=5}"></span>
+                                            <input type="hidden" name="hidden_id" value="42"/>
+                                        </div>
+                                        <dl>
+                                            <dt>
+                                                标签：
+                                            </dt>
+                                            <dd>
+                                                <div class="cur_tag_box">
+                                                    {$v.tags|default=''}
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>
+                                                评价内容：
+                                            </dt>
+                                            <dd>
+                                                {$v.content|default=''}
+                                            </dd>
+                                        </dl>
+                                        <dl>
+                                        </dl>
+                                        <!--<div class="pl_operate">
+                                            <a class="add_tag_btn useful" onclick="youyong_btn(this)"
+                                               href="javascript:;">有用&nbsp;（<b>0</b>）&nbsp;</a>
+                                            <a class="add_tag_btn open_hf_btn" uid="0" href="javascript: void(0);">回复&nbsp;（<b>0</b>）&nbsp;</a>
+                                        </div>
+                                        <div class="zhuiwen_input" style="display:none">
+                                            <span></span>
+                                            <input type="text" class="txt" placeholder="请输入回复的内容..."/>
+                                            <a href="javascript:;" uid="' + uid + '" onclick="AddReply(this)"
+                                               class="detail-comment-submit">回复</a>
+                                            <div class="clear"></div>
+                                        </div>-->
+                                        <ul class="pl_hf_list">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {/foreach}
+                            <!--评论分页信息-->
+                            <!--<div class="nextpages" id="pjpages" style="text-align:right;">
+                                <span>共<b style="color:#f9484e">1</b>条记录</span>
+                                <span>1/1页</span>
+                                <span class="noPage">首页</span>
+                                <span class="noPage">上一页</span>
+                                <a id="curPage" class="cur" href="javascript:GetReviews(100390,1,8,0);"
+                                   title="第1页">1</a>
+                                <span class="noPage">下一页</span>
+                                <span class="noPage">尾页</span>
+                            </div>-->
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-comment clearfloat" id="detail-comment">
+            <div class="detail-comment clearfloat" id="thistop5">
+                <!--商品咨询区域-->
+                <div id="comContent">
+                    <h1 class="ui-border-lrb">商品咨询<a href="javascript:;" class="comment-btn"><i class="iconfont"></i>我要咨询</a>
+                    </h1>
+                    <dl class="clearfloat">
+                        <dt>
+                            <span name="userImg" userid="2042370"> <img src="__PUBLIC__/pcshop/images/touxiang.jpg"/></span>
+                            <b>普通会员</b>
+                        </dt>
+                        <dd class="ui-border">
+                            <em> <img src="__PUBLIC__/pcshop/images/arrow.gif"/></em>
+                            <h2><span>2015/12/8 13:53:59</span><strong>182****981</strong>发布咨询：</h2>
+                            <p style="color: #777">惠氏启赋奶粉有搞活动吗</p>
+                            <h3 class="clearfloat"><b>客服回复：</b>
+                                <p> 您好，可以关系我们网站首页双十二活动哦 <input name="yes" type="button" value="赞（0）" cur="0"
+                                                               replayid="6304" onclick="goodAdd(this)"
+                                                               class="diaocha_btn"/></p></h3>
+                            <div class="detail-comment-aks clearfloat">
+                                <input name="CommentAndConsultation$proComment$ctl00$askedNum" type="button"
+                                       id="CommentAndConsultation_proComment_askedNum_0" class="diaocha_btn zhuiwen"
+                                       tit="tAsked" value="追问（0）"/>
+                            </div>
+                            <div class="detail-comment-text clearfloat">
+                                <ul>
+                                </ul>
+                                <h5><strong>三九用户</strong>追问：</h5>
+                                <input type="text" placeholder="请输入您要咨询的内容..." class="zhuiwen_input"/>
+                                <a href="javascript:;" class="detail-comment-submit" onclick="addAsked(this)"
+                                   rid="6301">提 交</a>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="page" style="float: right;">
+                    <span id="spanPageInfo"> <span>共<b style="color:#f9484e">7</b>条记录</span><span>1/1页</span><span
+                            class="noPage">首页</span><span class="noPage">上一页</span><a id="curPage" class="cur"
+                                                                                      href="javascript:GetComment(100390,1,20,-1,'');"
+                                                                                      title="第1页">1</a><span
+                            class="noPage">下一页</span><span class="noPage">尾页</span></span>
+                    <a href="/zixun.aspx?pid=438" class="allzixun" title="查看全部咨询">查看全部咨询</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="detail-comment-box hide">
+    <div class="detail-comment-input">
+        <h1><i class="close-comment">&times;</i>评价咨询</h1>
+        <textarea placeholder="请输入评价或咨询内容..." id="comment-view"></textarea>
+        <a href="javascript:;" id="send-comment">发表评论</a>
+        <p>您发表的咨询我们的工作人员答复后方可显示，请勿重复发表，谢谢！</p>
+    </div>
+</div>
+<style>#cend_phone {
+    position: fixed;
+    width: 440px;
+    background: #fff;
+    z-index: 9999;
+    top: 100px;
+    height: 315px;
+    box-shadow: 2px 2px 4px #444;
+    border: solid 1px #ccc;
+    z-index: 19901028;
+}
+
+#cend_phone h3 {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: solid 1px #eee;
+    color: #333;
+    margin-bottom: 20px;
+    background: #f4f4f4;
+}
+
+#cend_phone h3 b {
+    font-size: 16px;
+    font-family: microsoft yahei;
+    margin-left: 10px;
+    float: left;
+}
+
+#cend_phone p {
+    line-height: 25px;
+    margin: 10px 10px 0 10px;
+}
+
+#cend_phone p span {
+    color: #999;
+}
+
+#cend_phone p b {
+    display: inline-block;
+    width: 65px;
+    float: left;
+    font-weight: normal;
+    text-align: right;
+}
+
+#cend_phone p input {
+    height: 25px;
+    width: 150px;
+    margin-right: 10px;
+    border: solid 1px #ccc;
+    line-height: 25px \9;
+}
+
+#cend_phone p textarea {
+    width: 340px;
+    height: 120px;
+    border: solid 1px #ccc;
+    background: #f4f4f4;
+}
+
+#closesend {
+    float: right;
+    color: #ff5a00;
+    margin-right: 10px;
+}
+
+#cend_phone p img {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#cend_phone button {
+    margin-left: 75px;
+    width: 120px;
+    height: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#tipBox {
+    z-index: 19911028;
+}</style>
+{include file="pcshop@public/footer"}
+<script>
+    $(document).ready(function(){
+        $('.add-cart').click(function(){
+            // 检查是否登录 获取当前用户ID
+            var userId = checkShopUserLogin();
+            var url = '{:url("/pcshop/Carts/saveToTable")}';
+            var data = {};
+            data.userId = userId;
+            data.productId = $(this).attr('data-ppid');
+            data.number = $("#buy_count").val();
+            mdAjax($(this),url,data,function(res){
+                layer.msg(res.msg,{icon:1});
+                layer.closeAll('loading');
+            });
+        });
+    });
+
+    function buyNow(url,productId)
+    {
+        var number = $("#buy_count").val();
+        if (isNaN(number)) {
+            layer.msg('您输入的内容必须是数字', {icon: 5});
+            $(this).val(1);
+            return;
+        }
+        url = url+'?orderGoods='+productId+':'+number;
+        location.href=url;
+    }
+</script>
+<script>
+$(".cart-input").change(function () {
+    var val = $(this).val();
+    if (isNaN(val)) {
+        layer.msg('您输入的内容必须是数字', {icon: 5});
+        $(this).val(1);
+    }
+    if (val <= 0) {
+        layer.msg('您输入的数字须大于或等于1', {icon: 5});
+        $(this).val(1);
+    }
+});
+jQuery(".detail-pinpai").slide({
+    mainCell: ".detail-pinpai-box ul",
+    autoPage: true,
+    effect: "topLoop",
+    autoPlay: true,
+    vis: 3,
+    scroll: 1,
+    delayTime: "800",
+    interTime: "4000",
+});
+$(".detail-right-tab li").click(function () {
+    $(this).addClass("detail-right-tab-on").siblings().removeClass("detail-right-tab-on");
+    $(".detail-shop").eq($(this).index()).fadeIn().siblings().hide();
+});
+
+$(".detail-ziqu").hover(function () {
+    $(".detail-ziqu-down").show();
+}, function () {
+    $(".detail-ziqu-down").hide();
+})
+$(".detail-shoucang").click(function () {
+    $(this).css("color", "#f9484e");
+    $(this).find("b").text("已收藏").css("color", "#f9484e");
+})
+$(".detail-info dd small").click(function () {
+    $(this).addClass("detail-info-on").siblings().removeClass("detail-info-on");
+});
+var locat = $('.detail-right-tab').offset().top;
+$(window).scroll(function () {
+    var top = $(this).scrollTop();
+    if (top > locat) {
+        $(".detail-right-tab").css({"position": "fixed", "top": "0"});
+    } else {
+        $(".detail-right-tab").css({"position": "static"});
+    }
+});
+jQuery(".detail-img-box").slide({
+    mainCell: ".detail-img-hd ul",
+    autoPlay: false,
+    effect: "left",
+    vis: 4,
+    scroll: 1,
+    prevCell: ".detail-prev",
+    nextCell: ".detail-next"
+});
+$(".detail-img-bd img").attr("src", $(".detail-img-on").find("img").attr("rel"));
+$(".detail-img-hd li:first-child").addClass("detail-img-on");
+$(".detail-img-hd li").mouseover(function () {
+    var rel = $(this).find("img").attr("rel");
+    var big = $(this).find("img").attr("big");
+    $(this).addClass("detail-img-on").siblings().removeClass("detail-img-on");
+    $(".detail-img-bd img").attr("src", rel);
+    $(".detail-img-bd img").attr("big", big);
+})
+$(".big-img").imagezoom();</script>
+</body>
+</html>

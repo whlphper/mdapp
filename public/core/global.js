@@ -3,6 +3,9 @@
  * @param obj
  */
 function mdChaneIrame(obj, isWelcome) {
+    /*layer.load(2, {
+        shade: [0.2, '#fff'] //0.1透明度的白色背景
+    });*/
     var isWelcome = isWelcome ? isWelcome : false;
     if (isWelcome) {
         breadHtml = '<li><a href="#"><i class="fa fa-dashboard"></i>系统首页</a></li>';
@@ -28,6 +31,7 @@ function mdChaneIrame(obj, isWelcome) {
     breadHtml = breadHtml + '<li><a href="#"><i class="fa fa-dashboard"></i>' + curName + ' </a></li>';
     $(".breadcrumb").html(breadHtml);
     $(".LRADMS_iframe").attr("src", url);
+    //layer.closeAll("loading");
     if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) { //移动端
         $(".sidebar-toggle").click();
     }
@@ -76,8 +80,14 @@ function listMenu(res, html) {
  * @param callBack
  */
 function mdBtnEvent(e, callBack) {
-    // 获取表单
-    var form = e.closest("form");
+    if(typeof(e) == 'object'){
+        // 获取表单
+        var form = e.closest("form");
+    }else{
+        var form = $("#"+e);
+        form = $(form[0]);
+        var e = form;
+    }
     // 表单ID
     var formId = form.attr("id");
     // 表单地址
@@ -234,12 +244,6 @@ function mdConfirmModal(size, title, content, url, table) {
     var content = content ? content : '';
     var action = [];
     // 功能按钮的array
-    var actFirst = {};
-    actFirst.name = '取消';
-    actFirst.class = 'btn-default';
-    actFirst.func = 'cancel()';
-    actFirst.icon = 'icon-flag';
-    action.push(actFirst);
     var actFirst2 = {};
     actFirst2.name = '确定';
     actFirst2.class = 'btn-success';
@@ -426,10 +430,11 @@ function assign(data, formId) {
             case 'url':
             case 'hidden':
             case 'date':
+            case 'textarea':
                 $(this).val(data[inputName]);
                 break;
             case 'checkbox':
-                inputAssign(formId, 'checkbox', data[inputName], inputName[data[inputName]]);
+                inputAssign(formId, 'checkbox', data[inputName], inputName,data[inputName]);
                 break;
             case 'select':
                 $(this).find("option").each(function () {
@@ -442,6 +447,22 @@ function assign(data, formId) {
                 break;
             case 'radio':
                     inputAssign(formId, 'radio', data[inputName], inputName, data[inputName]);
+                break;
+            case 'summernote':
+                $('#summernote').summernote('code',data[inputName])
+                break;
+            case 'file':
+                var dataId = $(this).attr("data-id");
+                var previewBox = dataId+'Preview';
+                var imgList = data[dataId+'Array'];
+                if(imgList != undefined){
+                    for(var i=0;i<imgList.length;i++){
+                        if(imgList[i].id && imgList[i].path){
+                            var html = '<img id="' + imgList[i].id + '" src="/public/'+ imgList[i].path +'" alt="" class="img-responsive" style="height:100px;"><button type="button" class="btn btn-danger" onclick="removePreview($(this),'+imgList[i].id+',\''+dataId+'\');"><i class="fa fa-remove"></i>删除</button>';
+                            $("#"+previewBox).append(html);
+                        }
+                    }
+                }
                 break;
         }
     });
@@ -474,7 +495,7 @@ function refreshTable(refreshTable) {
 // allExplain  所有标识信息
 function inputAssign(formId, type, code, name, initial) {
     var workTree = [];
-    if (code == '1' || code == '0') {
+    if (code == '1' || code == 0) {
         var obj = {};
         obj.code = '0';
         obj.name = '否';
@@ -490,6 +511,7 @@ function inputAssign(formId, type, code, name, initial) {
             }
         }
         if (workTree.length == 0) {
+            return
             layer.msg("node不存在", {icon: 0});
         }
     }
@@ -506,7 +528,7 @@ function inputAssign(formId, type, code, name, initial) {
             }
             break;
         case 'radio':
-            var initial = initial ? initial : '';
+            var initial = initial ? initial : 0;
             for (var i = 0; i < workTree.length; i++) {
                 if (workTree[i].code == initial) {
                     html = html + '<label class="radio-inline"><input type="radio" name="' + name + '" value="' + workTree[i].code + '" checked>' + workTree[i].name + '</label>';
@@ -552,4 +574,191 @@ function initMenu()
     var h = document.documentElement.clientHeight || document.body.clientHeight;
     $(".LRADMS_iframe").css("height",h+'px');
 }
+
+//图片上传-summernote
+function sendFile(bakurl,file, editor, $editable){
+    var filename = false;
+    try{
+        filename = file['name'];
+    } catch(e){
+        filename = false;
+    }
+    if(!filename){
+        $(".note-alarm").remove();
+    }
+
+    //以上防止在图片在编辑器内拖拽引发第二次上传导致的提示错误
+    data = new FormData();
+    data.append("file", file);
+    data.append("key",filename); //唯一性参数
+
+    $.ajax({
+        data: data,
+        type: "POST",
+        url: bakurl,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(url) {
+            if(url.code == 0){
+                layer.msg("上传失败！",{icon:0});
+            }else{
+                layer.msg("上传成功！",{icon:1});
+                $("#summernote").summernote('insertImage', url.path, 'image name'); // the insertImage API
+            }
+
+            //setTimeout(function(){$(".note-alarm").remove();},3000);
+        },
+        error:function(){
+            layer.msg("上传失败！",{icon:0});
+            return;
+            //setTimeout(function(){$(".note-alarm").remove();},3000);
+        }
+    });
+}
+
+
+//pcshop 全局JS
+$(document).ready(function(){
+    //首页搜索
+    $('.search-btn').click(function(){
+        var keyword = $("#wkeyword").val();
+        var url = $(this).attr('data-url');
+        location.href = url+'?keyword='+keyword;
+    });
+});
+
+
+/**
+ * onchange上传图片
+ * @param obj
+ */
+function reayUpload(obj){
+    //演示上传文件
+    var id  = obj.attr("data-id");
+    var url = obj.attr("data-url");
+    var preview = obj.attr("data-preview");
+    var curObject = obj;
+    ajaxUpload(curObject,id,url,preview);
+}
+
+/**
+ * 上传图片
+ * curObject   点击自身DOM
+ * id          存放图片地址的 DOM ID
+ * url         后端上传地址
+ * preview     存放预览图片的 DOM ID
+ */
+function ajaxUpload(curObject,id,url,preview)
+{
+    var preview = preview ? preview : false;
+    var isMultyple = curObject.attr("multiple") ? true : false;
+    var curObject = curObject;
+    //获取上传所有文件信息
+    var files = curObject.get(0).files;
+
+    //多文件上传
+    for(var i=0;i<files.length;i++){
+        var obj = files[i];
+        //装需要上传文件的数组
+        data = new FormData();
+        data.append("file", obj);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if(isMultyple){
+                    var curVal = $("#"+id).val();
+                    if(curVal == ''){
+                        var lastVal = new Array();
+                    }else{
+                        var lastVal = curVal.split(",");
+                    }
+                    lastVal.push(res.data);
+                    lastVal = lastVal.join(',');
+                    $("#"+id).val(lastVal);
+                }else{
+                    $("#"+id).val(res.data);
+                }
+
+                if(preview){
+                    parent.layer.msg("文件上传成功",{icon:1});
+                    preview = preview.replace(/\s/g, "");
+                    if(isMultyple){
+                        var html = '<div class="img"><img  id="' + res.data + '" src="'+res.path+'"> <span class="close" onclick="removePreview($(this),'+res.data+',\''+id+'\');"></span></div>';
+                        $(curObject).parent().before(html);
+                    }else{
+                        $("#"+preview).html('<img id="' + res.data + '" src="'+ res.path +'" alt="" class="img-responsive" style="height:100px;"><button type="button" class="btn btn-danger" onclick="removePreview($(this),'+res.data+',\''+id+'\');"><i class="fa fa-remove"></i>删除</button>')
+                    }
+                }else{
+                    parent.layer.msg("文件上传出错",{icon:2});
+                }
+            },
+            error: function(res){
+                parent.layer.msg("服务器出错",{icon:2});
+            }
+        },'JSON');
+    }
+}
+
+/**
+ * 删除上传后的图片
+ * obj     span自身
+ * imgId   img对应的ID
+ * valueId 存放图片地址的Id
+ * 单图片/多图片均可用
+ */
+function removePreview(obj,imgId,valueId)
+{
+    var curpath = $("#"+imgId).attr("id");
+    obj.remove();
+    $("#"+imgId).remove();
+    var oldVal = $("#"+valueId).val();
+    oldVal = oldVal.split(",");
+    var newVal = new Array();
+    for(var i=0;i<oldVal.length;i++){
+        if(oldVal[i] != curpath){
+            newVal.push(oldVal[i]);
+        }
+    }
+    newVal.join(",");
+    $("#"+valueId).val(newVal);
+}
+
+
+
+/*|------------------
+  |  Create By Whlphper
+  |  下面是P C商城代码块
+ */
+/*|------------------*/
+
+
+/**
+ * 检查PC商城用户是否登录
+ * @returns {jQuery}  用户ID
+ */
+function checkShopUserLogin()
+{
+    // 登录URI
+    var shopLoginUrl = $("#shopLoginUrl").val();
+    // 是否登录-用户ID
+    var shopUserId = $("#shopUserId").val();
+    if(!shopUserId || shopUserId == ''){
+        //询问框
+        layer.confirm('您尚未登录,请登录后操作', {
+            btn: ['去登陆','再等等'] //按钮
+        }, function(){
+            location.href=shopLoginUrl;
+            return;
+        });
+    }else{
+        return shopUserId;
+    }
+}
+
 

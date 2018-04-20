@@ -10,14 +10,5 @@ use app\common\model\Base;
  */
 class User extends Base
 {
-    /*
-     * @ 检查用户账号合法性
-     * @ param $username  账号或者手机号
-     * @ return mixed
-     * */
-    public function checkUser($username)
-    {
-        $user = User::get(['account_number' => $username]);
-        return $user;
-    }
+
 }

@@ -1,0 +1,130 @@
+{include file="pcshop@public/header"}
+<body>
+<div class="login-head">
+    <div class="wrap-small" style="padding:20px 0 20px; border-bottom:1px solid #e7e7e7;">
+        <span><img src="__PUBLIC__/pcshop/images/severs.jpg?v=1"/></span>
+        <div class="logo" style="margin-top:10px;">
+            <a href="{:url('/pcshop')}"><img src="__PUBLIC__/pcshop/images/logo.png"/></a>
+        </div>
+    </div>
+</div>
+<div class="login-bg">
+    <div class="wrap-small">
+        <div class="login-body"
+             style="background: url(__PUBLIC__/pcshop/images/img_login01.png) no-repeat left center; min-height: 360px; overflow: hidden;">
+            <div class="login-main ui-border">
+                <h1>登录<span>还没有账号？<a href="{:url('/pcshop/User/register')}">30秒注册</a></span></h1>
+                <div class="login-name clearfloat">
+                    <i class="iconfont"></i>
+                    <input class="login-form" type="text" id="username" name="username" value="{$username|default=''}" placeholder="邮箱/用户名/手机"/>
+                </div>
+                <div class="login-psw clearfloat">
+                    <i class="iconfont"></i>
+                    <input class="login-form" type="password" id="userpwd" value="{$password|default=''}"  name="userpwd" placeholder="密码"/>
+                </div>
+                <!--<div class="login-code clearfloat" style="display: none;" id="logincode">
+                    <input type="text" placeholder="验证码" id="txtCode" name="txtCode" style="width: 100px;"/>
+                    <img src="__PUBLIC__/pcshop/images/" id="vCodeImg" style="width: 90px; height: 38px;"
+                         onclick="this.src='/ImgCode.aspx?t='+Math.random()*100"/>
+                </div>-->
+                <div class="login-btn">
+                    <p><input id="isSave" type="checkbox" checked="" value="1"/>下次自动登录<a href="__PUBLIC__/pcshop/forget.html"
+                                                                               style="float: right;">忘记密码？</a></p>
+                    <input id="loginbut" type="button" onclick="Login()" value="登 录"/>
+                    <span id="loginstats" style="display: none"> 正在登录...</span>
+                </div>
+                <div class="login-other">
+                    <p>使用其它合作网站账号登录：</p>
+                    <a href="__PUBLIC__/pcshop//Account/QQlogin.html?backUrl='+GetUrlParam('url')+'&amp;kind=2"
+                       title="QQ登录"><img src="__PUBLIC__/pcshop/images/icon-qq.png" width="16" height="16"/></a>
+                    <a href="__PUBLIC__/pcshop/http://www.ch999.com/Online/Alipaylogin.html?backUrl='+GetUrlParam('url')+'&amp;kind=2"
+                       title="支付宝登录"><img src="__PUBLIC__/pcshop/images/zhifubao.png" width="16" height="16"/></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="login-foot">
+    <div class="wrap-small">
+        <p>订购热线：{$baseInfo.telephone|default='0008-55555555'}　邮箱：{$baseInfo.email|default='761243073@qq.com'} ICP备：滇06002001号-6</p>
+        <p>地址：{$baseInfo.address|default='山东省青岛市'}<a style="color: #f9484e; padding: 0 5px;" href="__PUBLIC__/pcshop/http://j.map.baidu.com/t2wPK" target="_blank">[地图]</a> QQ在线咨询：<a onclick="window.open(http://b.qq.com/webc.htm?new=0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=+document.location,_blank,height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no);" href="__PUBLIC__/pcshop/javascript:"><img style="margin-right: 8px" src="__PUBLIC__/pcshop/images/qq.gif" />800058139</a></p>
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function GetUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return '/';
+    }
+
+    function Login() {
+        var btn = $('#loginbut');
+        if (btn.attr('issubmit') == 1) return;
+        var uname = $.trim($('#username').val()), upwd = $.trim($('#userpwd').val());
+        var txtCode = $.trim($('#txtCode').val());
+        if (uname == '') {
+            layer.tips("请输入用户名", $('#username'), {tips: 1});
+            return false;
+        } else if (upwd.length < 1) {
+            layer.tips("请输入密码", $('#userpwd'), {tips: 1});
+            return false;
+        }
+        ;
+       /* if ($('#logincode').attr('iscode') == "1" && txtCode == "") {
+            layer.tips('请输入验证码！', $('#txtCode'), {tips: 1});
+            $("#txtCode").focus();
+            return false;
+        }*/
+        $('#loginstats').show();
+        btn.attr('issubmit', 1).hide();
+        var isSave = $("#issave").prop("checked") ? 0 : 1;
+        var url = "{:url('pcshop/User/checkUser')}";
+        var jump = "{:url('/pcshop')}";
+        $.post(url, {
+            'username': uname, 'password': upwd,'isRemember': isSave
+        }, function (res) {
+            if (res.code == 1) {
+                $('#loginstats').text('登录成功,正在跳转...');
+                window.location.href = jump;
+            }
+            /*else if (res.stats == -1) {
+                btn.attr('issubmit', 0).show();
+                $('#loginstats').hide();
+                $('#logincode').attr('iscode', 1).show();
+                $('#txtCode').val('');
+                layer.tips('验证码错误！', $('#txtCode'), {tips: 1});
+                $('#txtCode').focus();
+                $('#vCodeImg').trigger('click');
+            }*/
+            else {
+                $('#loginstats').hide();
+                btn.attr('issubmit', 0).show();
+                if (res.code == 2) {
+                    layer.tips(res.msg, $('#userpwd'), {tips: 1});
+                    $('#userpwd').focus();
+                } else {
+                    layer.tips(res.msg, $('#username'), {tips: 1});
+                }
+            }
+        }, 'json');
+    }
+
+    $(document).ready(function () {
+        $('#username,#userpwd').keypress(function (e) {
+            e = e || window.event;
+            if (e.keyCode == 13) {
+                Login();
+                return false;
+            }
+        })
+    })
+    $(".login-form").focus(function () {
+        $(this).parent().addClass("login-form-on");
+    });
+    $(".login-form").blur(function () {
+        $(this).parent().removeClass("login-form-on");
+    })
+</script>
+</body>
+</html>

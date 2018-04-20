@@ -1,0 +1,141 @@
+{include file="admin@public/store"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<!--select-->
+<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-select/dist/css/bootstrap-select.css">
+<!-- iCheck -->
+<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
+<!--select-->
+<script src="__PUBLIC__/plugins/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<!--ickeck-->
+<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
+<!--iconlist-->
+<script src="__PUBLIC__/dict/fontawesome.icon.js"></script>
+<style>
+    .mdIconList{border:1px solid #eee;cursor: pointer;padding: 5px;}
+    .fontawesomeList{display: none;position: absolute;left:250px;width:200px;z-index: 200;background: aliceblue;height:200px;overflow: auto;}
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // 生成select checkbox 信息
+        var url = "{:url('admin/Index/initSelect')}";
+            initDataList(url,'menulist','Category',['status',1],'id,pid,name,level','a.sort desc','id','pid');
+        var id = session("mdCategoryId");
+        if(id){
+            var url = "{:url('shop/Category/getRowData')}";
+            var data = {};
+            data.id = id;
+            mdAjax(false,url,data,function(res){
+                assign(res.data,'mdCategoryForm');
+                layer.closeAll("loading");
+            });
+        }else{
+            inputAssign('mdCategoryForm','radio','1','status',1);
+            inputAssign('mdCategoryForm','radio','1','isNav',1);
+            $("#mdCategoryForm").find('input').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green',
+                increaseArea: '30%', // optional
+                labelHover: false
+            });
+            layer.closeAll("loading");
+        }
+    });
+
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+<body>
+<!-- Main content -->
+<!--主体内容-->
+<div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{:url('shop/Category/saveToTable')}" id="mdCategoryForm">
+            <input type="hidden" name="id" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新增分类</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>分类名称:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>分类图片:</label>
+                        <div class="input-group">
+                            <input type="file" class="add-btn" onchange="reayUpload($(this))" accept="image/*"  capture="camera"  data-id="poster" data-url="{:url('/admin/Index/uploadImage')}" data-preview="posterPreview">
+                            <input type="hidden" id="poster" name="poster" required value="" class="validata_hidden" placeholder="上传广告位图片">
+                        </div>
+                        <div id="posterPreview" class="col-lg-12">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>所属分类:</label>
+                        <select class="form-control menulist" type="select" name="pid" required>
+                            <option value="">请选择</option>
+                            <option value="0">顶级分类</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>关键字:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="keyword" class="form-control" placeholder="多个关键字请用|隔开">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>分类排序:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="number" name="sort" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>分类描述:</label>
+                        <div class="input-group">
+                            <textarea name="desc" type="textarea" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>是否开启:</label>
+                        <div>
+                            <input  type="radio" name="status" value="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>导航显示:</label>
+                        <div>
+                            <input  type="radio" name="isNav" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
+                            class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sysCategoryTable"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->\
+</div>
+</body>
+<!-- /.content -->
+</html>

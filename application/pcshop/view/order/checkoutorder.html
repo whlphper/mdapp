@@ -1,0 +1,669 @@
+{include file="pcshop@public/header"}
+<!--城市列表-->
+<script src="__PUBLIC__/pcshop/js/cart.js?debug=13"></script>
+<script src="__PUBLIC__/pcshop/js/cartStepNew.js?debug=13"></script>
+<script src="__PUBLIC__/pcshop/js/iSelect.js"></script>
+<!-- iCheck -->
+<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
+<!--ickeck-->
+<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
+<style>
+    .btn_1, .btn_2, .btn_3 {
+        padding: 0 20px;
+        height: 40px;
+        background: #39f;
+        margin: 0 15px;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: bold;
+        font-family: 'Microsoft YaHei', SimHei;
+        color: #fff;
+        line-height: 40px;
+        border-radius: 2px;
+        border: 1px solid #39f;
+    }
+
+    .btn_4 {
+        width: 150px;
+        line-height: 46px;
+        height: 46px;
+        text-align: center;
+        display: block;
+        font-size: 14px;
+    }
+
+    .cart-addr .cart-addr-tab li, .cart-addr .cart-addr-paylist li {
+        font-size: 14px;
+        text-align: center;
+        height: 46px;
+        line-height: 46px;
+        width: 150px;
+        float: left;
+        margin-right: 30px;
+        cursor: pointer;
+    }
+
+    .cart-addr .cart-addr-tab .cart-addr-tab-on, .cart-addr .cart-addr-paylist .cur {
+        border: 1px solid #f9484e;
+        color: #f9484e;
+        background: url(http://imgma.ch999img.com/Static/images/rb_arrow.png) no-repeat right bottom;
+    }
+</style>
+<body>
+<link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+<!--top-->
+{include file="pcshop@public/top"}
+<script src="__PUBLIC__/pcshop/js/cart.js?debug=13"></script>
+<div class="wrap">
+    <div class="cart-addr">
+        <div class="cart-addr-tab">
+            <h1>配送方式</h1>
+            <ul>
+                <li class="ui-border cart-addr-tab-on" onclick="cartStep.setPickupID(this,4)">快递</li>
+            </ul>
+        </div>
+        <!--收货地址-->
+        <div class="cart-addr-box clearfloat">
+            <div class="cart-style" style="display:block;">
+                <h1>收货地址</h1>
+                {foreach $address as $k=>$value}
+                <li onclick="setAddressId({$value.id})" class="ui-border {if $value.isDefault==1}cart-addr-box-on{/if}"
+                    data-itemId="{$value.id}"
+                    data-id="{$value.id}" data-reciver="{$value.reciver}" data-mobile="{$value.mobile}"
+                    data-region="{$value.region}" data-address="{$value.address}" aata-isDefault="{$value.isDefault}">
+                    <h2>{$value.reciver}<i title="设为默认收货地址" onclick="cartStep.setDefaultAddr(this,{$value.id})"
+                                           class="{if $value.isDefault==1}cart-addr-box-on  cart-addr-default{/if}">默认</i>
+                    </h2>
+                    <h3>{$value.mobile}</h3>
+                    <h3><b>{$value.region}</b></h3>
+                    <p>{$value.address}</p>
+                    <h4 class="hide"><span><i class="iconfont">&#xe60e;</i>配送至此地址</span><a href="#"
+                                                                                           class="cart-addr-edit"
+                                                                                           onclick="editToAddr($(this),{$value.id})">修改</a><a
+                            href="javascript:;" class="cart-addr-del" data-id="{$value.id}"
+                            onclick="delAddress({$value.id})">删除</a></h4>
+                </li>
+                {/foreach}
+                <div class="ui-border cart-address" onclick="editToAddr($(this),false);"><strong>+</strong>
+                    <p style="text-align:center;">添加新地址</p></div>
+                <div class="cart-show-more">
+                    <em>显示更多收货地址</em>
+                </div>
+            </div>
+        </div>
+        <div class="cart-addr-paylist">
+            <h1>支付方式</h1>
+            <ul>
+                <li class="ui-border cur" onclick="cartStep.setPayId(this,1)" data-id="1">支付宝</li>
+                <li class="ui-border " onclick="cartStep.setPayId(this,2)" data-id="3">微信</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--订单商品列表-->
+    <div class="confirm-list">
+        <div class="cart-title ui-border-tb clearfloat">
+            <span style="width:690px;">商品名称</span>
+            <span style="width:120px;">单价</span>
+            <span style="width:194px;">数量</span>
+            <span style="width:120px;">总价</span>
+        </div>
+        <div class="cart-list-bd">
+            {foreach $cartGoods as $k=>$v}
+            <li class="cart-baosui ui-border-b c_goods" data-number="{{$v.number}}" data-shopPrice="{$v.shopPrice}"
+                data-marketPrice="{$v.marketPrice}">
+                <div class="col-row col-img"><a href="" target="_blank"><i></i><img
+                        src="__PUBLIC__{$v.albumPath}"/></a></div>
+                <div class="col-row col-name"><a href="">{$v.name}</a>
+                    <p><span>{$v.keyword|default='暂无标签'}</span></p>
+                </div>
+                <div class="col-row col-price">{$v.shopPrice}<p><s>{$v.marketPrice}元</s></p></div>
+                <div class="col-row col-num">{$v.number}</div>
+                <div class="col-row col-money">{$v.number * $v.marketPrice}<p>省
+                    {$v.number * $v.marketPrice - $v.number * $v.shopPrice}元</p>
+                </div>
+            </li>
+            {/foreach}
+        </div>
+    </div>
+    <div class="confirm-beizhu">
+        <h1>添加订单备注</h1>
+        <textarea placeholder="请输入备注信息" maxlength="200" rows="4" id="remarks"></textarea>
+        <input type="hidden" id="orderId" value="{$orderId}">
+    </div>
+    <!--优惠券暂时不用了-->
+    <!--<div class="confirm-code">
+        <h2><i>+</i>使用优惠券<a href="member_index.htmlRedPaper.aspx">[ 查看优惠券细则 ]</a></h2>
+        <p><em id="sel-code">选择您的优惠券</em> 或 <a href="javascript:;" class="cart-input-code">直接输入优惠码</a><strong id="inputCoupon"><input type="text" placeholder="输入优惠码" id="code-val" /><button id="code-btn" onclick="cartStep.customCoupon(this)">使用</button></strong><span id="couponBox">共使用了<b class="num">0</b>张优惠码，可以优惠<b class="price">0</b>元 </span> </p>
+        <div class="cart-code-sel ui-border-lrb" style="display:none;">
+            <h3 style="display:none;color:#999;">暂无优惠券</h3>
+            <ul id="code_list">
+            </ul>
+            {literal}
+            <script type="text/html" id="codeTmpl">
+                {{each}}
+                <li data-fold="{{$value.limit2?"1":"0"}}" data-code="{{$value.ma}}" data-price="{{$value.total}}"  data-money="{{$value.total}}" onclick="cartStep.selectCoupon(this)">{{$value.total}}元优惠码【{{$value.limit2?"可叠加":"不可叠加"}}】</li>
+                {{/each}}
+
+            </script>
+            {/literal}
+        </div>
+    </div>-->
+    <div class="confirm-total">
+        <p>共<b id="strFootCount">{$allNumber}</b>件商品，共：<b id="totalMemberPrice"> &yen; <em>{$total}</em></b>元</p>
+        <!--<p>运费：<b id="fee">&yen; <em>0.00</em></b>元</p>-->
+        <p>优惠：<b id="totalYH">&yen; <em>0.00</em></b>元</p>
+        <p>总计：<b id="str_allPrice">&yen; <em>{$total}</em></b>元</p>
+        <a onclick="submitOrder($(this));">提交订单</a>
+    </div>
+</div>
+<div class="city-wrap">
+    <a href="javascript:;" class="close" onclick="closeCt()"></a>
+    <p></p>
+    <div class="select-city">
+        <img src="__PUBLIC__/pcshop/images/loading.gif"/>正在加载...
+        {literal}
+        <script type="text/html" id="Script1">
+            <dl>
+                <dt><span {{if lv==1}}class="cur"{{/if}} onclick="Area.getProvince()">{{provincename}}</span><span {{if
+                                                                                                                   lv==2}}class="cur"{{/if}}
+                                                                                                                   onclick="Area.getCity(Area.iProvince,Area.iProvinceName)">{{cityname}}</span><span
+                        {{if lv==3}}class="cur"{{/if}} onclick="Area.getCounty(Area.iCity,Area.iCityName)">{{countyname}}</span>
+                </dt>
+                <dd>
+                    <ul>
+                        {{each data}}
+                        <li><a href="javascript:Area.{{func}}({{$value.id}},'{{$value.name}}',this);">{{$value.name}}{{if
+                            lv==3&&$value.iskc==1||lv==1&&$value.isshop||lv==2&&$value.isshop}}<i></i>{{/if}}</a></li>
+                        {{/each}}
+                    </ul>
+                </dd>
+            </dl>
+        </script>
+        {/literal}
+    </div>
+</div>
+<!--选择门店弹出框-->
+<div class="cart-sel-box" id="mama-shop" style="display:none;">
+    <div class="cart-sel-shop">
+        <h3>请选择门店所在地：<span class="ui-border ck_kucun"><em id="kc_cityname">云南 昆明市 全国 </em></span></h3>
+        <!--城市选项卡-->
+        <ul id="shopList">
+        </ul>
+        {literal}
+        <script id="shopTmpl" type="text/html">
+            {{each}}
+            <li class="ui-border c_d_box" data-payid="1,2,3" data-id="{{$value.Id}}" data-tit="{{$value.AreaName}}"
+                data-o="{{$value.Address}}" data-url="{{$value.Url}}" data-tel="{{$value.Tel}}"
+                data-open="{{$value.Hours}}" data-type="shop" onclick="cartStep.selectShop(this,{{$value.Id}})">
+                <h4>{{$value.AreaName}}<a href="javascript:" onclick="sendSMS(this)" id='{{$value.Id}}'
+                                          data-id="{{$value.Id}}">发送到手机</a><a href="{{$value.Url}}"
+                                                                              data-id="{{$value.Id}}">店铺详情</a></h4>
+                <p>地址：{{$value.Address}}</p>
+                <p>销售热线：{{$value.Tel}}</p>
+                <p>工作时间：{{$value.Hours}}</p>
+            </li>
+            {{/each}}
+        </script>
+        {/literal}
+    </div>
+</div>
+<!--选择自提点弹出框-->
+<div class="cart-sel-box" id="mama-ziti" style="display:none;">
+    <div class="cart-sel-shop">
+        <h3>请选择自提点所在地：<span class="ui-border">云南省-昆明市-昆明市区</span></h3>
+        <!--城市选项卡-->
+        <div class="city-wrap" style="margin:-16px 0 0 130px;">
+            <a href="javascript:;" class="close" onclick="closeCt()"></a>
+            <p>热门城市： <a href="javascript:Area.quickSet(99,9901,990101,'全国',false);">全国</a> <a
+                    href="javascript:Area.quickSet(4,284,284,'成都市区',true);">成都</a> <a
+                    href="javascript:Area.quickSet(26,3250,2387,'重庆市区',true);">重庆</a> <a
+                    href="javascript:Area.quickSet(2,39,39,'昆明市区',true);">昆明</a> <a
+                    href="javascript:Area.quickSet(2,40,2691,'麒麟区',true);">曲靖</a> <a
+                    href="javascript:Area.quickSet(2,220,2780,'大理市',true);">大理</a> <a
+                    href="javascript:Area.quickSet(2,219,2758,'蒙自市',true);">蒙自</a> <a
+                    href="javascript:Area.quickSet(3,305,305,'贵阳市',true);">贵阳</a> <a
+                    href="javascript:Area.quickSet(3,306,2601,'六盘水市',true);">六盘水</a> <a
+                    href="javascript:Area.quickSet(10,81,81,'沈阳市区',true);">沈阳</a></p>
+            <div class="select-city">
+                <img src="__PUBLIC__/pcshop/images/loading.gif"/>正在加载...
+            </div>
+        </div>
+        <ul id="zitiList">
+            <li class="ui-border cart-sel-shop-on"><h4>禄劝县<a href="#">发送到手机</a></h4>
+                <p>地址：禄劝县盛世家园6栋2单元</p>
+                <p>自提点电话：13629666526</p>
+                <p>联系人：杨先生</p>
+                <p>工作时间：周一至周六9：00--22：00</p>
+                <p>周边信息：屏山镇掌鸠河西路九队小区福来居</p></li>
+        </ul>
+        <script type="text/html">
+            <li class="ui-border cart-sel-shop-on">
+                <h4>禄劝县<a href="#">发送到手机</a></h4>
+                <p>地址：禄劝县盛世家园6栋2单元</p>
+                <p>自提点电话：13629666526</p>
+                <p>联系人：杨先生</p>
+                <p>工作时间：周一至周六9：00--22：00</p>
+                <p>周边信息：屏山镇掌鸠河西路九队小区福来居</p>
+            </li>
+        </script>
+    </div>
+</div>
+
+<style>
+    #cend_phone {
+        position: fixed;
+        width: 440px;
+        background: #fff;
+        z-index: 9999;
+        top: 100px;
+        height: 315px;
+        box-shadow: 2px 2px 4px #444;
+        border: solid 1px #ccc;
+        z-index: 19901028;
+    }
+
+    #cend_phone h3 {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: solid 1px #eee;
+        color: #333;
+        margin-bottom: 20px;
+        background: #f4f4f4;
+    }
+
+    #cend_phone h3 b {
+        font-size: 16px;
+        font-family: microsoft yahei;
+        margin-left: 10px;
+        float: left;
+    }
+
+    #cend_phone p {
+        line-height: 25px;
+        margin: 10px 10px 0 10px;
+    }
+
+    #cend_phone p span {
+        color: #999;
+    }
+
+    #cend_phone p b {
+        display: inline-block;
+        width: 65px;
+        float: left;
+        font-weight: normal;
+        text-align: right;
+    }
+
+    #cend_phone p input {
+        height: 25px;
+        width: 150px;
+        margin-right: 10px;
+        border: solid 1px #ccc;
+        line-height: 25px \9;
+    }
+
+    #cend_phone p textarea {
+        width: 340px;
+        height: 120px;
+        border: solid 1px #ccc;
+        background: #f4f4f4;
+    }
+
+    #closesend {
+        float: right;
+        color: #ff5a00;
+        margin-right: 10px;
+    }
+
+    #cend_phone p img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    #cend_phone button {
+        margin-left: 75px;
+        width: 120px;
+        height: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    #tipBox {
+        z-index: 19911028;
+    }
+</style>
+{include file="pcshop@public/footer"}
+<script>
+    $(document).ready(function () {
+        session('curOrderPayType', 1);
+        {if empty($address)}
+        session('curOrderAddressId', false);
+        {else}
+        session('curOrderAddressId', {$address[0]['id']});
+        {/if}}
+    );
+    function editToAddr(obj, id) {
+        var url = '{:url("/pcshop/Address/getRowData")}';
+        var regionUrl = '{:url("/pcshop/Order/addrRegion")}';
+        var provinceHtml = '';
+        /*mdAjax(false,regionUrl,{},function(res){
+            for(var i=0;i<res.data.length;i++){
+                provinceHtml = provinceHtml+'<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+            }
+        })*/
+        var content = '<form action="{:url(\'/pcshop/Address/saveToTable\')}" id="pcShopUserAddr">\n' +
+            '        <input type="hidden" name="id" value="">\n' +
+            '        <input type="hidden" name="userId" value="{$Think.session.pcshopUserId}">\n' +
+            '        <div class="cart-address-form">\n' +
+            '            <table>\n' +
+            '                <tbody>\n' +
+            '                <tr>\n' +
+            '                    <td width="100">收货人姓名<b>*</b></td>\n' +
+            '                    <td><input type="text" id="receiveName" name="reciver"/></td>\n' +
+            '                </tr>\n' +
+            '                <tr>\n' +
+            '                    <td width="100">所在地区<b>*</b></td>\n' +
+            '                    <td><input type="text" id="region" name="region"/></td>\n' +
+            '                </tr>\n' +
+            '                <tr>\n' +
+            '                    <td width="100">手机号码<b>*</b></td>\n' +
+            '                    <td><input type="text" id="txtMobile" name="mobile"/></td>\n' +
+            '                </tr>\n' +
+            '                <tr>\n' +
+            '                    <td width="100">详细地址<b>*</b></td>\n' +
+            '                    <td><input type="text" id="txtAddress" name="address" placeholder="街道名称、门牌号"\n' +
+            '                               style="width:360px;"/></td>\n' +
+            '                </tr>\n' +
+            '                <tr>\n' +
+            '                    <td><input type="checkbox" name="isDefault" id="isDefault" value="1"/></td>\n' +
+            '                    <td><label for="isDefault">设置为默认收货地址</label></td>\n' +
+            '                </tr>\n' +
+            '                </tbody>\n' +
+            '            </table>\n' +
+            '        </div>\n' +
+            '    </form>';
+        if (id) {
+            var data = {};
+            data.id = id;
+            mdAjax(obj, url, data, function (res) {
+                assign(res.data, 'pcShopUserAddr');
+                layer.closeAll('loading');
+            });
+        }
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            shadeClose: true, //开启遮罩关闭
+            area: ['50%', '50%'], //宽高
+            title: '收货地址',
+            content: content,
+            btn: ['保存', '取消'],
+            yes: function (index, layero) {
+                mdBtnEvent('pcShopUserAddr', function (res) {
+                    layer.msg(res.msg, {icon: 1});
+                    layer.closeAll();
+                    location.reload();
+                });
+            }
+        });
+    }
+
+    function setAddressId(id) {
+        session('curOrderAddressId', id);
+    }
+
+    function submitOrder(obj) {
+        var pay = session('curOrderPayType');
+        var address = session('curOrderAddressId');
+        if (!address) {
+            layer.msg('请选择收货地址', {icon: 0});
+            return;
+        }
+        // 先完善订单信息
+        var data = {};
+        data.id = $("#orderId").val();
+        data.payType = pay;
+        data.addressId = address;
+        var url = "{:url('/pcshop/Order/saveToTable')}";
+        mdAjax(false,url,data,function (res) {
+            layer.msg(res.msg, {icon: 1});
+            layer.closeAll('loading');
+        })
+
+        var qrcode = '<img src="__PUBLIC__/pcshop/images/wxpay.jpg" class="">';
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            shadeClose: true, //开启遮罩关闭
+            area: '516px', //宽高
+            title: '订单支付',
+            content: qrcode,
+            btn: ['请扫描支付'],
+            yes: function (index, layero) {
+                layer.msg('请扫描支付', {icon: 1});
+            }
+            , btn2: function (index, layero) {
+                //按钮【按钮二】的回调
+                layer.msg('取消支付', {icon: 1});
+                return false;
+            }
+        });
+        // 在这里轮询
+        if(pay == 2){
+            setTimeout(function () {
+                pollingOrder();
+            },500)
+        }
+    }
+
+    // 轮询检查订单支付状态
+    function pollingOrder(){
+        var url = '{:url("/pcshop/Order/checkOrder")}';
+        var data = {};
+        data.id = $("#orderId").val();
+        $.post(url,data,function (res) {
+            // code 1 支付成功
+            if(res.code == 1){
+                layer.msg('订单支付成功',{icon:1});
+                var jump = "{:url('/pcshop/Order/success')}";
+                location.href = jump;
+            }
+        });
+    }
+</script>
+<script>
+    //发送店铺信息
+    function sendSMS(obj) {
+        var mes = "", self = $(obj);
+        if (self.parents(".seo_dianpu").length > 0) {
+            $(obj).parent().siblings("p").each(function () {
+                mes += $(obj).text() + '\n';
+            });
+        } else {
+            $(obj).parent().siblings("p").each(function () {
+                mes += $(this).text() + '\n';
+            });
+        }
+        var ztid = $(obj).attr("id");
+        if (ztid == "") {
+            changeShowtip("无店面id", $(obj));
+        }
+        sendToPhone(mes, ztid, 1);
+    };
+
+    function tgtj() {
+        var gethref = window.location.href;
+        var gettype = gethref.split('?');
+        var gettype1 = gethref.split('=');
+        if (gettype.length > 0 || gettype1.length > 0) {
+            if (gettype[1] == "mmxlad" || gettype[1] == "mmqqad" || gettype[1] == "mmqtad" || gettype1[1] == "mmjxad") {
+                var type = gettype[1];
+                if (gettype1[1] == "mmjxad")
+                    type = gettype1[1];
+                $.ajax({
+                    url: "/Ajax.aspx",
+                    type: "post",
+                    cache: false,
+                    dataType: "html",
+                    data: {
+                        act: "inserttj",
+                        type: type,
+                        pagename: gethref
+                    },
+                    success: function (a) {
+
+                    }
+                })
+            }
+        }
+    }
+</script>
+<script>
+    $(document).on("click", ".layui-layer-close", function () {
+        layer.closeAll();
+    });
+
+    /*详情页-地址选择*/
+    var ckkcTimer;
+    $(".ck_kucun").hover(function () {
+        clearTimeout(ckkcTimer);
+        $(this).addClass("ck_cur").css({zIndex: 10000});
+        /*$(".ck_kucunshow").show();*/
+        var pos = $(this).offset();
+        $(".city-wrap").show().css({left: pos.left, top: pos.top + 24, position: "absolute"});
+        Area.change();
+    }, function () {
+        ckkcTimer = setTimeout(function () {
+            /*$(".ck_kucunshow").hide();*/
+            $(".ck_kucun").removeClass("ck_cur");
+            $(".city-wrap").hide();
+        }, 300);
+    });
+    $(".city-wrap").hover(function () {
+        clearTimeout(ckkcTimer);
+    }, function () {
+        if (Cookie.Get("ischecked") == "1") {
+            $(".city-wrap").hide();
+        }
+        $(".ck_kucun").removeClass("ck_cur");
+    });
+
+</script>
+<script>
+
+    $(document).on("click", ".c_clearing dt", function () {
+        var self = $(this);
+        if (self.siblings("dd").is(":hidden")) {
+            self.siblings("dd").slideDown();
+            self.find("i").text("-");
+        } else {
+            self.siblings("dd").slideUp();
+            self.find("i").text("+");
+        }
+    });
+    $(document).on("mouseover", ".selectBox", function () {
+        $(this).addClass("cur_cart");
+    }).on("mouseout", ".selectBox", function () {
+        $(this).removeClass("cur_cart");
+    });
+
+
+    /*购物车-配送方式选择*/
+    $(".cart-addr-tab li").click(function () {
+        $(this).addClass("cart-addr-tab-on").siblings().removeClass("cart-addr-tab-on");
+        $(".cart-style").eq($(this).index()).fadeIn().siblings().hide();
+    });
+
+    /*购物车-地址选择*/
+    $(document).on("click", ".cart-addr-box li", function () {
+        $(this).addClass("cart-addr-box-on").siblings().removeClass("cart-addr-box-on");
+        if ($(this).attr("data-jiaji") == "1") $(".cart-jiaji").show();
+        else $(".cart-jiaji").hide();
+    });
+    /*购物车-支付方式*/
+    $(document).on("click", ".cart-addr-paylist li", function () {
+        $(this).addClass("cart-addr-box-on").siblings().removeClass("cart-addr-box-on");
+    });
+
+    /*购物车-地址*/
+    $(".cart-show-more").click(function () {
+        var text = $(this).find("em").text();
+        if (text == "显示更多收货地址") {
+            $(".cart-addr-box ul").css("height", "auto");
+            $(this).find("em").text("收起更多收货地址");
+        } else {
+            $(".cart-addr-box ul").css("height", "190px");
+            $(this).find("em").text("显示更多收货地址");
+        }
+    })
+    $(".cart-addr-box li h2 i").click(function () {
+        $(".cart-addr-box li h2 i").removeClass("cart-addr-default");
+        $(this).addClass("cart-addr-default");
+        layer.msg('已设置为默认地址', {icon: 1, time: 1500});
+    })
+    addr_more();
+
+    function addr_more() {
+        var addr_len = $(".cart-addr-box li").length;
+        if (addr_len > 3) {
+            $(".cart-show-more").show();
+        } else {
+            $(".cart-show-more").hide();
+        }
+    }
+
+    /*购物车-优惠码*/
+    $(".confirm-code h2").click(function () {
+        if ($(this).find("i").text() === '+') {
+            $(this).siblings("p").stop().slideDown();
+            $(this).find("i").text("-");
+        } else {
+            $(this).siblings("p").slideUp();
+            $(this).find("i").text("+");
+        }
+    })
+    //优惠码选择
+    $("#sel-code").hover(function () {
+        $(".cart-code-sel").show();
+        var len = $(".cart-code-sel li").length;
+        if (!len) {
+            $(".cart-code-sel h3").show();
+        }
+    }, function () {
+        $(".cart-code-sel").hide();
+    })
+    $(".cart-code-sel").hover(function () {
+        $(this).show();
+    }, function () {
+        $(this).hide();
+    })
+    $(".cart-code-sel li").click(function () {
+        $(".cart-input-code").text("直接输入优惠码");
+        $(".cart-input-code").siblings("strong").hide();
+        var val = $(this).text();
+        $("#sel-code").text(val);
+        $(".cart-code-sel").hide();
+    })
+    //输入优惠码
+    $(".cart-input-code").click(function () {
+        $("#sel-code").text("选择您的优惠券");
+        $(this).siblings("strong").show();
+    })
+
+    /*节省-四舍五入*/
+    var float = function () {
+        $(".cart-jiesheng").each(function () {
+            var val = parseFloat($(this).text()).toFixed(2);
+            $(this).text(val);
+        })
+    }
+    window.setInterval(float, 500);
+</script>
+</body>
+</html>

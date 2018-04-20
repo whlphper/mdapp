@@ -24,7 +24,7 @@ class Core extends Base
     // 菜单列表
     public function getMenus(request $request)
     {
-        $list = model('Menus')->getBootstrapeTable([], 'a.id,a.url,a.name,a.flag,a.pid,a.sort', [], 'a.sort desc');
+        $list = model('Menus')->getBootstrapeTable([], 'a.id,a.url,a.name,a.flag,a.pid,a.sort', [], 'a.level asc,a.sort desc');
         return $list;
     }
 

@@ -1,0 +1,130 @@
+{include file="admin@public/header"}
+{include file="admin@public/search"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<link rel="stylesheet" href="__PUBLIC__/bootstrap/table/bootstrap-table.css">
+<script src="__PUBLIC__/bootstrap/table/bootstrap-table.js"></script>
+<script src="__PUBLIC__/bootstrap/table/locale/bootstrap-table-zh-CN.js"></script>
+<!-- InputMask -->
+<script src="__PUBLIC__/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="__PUBLIC__/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="__PUBLIC__/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".insert").click(function(){
+            var url = "{:url('/shop/Brand/storeBrand')}";
+            sessionStorage.removeItem("mdBrandId");
+            mdAjax($(this),url,{},function(res){
+                mdFormModal(res);
+                layer.closeAll("loading");
+            },'get','html');
+        });
+        $(".deleteMore").click(function(){
+            var table = $(this).attr('data-table');
+            var checked = mdGetTableChecked(table);
+            if(!checked){
+                layer.msg('请选择要删除的数据',{icon:0});
+                return
+            }
+            checked = checked.join(',');
+            var url = "{:url('/shop/Brand/deleteToTable/id/" + checked + "')}";
+            mdConfirmModal('modal-sm','提示','确定批量删除此数据吗?',url,table);
+        });
+    });
+    //每行操作渲染
+    function actionFormatter() {
+        return '<div class="btn-group"><button class="btn bg-olive btn-sm edit">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn  bg-orange btn-sm delete">删除</button></div>';
+    }
+    function iconFormatter(value,row,index){
+        return '<i class="fa '+value+'"></i>';
+    }
+    function posterPathFormatter(value)
+    {
+        if(value){
+            return '<img class="img-responsive" style="width:120px;height:40px;" src="__PUBLIC__'+value+'">';
+        }
+    }
+    //每行操作对应事件
+    window.actionEvents = {
+        'click .delete': function (e, value, row, index) {
+            var url = "{:url('/shop/Brand/deleteToTable/id/" + row.id + "')}";
+            var table = 'sysBrandTable';
+            mdConfirmModal('modal-sm','提示','确定删除此品牌吗?',url,table);
+            /*mdAjax($(this),url,{},function(res){
+             swal('提示', res["msg"], "success");
+             $("#sysBrandTable").bootstrapTable('refresh');
+
+             },'GET');*/
+        },
+        'click .edit': function (e, value, row, index) {
+            var url = "{:url('/shop/Brand/storeBrand/id/" + row.id + "')}";
+            session("mdBrandId",row.id);
+            mdAjax($(this),url,{},function(res){
+                mdFormModal(res);
+            },'get','html');
+        },
+    };
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+
+<!-- Main content -->
+<!--主体内容-->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="col-sm-3" style="padding-left: 0;">
+                        <div class="input-group">
+                            <button type="button" class="btn btn-success btn-sm insert"><i class="fa fa-fw fa-plus-square-o">&nbsp;&nbsp;</i>新增</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning btn-sm deleteMore" data-table="sysBrandTable"><i class="fa fa-fw fa-trash-o">&nbsp;&nbsp;</i>批量删除</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body ">
+                    <div id="toolbar">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form id="sysBrandsSearch">
+                                    <div class="col-lg-6" style="padding-left: 0;">
+                                        <div class="input-group col-lg-3">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control" name="name" placeholder="请输入品牌名称" data-mask>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button type="button" class="btn btn-info btn-sm bootstrap-search" refreshTableID="sysBrandTable"><i class="fa fa-fw fa-search">&nbsp;</i>搜索</button>&nbsp;
+                                        <button type="button" class="btn bgm-teal btn-sm bootstrap-reset" refreshTableID="sysBrandTable"><i class="fa fa-fw fa-refresh">&nbsp;</i>重置</button>&nbsp;
+                                        <button type="button" class="btn bgm-amber btn-sm"><i class="fa fa-fw fa-cloud-download">&nbsp;</i>导出</button>&nbsp;
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="sysBrandTable" class="table table-vmiddle table-condensed table-boedered" data-side-pagination="server"
+                           data-url="{:url('/shop/Brand/getTableData')}" data-toggle="table" data-toolbar="#toolbar"
+                           data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]">
+                        <thead>
+                        <tr>
+                            <th data-checkbox="true"></th>
+                            <th data-field="posterPath" data-formatter="posterPathFormatter">品牌图片</th>
+                            <th data-field="name" data-formatter="">品牌名称</th>
+                            <th data-field="desc" data-formatter="">品牌简介</th>
+                            <!--<th data-field="franchName">所属店铺</th>-->
+                            <th data-field="sort" data-sortable="true">排序</th>
+                            <th data-field="created_at" data-align="center" data-sortable="true">创建时间</th>
+                            <!--<th data-field="userName" >创建人</th>-->
+                            <th data-field="action" data-formatter="actionFormatter" data-align="center" data-events="actionEvents"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+</html>

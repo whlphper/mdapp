@@ -15,8 +15,8 @@ class Login extends Controller {
     public function index(Request $request)
     {
         // 判断是否存在cookie
-        if(cookie('md_remember_username') && cookie('md_remember_userpass')){
-            $rememberInfo = ['username'=>cookie('md_remember_username'),'password'=>cookie('md_remember_userpass')];
+        if(cookie('adminpassword') && cookie('adminusername')){
+            $rememberInfo = ['username'=>cookie('adminusername'),'password'=>passport_decrypt(cookie('adminpassword'))];
         }
         return view('',isset($rememberInfo) ? ['rememberInfo'=>$rememberInfo] : []);
     }
@@ -24,28 +24,29 @@ class Login extends Controller {
     public function login(Request $request)
     {
         try{
+            $order = 'a.created_at desc';
+            $field = 'a.id,a.account_number,a.roles_id,a.password,a.franchisee_id,a.avatar,a.nick_name,a.mobile,a.type,a.real_name,b.savePath as avatarPath';
+            $join = [['File b','a.avatar=b.id','left']];
             $data = $request->only(['username','password','rememberMe']);
-            // 验证
-            $loginVali = $this->validate($data,'User.login');
-            if($loginVali !== true){
-                throw new \Exception($loginVali);
-            }
             // 账号是否合法
-            $user = model("User")->checkUser($data['username']);
-            if(!$user){
-                throw new \Exception('用户不存在');
+            $user = model("User")->getRow(['account_number|mobile'=>$data['username']],$field,$join,$order);
+            if($user['code'] == 0){
+                throw new \Exception('用户'.$user['msg']);
             }
-            $user = $user->toArray();
+            $user = $user['data'];
             if($user['password'] != md5($data['password'])){
                 throw new \Exception('登陆密码错误');
             }
             // 记住账号
             if(!empty($data['rememberMe'])){
-                cookie('md_remember_username',$data['username'],60*60*24*30);
-                cookie('md_remember_userpass',$data['password'],60*60*24*30);
+                // 加密
+                $cookieUserPwd = passport_encrypt($data['password']);
+                // 设置
+                cookie('adminpassword', $cookieUserPwd, 7200);
+                cookie('adminusername', $data['username'], 7200);
             }else{
-                cookie('md_remember_userpass',null);
-                cookie('md_remember_username',null);
+                cookie('adminpassword',null);
+                cookie('adminusername',null);
             }
             // session 跳转系统首页
             session("userId",$user['id']);

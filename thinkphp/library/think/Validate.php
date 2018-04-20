@@ -43,6 +43,7 @@ class Validate
         'boolean'     => ':attribute must be bool',
         'email'       => ':attribute not a valid email address',
         'mobile'      => ':attribute not a valid mobile',
+        'decimal'      => ':attribute not a valid mobile',
         'array'       => ':attribute must be a array',
         'accepted'    => ':attribute must be yes,on or 1',
         'date'        => ':attribute not a valid datetime',
@@ -581,6 +582,18 @@ class Validate
     protected function is($value, $rule, $data = [])
     {
         switch ($rule) {
+            case 'decimal':
+                // 金额
+                $result = $this->regex($value, '/^[0-9]+(.[0-9]{1,2})?$/');
+                break;
+            case 'telephone':
+                // 电话
+                $result = $this->regex($value, '/^([0-9]{3,4}-)?[0-9]{7,8}$/');
+                break;
+            case 'mobile':
+                // 手机号
+                $result = $this->regex($value, "/^1[34578]{1}\d{9}$/");
+                break;
             case 'require':
                 // 必须
                 $result = !empty($value) || '0' == $value;

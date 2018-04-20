@@ -1,0 +1,84 @@
+{include file="pcshop@public/header"}
+<body>
+<link rel="icon" href="__PUBLIC__/pcshop/images/favicon.ico" type="image/x-icon" />
+{include file="pcshop@public/top"}
+<script src="__PUBLIC__/pcshop/js/cart.js?debug=13"></script>
+<!--首页轮播-->
+<div class="banner">
+    <div class="arrow_box" style="display: none;">
+        <a href="javascript:;" class="prev"></a>
+        <a href="javascript:;" class="next"></a>
+    </div>
+    <div class="hd">
+        <ul>
+            {foreach $carousel as $k=>$v}
+                {if $k eq 0}
+                    <li class="hd-on">{$k++}</li>
+                {else}
+                    <li class="">{$k++}</li>
+                {/if}
+            {/foreach}
+        </ul>
+    </div>
+    <div class="bd">
+        <ul style="position: relative; width: 1663px; height: 400px;">
+            {foreach $carousel as $k=>$v}
+            <li style="background: transparent url(__PUBLIC__/{$v.posterPath}) no-repeat scroll center center; position: absolute; width: 1663px; left: 0px; top: 0px;  {if $k eq 0} display: block; {else} display: none; {/if} ">
+                <a {if $v.isBlank eq 1} target="_blank" {/if} href="{$v.url}"></a>
+            </li>
+            {/foreach}
+
+        </ul>
+    </div>
+</div>
+<!--商城优势-->
+<div class="chengnuo ui-border-b"></div>
+<!--商品区域-->
+<div class="wrap">
+    <div id="3lou" class="index-three select clearfloat">
+        <!--四个小提示-->
+        <div class="select-tab">
+            <ul>
+                <li class="tab-on"><i class="iconfont"></i>宝宝吃什么<em style="display:block"></em></li>
+                <li><i class="iconfont"></i>宝宝用什么<em></em></li>
+                <li><i class="iconfont"></i>宝宝玩什么<em></em></li>
+                <li><i class="iconfont"></i>孕妈用什么<em></em></li>
+            </ul>
+        </div>
+        <!--分类商品-->
+        {foreach $cateGoods as $k=>$v}
+        <div class="select-view ui-border">
+            <ul style="display:block;">
+                <dl>
+                    <!--分类图片-->
+                    <dt style="float:left;">
+                        <a target="_blank"  title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}" rel="nofollow"><img width="380" height="380" border="0" dis="true" src="__PUBLIC__/{$v.posterPath}"></a>
+                    </dt>
+                    <!--分类下的四个商品-->
+                    {foreach $v.products as $k2=>$v2}
+                    <dd class="ui-border-lb">
+                        <a href="{:url('/pcshop/Product/detail',['id'=>$v2.id])}" target="_blank" title="{$v2.name}"><img width="160" height="160" src="__PUBLIC__/{$v2.album}"></a>
+                        <div class="shop-info">
+                            <h2><a href="{:url('/pcshop/Product/detail',['id'=>$v2.id])}" target="_blank">{$v2.name}</a></h2>
+                            <s>
+                                原价: ¥ {$v2.marketPrice}
+                            </s>
+                            <h3>¥ <b ppid="3574" class="nowPrice">{$v2.shopPrice}</b></h3>
+                            <a class="shop-btn" href="{:url('/pcshop/Product/detail',['id'=>$v2.id])}" target="_blank">立即购买</a>
+                        </div>
+                    </dd>
+                    {/foreach}
+                </dl>
+            </ul>
+        </div>
+        {/foreach}
+        <!---->
+    </div>
+
+</div>
+</div>
+<style>#cend_phone{position:fixed;width:440px;background:#fff;z-index:9999;top:100px;height:315px;box-shadow:2px 2px 4px #444;border:solid 1px #ccc;z-index:19901028;}#cend_phone h3{height:40px;line-height:40px;border-bottom:solid 1px #eee;color:#333;margin-bottom:20px;background:#f4f4f4;}#cend_phone h3 b{font-size:16px;font-family:microsoft yahei;margin-left:10px;float:left;}#cend_phone p{line-height:25px;margin:10px 10px 0 10px;}#cend_phone p span{color:#999;}#cend_phone p b{display:inline-block;width:65px;float:left;font-weight:normal;text-align:right;}#cend_phone p input{height:25px;width:150px;margin-right:10px;border:solid 1px #ccc;line-height:25px\9;}#cend_phone p textarea{width:340px;height:120px;border:solid 1px #ccc;background:#f4f4f4;}#closesend{float:right;color:#ff5a00;margin-right:10px;}#cend_phone p img{cursor:pointer;vertical-align:middle;}#cend_phone button{margin-left:75px;width:120px;height:30px;margin-top:10px;cursor:pointer;}#tipBox{z-index:19911028;}</style>
+
+{include file="pcshop@public/footer"}
+</body>
+</html>

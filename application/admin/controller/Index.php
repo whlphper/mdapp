@@ -67,9 +67,12 @@ class Index extends Base{
      * @param $cField    子级字段名称
      * @param $default   初始化值
      * */
-    public function initSelect($table,$condition,$field,$order,$pField,$cField,$default='')
+    public function initSelect($table,$condition,$field,$order,$pField='id',$cField='pid',$default='')
     {
-        if(is_array($condition)){
+        if($condition == ''){
+            $condition = [];
+        }
+        if(is_array($condition) && !empty($condition)){
             $conditionBack[$condition[0]] = $condition[1];
         }else{
             $conditionBack = [];
@@ -79,7 +82,7 @@ class Index extends Base{
             return $list;
         }
         $list = $list['data'];
-        $html = '<option value="">请选择</option><option value="0">顶级菜单</option>';
+        $html = '<option value="">请选择</option><option value="0">顶级</option>';
         if(strpos($field,'level')){
             $list = getSubs($list,0,1,$cField);
         }
@@ -91,5 +94,11 @@ class Index extends Base{
             }
         }
         echo $html;
+    }
+
+    public function uploadImage($folder = "default", $extType = "image", $defaultSize = 15)
+    {
+        $result = upload($folder,$extType,$defaultSize);
+        return $result;
     }
 }

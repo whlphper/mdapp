@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+use think\Db;
 // 应用公共文件
 function WebService($uri,$class_name='',$namespace='controller',$persistence = false){
     $class = 'index\\'. $namespace .'\\'. $class_name;
@@ -141,7 +141,7 @@ function descarte($arr, $tmp = array())
     return $n_arr;
 }
 
-function upload($folder = "", $extType = "image", $defaultSize = 15)
+function upload($folder = "default", $extType = "image", $defaultSize = 15)
 {
     $folder = empty($folder) ? 'default' : $folder;
     $accept = array();
@@ -176,19 +176,20 @@ function upload($folder = "", $extType = "image", $defaultSize = 15)
             }
             $savePath = $folder;
             $saveName = date('YmdHis', time()) . rand(1, 9999999) . "." . $ext;
-            $moveInfo = $file->move(ROOT_PATH . 'public/uploads/' . $savePath, $saveName);
+            $moveInfo = $file->move(ROOT_PATH . 'public/upload/' . $savePath, $saveName);
             $fullPath = $moveInfo->getPathName();
             if ($moveInfo !== false) {
                 $sysFileData['fileName'] = $fileName;
-                $sysFileData['savePath'] = '/uploads/' . $savePath . '/' . $saveName;
+                $sysFileData['savePath'] = '/upload/' . $savePath . '/' . $saveName;
                 $sysFileData['saveName'] = $saveName;
                 $sysFileData['exts'] = $ext;
                 $sysFileData['size'] = $fileSize;
-                $sysFileData['adduserId'] = session('userId') ? session('userId') : 0;
-                $sysFileData['addtime'] = date('Y-m-d H:i:s', time());
-                $last = saveData('SysFile', $sysFileData);
-                if ($last['data']) {
-                    $result[] = $last['data'];
+                $sysFileData['created_user'] = session('userId') ? session('userId') : 0;
+                $sysFileData['created_at'] = date('Y-m-d H:i:s', time());
+                $last = Db::name('File')->insertGetId($sysFileData);
+                if ($last) {
+                    $result[] = $last;
+                    $path[] = '/public/'.$sysFileData['savePath'];
                 }
             } else {
                 return array('code' => 0, 'msg' => $file->getError());
@@ -197,7 +198,7 @@ function upload($folder = "", $extType = "image", $defaultSize = 15)
     } else {
         return array('code' => 0, 'msg' => '没有文件可上传');
     }
-    return array('code' => 1, 'msg' => '文件上传成功', 'data' => implode(',', $result));
+    return array('code' => 1, 'msg' => '文件上传成功', 'data' => implode(',', $result),'path'=>implode(',',$path));
 }
 
 //获取某个分类的所有子分类
@@ -212,5 +213,53 @@ function getSubs($categorys,$catId=0,$level=1,$filed){
         }
     }
     return $subs;
+}
+
+/**
+ * 加密
+ * @param $txt
+ * @param string $key
+ * @return string
+ */
+function passport_encrypt($txt, $key = 'mdappPcshop')
+{
+    srand((double)microtime() * 1000000);
+    $encrypt_key = md5(rand(0, 32000));
+    $ctr = 0;
+    $tmp = '';
+    for($i = 0;$i < strlen($txt); $i++) {
+        $ctr = $ctr == strlen($encrypt_key) ? 0 : $ctr;
+        $tmp .= $encrypt_key[$ctr].($txt[$i] ^ $encrypt_key[$ctr++]);
+    }
+    return urlencode(base64_encode(passport_key($tmp, $key)));
+}
+
+/**
+ * 解密
+ * @param $txt
+ * @param string $key
+ * @return string
+ */
+function passport_decrypt($txt, $key = 'mdappPcshop')
+{
+    $txt = passport_key(base64_decode(urldecode($txt)), $key);
+    $tmp = '';
+    for($i = 0;$i < strlen($txt); $i++) {
+        $md5 = $txt[$i];
+        $tmp .= $txt[++$i] ^ $md5;
+    }
+    return $tmp;
+}
+
+function passport_key($txt, $encrypt_key)
+{
+    $encrypt_key = md5($encrypt_key);
+    $ctr = 0;
+    $tmp = '';
+    for($i = 0; $i < strlen($txt); $i++) {
+        $ctr = $ctr == strlen($encrypt_key) ? 0 : $ctr;
+        $tmp .= $txt[$i] ^ $encrypt_key[$ctr++];
+    }
+    return $tmp;
 }
 
