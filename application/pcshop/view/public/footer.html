@@ -1,57 +1,37 @@
 <div class="more">
-    <a href="{:url('/pcshop/Search/all')}"></a>
+    <a href="{:url('/pcshop/Category/all')}" target="_blank"></a>
 </div>
+
 <!--底部链接-->
 <div class="foot_link">
     <div class="wrap clearfloat">
+        {foreach $cataLog as $k=>$v}
         <div class="foot_one">
-            <h3 class="xs_tit"></h3>
+            <h3 style="font-size:14px;font-weight: bold;text-align: left;margin-left: 60px;margin-bottom: 20px">{$v.title}</h3>
+            {if isset($v.subLog)}
+            {foreach $v.subLog as $k2=>$v2}
             <ul id="bottom1_newUser">
-                <li><a title="常见问题" rel="nofollow" href="__PUBLIC__/pcshop/help.html1107.html">常见问题</a></li>
-                <li><a title="会员权益" rel="nofollow" href="__PUBLIC__/pcshop/help.html1108.html">会员权益</a></li>
-                <li><a title="购物流程" rel="nofollow" href="__PUBLIC__/pcshop/help.html1109.html">购物流程</a></li>
-                <li><a title="如何购买" rel="nofollow" href="__PUBLIC__/pcshop/help.html">如何购买</a></li>
+                <li><a title="{$v2.title}" rel="nofollow"  target="_blank" href="{:url('/pcshop/Help/index',['id'=>$v2.id])}">{$v2.title}</a></li>
             </ul>
+            {/foreach}
+            {/if}
         </div>
-        <div class="foot_one">
-            <h3 class="xs_tit "></h3>
-            <ul id="bottom1_sendType">
-                <li><a title="配送预约" rel="nofollow" href="__PUBLIC__/pcshop/help.html1105.html">配送预约</a></li>
-                <li><a title="快递运输" rel="nofollow" href="__PUBLIC__/pcshop/help.html1119.html">快递运输</a></li>
-                <li><a title="三九快递" rel="nofollow" href="__PUBLIC__/pcshop/help.html1120.html">三九快递</a></li>
-                <li><a title="全省包邮服务" rel="nofollow" href="__PUBLIC__/pcshop/help.html1138.html">全省包邮服务</a></li>
-            </ul>
-        </div>
-        <div class="foot_one">
-            <h3 class="xs_tit "></h3>
-            <ul id="bottom1_payType">
-                <li><a title="银行汇款" rel="nofollow" href="__PUBLIC__/pcshop/help.html1110.html">银行汇款</a></li>
-                <li><a title="网上支付" rel="nofollow" href="__PUBLIC__/pcshop//onlinepay.aspx">网上支付</a></li>
-                <li><a title="货到付款" rel="nofollow" href="__PUBLIC__/pcshop/help.html1112.html">货到付款</a></li>
-                <li><a title="刷卡服务" rel="nofollow" href="__PUBLIC__/pcshop/help.html1122.html">刷卡服务</a></li>
-            </ul>
-        </div>
-        <div class="foot_one">
-            <h3 class="xs_tit"></h3>
-            <ul id="bottom1_afterSev">
-                <li><a title="服务承诺" rel="nofollow" href="__PUBLIC__/pcshop/help.html1113.html">服务承诺</a></li>
-                <li><a title="退换货流程" rel="nofollow" href="__PUBLIC__/pcshop/help.html1114.html">退换货流程</a></li>
-                <li><a title="售后质保" rel="nofollow" href="__PUBLIC__/pcshop/help.html1115.html">售后质保</a></li>
-                <li><a title="品质保证" rel="nofollow" href="__PUBLIC__/pcshop/help.html1116.html">品质保证</a></li>
-            </ul>
-        </div>
-        <div class="foot_two">
+        {/foreach}
+        <!--<div class="foot_two">
             <h3><strong><font size="2">0871-</font>65885399</strong></h3>
             <div class="dingyue">
                 <p style="color: Red;">请为我们提供您宝贵的意见及建议</p>
-                <p> <input type="button" class="book_btn" value="在线投诉及建议" onclick="javascript:window.location.href =help.htmltousu.aspx" /></p>
-                <p style="color: blue; margin-top: -7px; font-weight: bold">工作时间：{$baseInfo.woektime|default='9:00-6:00'}</p>
+                <p>
+                    <input type="button" class="book_btn" value="在线投诉及建议" onclick="javascript:window.location.href =help.htmltousu.aspx" />
+                </p>
+                <p style="color: blue; margin-top: -7px; font-weight: bold">工作时间：{$seo.siteServicetime|default='09:00-18:00'}</p>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
+
 <!--商城基本信息-->
-<div class="stores clearfloat">
+<div class="stores clearfloat" style="display: none">
     <div class="stores-box">
         <div class="stores-arrow">
             <a href="javascript:;" class="stores-prev">&lt;</a>

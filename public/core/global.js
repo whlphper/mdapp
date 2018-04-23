@@ -754,8 +754,8 @@ function checkShopUserLogin()
             btn: ['去登陆','再等等'] //按钮
         }, function(){
             location.href=shopLoginUrl;
-            return;
         });
+        return;
     }else{
         return shopUserId;
     }

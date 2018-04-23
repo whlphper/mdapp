@@ -1,0 +1,125 @@
+{include file="pcshop@public/header"}
+<body>
+{include file="pcshop@public/top"}
+<div class="wrap">
+    <div class="now-addr">
+        <i class="iconfont"></i>当前位置：
+        <a href="{:url('/pcshop')}">首页</a> &gt;
+        <a href="{:url('/pcshop/User/uCenter')}">会员中心</a>
+    </div>
+    <!--个人中心所有功能列表-->
+    {include file="pcshop@public/uleftnav"}
+    <div class="user-body">
+        <div class="user-infobox ui-border clearfloat">
+            <div class="user-info ui-border-r">
+                <p> <span> <img src="__PUBLIC__/pcshop/images/touxiang.jpg" /></span> <a href="{:url('pcshop/User/intro')}">个人信息</a> </p>
+                <strong> <h3>欢迎回来~</h3> <h2>{$Think.session.pcshopUser.nick_name}<em>（<i class="iconfont"></i>普通会员）</em></h2>
+                    <!-- <h4>账户余额：<b style="color:#f9484e">3500.00</b>元 <a href="#" id="chongzhi">充值</a><a href="#" id="tixian">提现</a></h4>-->
+                    <!--<h4>账户积分：<b style="color:#fe9900">0</b>分</h4>
+                    <h4>宝宝生日：1988-07-05</h4> -->
+                </strong>
+            </div>
+            <div class="user-quick">
+                <h2><b></b>账户信息<span>您的帐户评分为：<em class="orange" style="font-size:16px;">100</em> 分</span></h2>
+                <div class="user-exp">
+                    <em style="width:100%;"></em>
+                </div>
+                <!--<h3>完善会员信息超值礼券马上送，赶快领取哦！</h3>
+                <div class="user-exp-list">
+                    <p><em></em>绑定邮箱送礼券 <b class="orange">(送99元优惠券包)</b><a href="member_index.htmlUpdateInfo.aspx?act2=email" class="green">已绑定</a></p>
+                    <p><em style="background-position:0 -16px;"></em>填写宝宝档案 <b class="orange">(双倍积分+生日礼包)</b><a href="member_index.htmlmember_info.html" class="blue">去填写</a></p>
+                    <p><em style="background-position:0 -48px;"></em>关注微信送6元全场通用券<a href="javascript:;" class="purple" id="user-guanzhu">去关注</a></p>
+                </div>-->
+            </div>
+        </div>
+        <!--订单查询表单-->
+        <div style="display: none;" class="order-sel ui-border">
+                <span class="col-row ui-border-r">订单查询</span>
+                <div class="order-sel-date col-row">
+                    <label>开始日期</label><input type="date" /><label>结束日期</label><input type="date" />
+                </div>
+                <div class="order-sel-btn col-row"><a href="#">查询</a></div>
+            </div>
+        <!--最近订单列表-->
+        <div style="display: none;" class="order-list ui-border">
+            <div class="order-list-title">
+                <em>&nbsp;</em>最近买到的宝贝
+                <span>
+                    <!--<a href="#">待评价<b>4</b></a>-->
+                </span>
+                <strong><a href="member_order.html">查看全部订单</a></strong>
+            </div>
+            <ul>
+                <li id="order_99852"> <span class="col-row"><a href="member_order.html?orderid=99852"><img src="__PUBLIC__/pcshop/images/20151210091251862.jpg" onerror="this.src='http://placehold.it/90x90'" /></a></span> <h4 class="col-row">订单编号<p style="color:#777;">99852</p></h4> <h3 class="col-row"><p>订单时间</p><p style="color:#777;">2015-11-30 08:59:58 <a href="orderdetail.aspx?orderid=99852" style="margin-left:50px;color:#009FDE;">订单详情</a></p></h3> <strong class="col-row">待付款</strong> <b class="col-row"> <a href="#" onclick="cancelOrder(99852);return false;">取消订单</a> <a href="/onlinepay.aspx?orderid=99852" target="_blank">去付款</a> </b> </li>
+            </ul>
+        </div>
+        <!--个人中心页面 4个个人喜好部分-->
+        <div style="display: none;" class="user-like ui-border-lrt">
+            <dl>
+                <dt>
+                    <em>&nbsp;</em>我的收藏
+                    <a href="member_index.htmlmember_collect.html">更多&gt;</a>
+                </dt>
+                <dd>
+                    <span class="col-row"><a href="club.html138.html" target="_blank"><img src="__PUBLIC__/pcshop/images/201512071332299.jpg" width="90" height="90" /></a></span>
+                    <p><a href="club.html138.html" target="_blank">童泰隔水尿垫c60085</a></p>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    <em style="background:#32b4e8;">&nbsp;</em>最近浏览过的
+                </dt>
+                <dd>
+                    <span class="col-row"><a href="club.html138.html" target="_blank"><img src="__PUBLIC__/pcshop/images/201512071332299.jpg" width="90" height="90" /></a></span>
+                    <p><a href="club.html138.html" target="_blank">童泰隔水尿垫c60085</a></p>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    <em style="background:#f76514;">&nbsp;</em>会员优惠
+                    <a href="club.htmlyouhui.html" target="_blank">更多&gt;</a>
+                </dt>
+                <dd>
+                    <span class="col-row"><a href="club.html138.html" target="_blank"><img src="__PUBLIC__/pcshop/images/201512071332299.jpg" width="90" height="90" /></a></span>
+                    <p><a href="club.html138.html" target="_blank">童泰隔水尿垫c60085</a></p>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    <em style="background:#aa77d5;">&nbsp;</em>积分兑换
+                    <a href="club.htmljingpin.html" target="_blank">更多&gt;</a>
+                </dt>
+                <dd>
+                    <span class="col-row"><a href="club.html138.html" target="_blank"><img src="__PUBLIC__/pcshop/images/201512071332299.jpg" width="90" height="90" /></a></span>
+                    <p><a href="club.html138.html" target="_blank">童泰隔水尿垫c60085</a></p>
+                </dd>
+            </dl>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<style>
+    #cend_phone { position: fixed; width: 440px; background: #fff; z-index: 9999; top: 100px; height: 315px; box-shadow: 2px 2px 4px #444; border: solid 1px #ccc; z-index: 19901028; }
+    #cend_phone h3 { height: 40px; line-height: 40px; border-bottom: solid 1px #eee; color: #333; margin-bottom: 20px; background: #f4f4f4; }
+    #cend_phone h3 b { font-size: 16px; font-family: microsoft yahei; margin-left: 10px; float: left; }
+    #cend_phone p { line-height: 25px; margin: 10px 10px 0 10px; }
+    #cend_phone p span { color: #999; }
+    #cend_phone p b { display: inline-block; width: 65px; float: left; font-weight: normal; text-align: right; }
+    #cend_phone p input { height: 25px; width: 150px; margin-right: 10px; border: solid 1px #ccc; line-height: 25px\9; }
+    #cend_phone p textarea { width: 340px; height: 120px; border: solid 1px #ccc; background: #f4f4f4; }
+    #closesend { float: right; color: #ff5a00; margin-right: 10px; }
+    #cend_phone p img { cursor: pointer; vertical-align: middle; }
+    #cend_phone button { margin-left: 75px; width: 120px; height: 30px; margin-top: 10px; cursor: pointer; }
+    #tipBox { z-index: 19911028; }
+</style>
+{include file="pcshop@public/footer"}
+<script>
+    /*会员中心导航*/
+    $(".user-nav dd").hover(function () {
+        $(this).find("b").css("opacity", "1");
+    }, function () {
+        $(this).find("b").css("opacity", "0");
+    })
+</script>
+</body>
+</html>

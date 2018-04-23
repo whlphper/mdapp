@@ -6,11 +6,11 @@
             <a href="{:url('/pcshop/User/logout')}" rel="nofollow">退出登录</a>
             <a href="{:url('/pcshop/User/uCenter')}" rel="nofollow">个人中心</a>
             {/if}
-            <a href="{:url('/pcshop/User/help')}">帮助中心</a>
-            <span>咨询电话：<b>0871-65885399</b></span>
+           <!-- <a href="{:url('/pcshop/User/help')}">帮助中心</a>
+            <span>咨询电话：<b>0871-65885399</b></span>-->
         </div>
         <div class="top-left">
-            <b>美橙互联商城 -</b> O2O实力派
+            <b>{$seo.siteName|default='MengD'}</b>
             <span id="loginbar">
                 {if $Think.session.pcshopUserId}
                 <a href="javascript:void(0);" style="color:red;" rel="nofollow">{$Think.session.pcshopUser.nick_name|default='未设定昵称'}</a>
@@ -31,20 +31,20 @@
         </div>
         <div class="top_logo clearfloat">
             <div class="logo">
-                <a href="{:url('/pcshop')}"><img src="__PUBLIC__/pcshop/images/logo1.png" title="三九妈咪商城" /></a>
+                <a href="{:url('/pcshop')}"><img src="__PUBLIC__{$seo.siteLogo|default='pcshop/images/logo1.png'}" title="{$seo.siteName|default='MengD'}" /></a>
             </div>
             <div class="search-box">
                 <form action="" method="get">
-                    <input type="text" id="wkeyword" name="w" class="search-kuang" placeholder="奶粉" value="" autocomplete="off" maxlength="30" />
+                    <input type="text" id="wkeyword" name="w" class="search-kuang" placeholder="" value="" autocomplete="off" maxlength="30" />
                     <input class="search-btn" data-url="{:url('/pcshop/Search/byKeyword')}" type="button" value="搜 索"/>
                 </form>
                 <p>热门搜索：
-                    <a href="{:url('pcshop/Search/hot/id/5')}">天然世家</a>
+                    <!--<a href="{:url('pcshop/Search/hot/id/5')}">天然世家</a>-->
                 </p>
             </div>
             <!--cms部分-->
             <div class="top_btn">
-                <a href="{:url('pcshop/article/index')}" target="_blank"><i class="iconfont"></i>新闻中心<em>&gt;</em></a>
+                <a href="{:url('pcshop/help/index')}" target="_blank"><i class="iconfont"></i>帮助中心<em>&gt;</em></a>
             </div>
         </div>
     </div>
@@ -113,12 +113,12 @@
                         <dl>
                             <dt>
                                 <em>&gt;</em>
-                                <a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a>
+                                <a title="{$v.name}" target="_blank" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a>
                             </dt>
                             {if isset($v.subCategory) && $v.subCategory}
                                 {foreach $v.subCategory as $k2=>$v2}
                                     <dd>
-                                        <a title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}">{$v2.name}</a>
+                                        <a title="{$v2.name}" target="_blank" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}">{$v2.name}</a>
                                     </dd>
                                 {/foreach}
                             {/if}
@@ -153,13 +153,13 @@
             <li><a title="首页" href="{:url('/pcshop')}">首页</a></li>
             {foreach $navCategory as $k=>$v}
                 {if $k <= 7}
-                    <li><a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a></li>
+                    <li><a title="{$v.name}" {if isset($cateId) && $cateId eq $v.id} style="background-color: #d7232a;" {/if} target="_blank" href="{:url('/pcshop/Category/all',['id'=>$v.id])}">{$v.name}</a></li>
                 {/if}
             {/foreach}
         </ul>
         <!--购物车数量提醒-->
         <div class="cart">
-            <a title="购物车" href="__PUBLIC__/pcshop/cart.html">购物车<i id="cartcount">{$Think.session.pcshopUser.cartCount|default=0}</i></a>
+            <a title="购物车" href="{:url('/pcshop/User/carts')}">购物车<i id="cartcount">{$cartsNumber|default=0}</i></a>
         </div>
     </div>
 </div>

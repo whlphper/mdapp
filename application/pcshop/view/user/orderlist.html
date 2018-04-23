@@ -1,0 +1,154 @@
+{include file="pcshop@public/header"}
+<body>
+{include file="pcshop@public/top"}
+<div class="wrap">
+    <div class="now-addr">
+        <i class="iconfont"></i>当前位置：
+        <a href="{:url('/pcshop')}">首页</a> &gt;
+        <a href="{:url('/pcshop/User/ucenter')}">会员中心</a>
+    </div>
+    {include file="pcshop@public/uleftnav"}
+    <div class="user-body">
+        <div class="order-list ui-border">
+            <div class="order-list-title">
+                <em>&nbsp;</em>最近买到的宝贝
+                <span>
+       <!--<a href="#">待评价<b>4</b></a>--></span>
+            </div>
+            <ul>
+                {foreach $data as $k=>$v}
+                <li id="{$v.id}">
+                    <span class="col-row">
+                        <a href="{:url('/pcshop/User/orderDetail',['id'=>$v.id])}">
+                        </a>
+                    </span>
+                    <h4 class="col-row">订单编号<p style="color:#777;">{$v.tradeNumber}</p></h4>
+                    <h3 class="col-row">
+                        <p>下单时间</p>
+                        <p style="color:#777;">{$v.created_at}>
+                            <a href="{:url('/pcshop/User/orderDetail',['id'=>$v.id])}"
+                               style="margin-left:50px;color:#009FDE;">订单详情</a>
+                        </p>
+                    </h3>
+                    <strong class="col-row">{$v.progress}</strong>
+                    <b class="col-row">
+                        {if $v.progress == '未支付'}
+                        <a href="#" onclick="cancelOrder({$v.id});return false;">取消订单</a>
+                        <a href="{:url('/pcshop/Order/checkoutOrder',['orderGoods'=>$v.product])}" target="_blank">去付款</a>
+                        {/if}
+                    </b>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+        {$page}
+        <div style="clear: both"></div>
+    </div>
+</div>
+<style>
+    #cend_phone {
+        position: fixed;
+        width: 440px;
+        background: #fff;
+        z-index: 9999;
+        top: 100px;
+        height: 315px;
+        box-shadow: 2px 2px 4px #444;
+        border: solid 1px #ccc;
+        z-index: 19901028;
+    }
+
+    #cend_phone h3 {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: solid 1px #eee;
+        color: #333;
+        margin-bottom: 20px;
+        background: #f4f4f4;
+    }
+
+    #cend_phone h3 b {
+        font-size: 16px;
+        font-family: microsoft yahei;
+        margin-left: 10px;
+        float: left;
+    }
+
+    #cend_phone p {
+        line-height: 25px;
+        margin: 10px 10px 0 10px;
+    }
+
+    #cend_phone p span {
+        color: #999;
+    }
+
+    #cend_phone p b {
+        display: inline-block;
+        width: 65px;
+        float: left;
+        font-weight: normal;
+        text-align: right;
+    }
+
+    #cend_phone p input {
+        height: 25px;
+        width: 150px;
+        margin-right: 10px;
+        border: solid 1px #ccc;
+        line-height: 25px \9;
+    }
+
+    #cend_phone p textarea {
+        width: 340px;
+        height: 120px;
+        border: solid 1px #ccc;
+        background: #f4f4f4;
+    }
+
+    #closesend {
+        float: right;
+        color: #ff5a00;
+        margin-right: 10px;
+    }
+
+    #cend_phone p img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    #cend_phone button {
+        margin-left: 75px;
+        width: 120px;
+        height: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    #tipBox {
+        z-index: 19911028;
+    }
+</style>
+{include file="pcshop@public/footer"}
+<script>
+    $(document).ready(function(){
+
+    });
+    function cancelOrder(id)
+    {
+        //询问框
+        layer.confirm('确认删除此订单吗', {
+            btn: ['确定','再等等'] //按钮
+        }, function(){
+            var url = '{:url("/pcshop/Order/deleteToTable")}';
+            var data = {};
+            data.id = id;
+            mdAjax($(this),url,data,function(res){
+                layer.msg(res.msg,{icon:1});
+                layer.closeAll('loading');
+            });
+        });
+    }
+</script>
+</body>
+</html>

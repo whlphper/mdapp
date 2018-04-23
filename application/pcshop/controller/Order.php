@@ -69,6 +69,7 @@ class Order extends Base
                 $orderData['userId'] = session("pcshopUserId");
                 $orderData['desc'] = $info;
                 $orderData['total'] = $total;
+                $orderData['tradeNumber'] = $this->merchantOrder();
                 $orderResult = model('Order')->saveData($orderData, 'Order', '用户下单', '999');
                 if ($orderResult['code'] == 0) {
                     throw new \think\Exception('下单失败' . $orderResult['msg']);
@@ -114,5 +115,20 @@ class Order extends Base
     public function checkOrder(Request $request)
     {
 
+    }
+
+    public function orderSuccess()
+    {
+        return view();
+    }
+
+    public function unionpayNoyify()
+    {
+
+    }
+
+    private function merchantOrder()
+    {
+        return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
     }
 }

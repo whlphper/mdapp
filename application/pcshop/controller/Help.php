@@ -13,5 +13,10 @@ use think\Db;
 
 class Help extends Base
 {
-
+    public function index($id=55)
+    {
+        // 获取当前问题详情
+        $detail = model('Catalog')->getColumn(['id'=>$id],'content');
+        return view('',['curId'=>$id,'detail'=>$detail['data'][0]]);
+    }
 }

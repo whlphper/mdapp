@@ -1,0 +1,166 @@
+{include file="pcshop@public/header"}
+<body>
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
+{include file="pcshop@public/top"}
+<div class="wrap">
+    <div class="now-addr">
+        <i class="iconfont"></i>当前位置：
+        <a href="{:url('/pcshop')}">首页</a> &gt;
+        <a href="{:url('/pcshop/User/ucenter')}">会员中心</a>
+    </div>
+    {include file="pcshop@public/uleftnav"}
+    <div class="user-body">
+        <div class="vipright">
+            <h3>个人信息管理</h3>
+            <div class="grziliao">
+                <form action="{:url('/pcshop/User/saveInfo')}" id="pcShopUserIntro">
+                    <table width="100%" border="0" cellspacing="5" cellpadding="0">
+                        <input type="hidden" name="id" value="{$data.id}">
+                        <tbody>
+                        <tr>
+                            <td align="right">用户名：</td>
+                            <td><input name="email" type="text" value="{$data.account_number}" readonly placeholder="填写您的用户名"
+                                       readonly="readonly" style="border: 1px solid #e3e3e3; color: #999"/> <!--<input
+                                    type="button" value="修改"
+                                    onclick="window.location.href = 'UpdateInfo.aspx?act2=name'"/>--></td>
+                        </tr>
+                        <!--<tr>
+                            <td align="right">邮箱：</td>
+                            <td><input name="email" type="text" value="{$data.email}" placeholder="填写邮箱，方便找回密码"
+                                       readonly="readonly" style="border: 1px solid #e3e3e3; color: #999"/> &lt;!&ndash;<input
+                                    type="button" value="修改"
+                                    onclick="window.location.href = 'UpdateInfo.aspx?act2=email'"/>&ndash;&gt;</td>
+                        </tr>-->
+                        <tr>
+                            <td class="ziliaoxxian" align="right">手机号：</td>
+                            <td class="ziliaoxxian"><input name="mobile" type="text" value="{$data.mobile}" readonly
+                                                           placeholder="填写手机号，方便找回密码" readonly="readonly"
+                                                           style="border: 1px solid #e3e3e3; color: #999"/> <!--<input
+                                    type="button" value="修改"
+                                    onclick="window.location.href = 'UpdateInfo.aspx?act2=phone'"/>--></td>
+                        </tr>
+                        <tr>
+                            <td align="right">姓名/昵称：</td>
+                            <td><label for="truename"></label> <input type="text" name="nick_name" id="nick_name"
+                                                                      value="{$data.nick_name}"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td align="left" style="padding:10px 0;"><input name="btnChange" type="button" id="btnSave"
+                                                                            value="保存"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div style="margin: 20px; color: #999;">
+                <p><strong style="color:#f76514;">友情提示：</strong></p>
+                <p>电子邮件非常重要！您的订单、到货通知等信息将发送到您登记的E-mail帐号中。</p>
+                <p>如果您丢失了密码，可以利用注册时所使用的E-mail获取账户密码。</p>
+                <p>如果您需要添加收货人信息，请从左侧选择</p>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+<style>
+    #cend_phone {
+        position: fixed;
+        width: 440px;
+        background: #fff;
+        z-index: 9999;
+        top: 100px;
+        height: 315px;
+        box-shadow: 2px 2px 4px #444;
+        border: solid 1px #ccc;
+        z-index: 19901028;
+    }
+
+    #cend_phone h3 {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: solid 1px #eee;
+        color: #333;
+        margin-bottom: 20px;
+        background: #f4f4f4;
+    }
+
+    #cend_phone h3 b {
+        font-size: 16px;
+        font-family: microsoft yahei;
+        margin-left: 10px;
+        float: left;
+    }
+
+    #cend_phone p {
+        line-height: 25px;
+        margin: 10px 10px 0 10px;
+    }
+
+    #cend_phone p span {
+        color: #999;
+    }
+
+    #cend_phone p b {
+        display: inline-block;
+        width: 65px;
+        float: left;
+        font-weight: normal;
+        text-align: right;
+    }
+
+    #cend_phone p input {
+        height: 25px;
+        width: 150px;
+        margin-right: 10px;
+        border: solid 1px #ccc;
+        line-height: 25px \9;
+    }
+
+    #cend_phone p textarea {
+        width: 340px;
+        height: 120px;
+        border: solid 1px #ccc;
+        background: #f4f4f4;
+    }
+
+    #closesend {
+        float: right;
+        color: #ff5a00;
+        margin-right: 10px;
+    }
+
+    #cend_phone p img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    #cend_phone button {
+        margin-left: 75px;
+        width: 120px;
+        height: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    #tipBox {
+        z-index: 19911028;
+    }
+</style>
+{include file="pcshop@public/footer"}
+<script>
+    $(document).ready(function(){
+        $("#btnSave").click(function(){
+            mdBtnEvent('pcShopUserIntro', function (res) {
+                layer.msg(res.msg, {icon: 1});
+                layer.closeAll();
+                location.reload();
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -104,7 +104,7 @@ class Login extends Controller {
 
     public function getAllMenu()
     {
-        $menus = model("Roles")::get(session("user.roles_id"))->toArray();
+        $menus = model("Roles")->get(session("user.roles_id"))->toArray();
         $menuIds = $menus['menu_ids'];
         $list = model('Menus')->getList($menuIds);
         if($menuId = $this->request->param('id')){

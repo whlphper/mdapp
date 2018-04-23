@@ -41,7 +41,7 @@ class Base extends Controller
                     return;
                 } else {
                     $this->roleId = session("user.roles_id");
-                    $menus = model("Roles")::get(session("user.roles_id"))->toArray();
+                    $menus = model("Roles")->get(session("user.roles_id"))->toArray();
                     $this->menuIds = $menus['menu_ids'];
                 }
                 break;
@@ -96,7 +96,7 @@ class Base extends Controller
                 // 控制下level
                 // 获取父级level
                 if (isset($data['pid']) && $data['pid'] > 0) {
-                    $parentLevel = model($this->modelName)::where(['id' => $data['pid'], 'deleted_at' => null])->column('level');
+                    $parentLevel = model($this->modelName)->where(['id' => $data['pid'], 'deleted_at' => null])->column('level');
                     $data['level'] = ++$parentLevel[0];
                 }
                 $result = model($this->modelName)->saveData($data, $this->modelName, $name, $code);
@@ -181,14 +181,14 @@ class Base extends Controller
         $navInfo = model('Category')->getCateNavTree();
         $this->assign('navCategory',$navInfo['navBlock']);
         $this->assign('category',$navInfo['cateTree']);
-        // 帮助信息 暂时不写了 start
-
-        // 帮助信息 暂时不写了 end
+        // 帮助信息 start
+        $cataLog = model('Catalog')->getDataList([],'a.id,a.parent_id,a.title');
+        $cataLog = list_to_tree($cataLog['data'],'id','parent_id','subLog');
+        $this->assign('cataLog',$cataLog);
+        // 帮助信息 end
 
         // 获取SEO信息 现在只是简单的做一下 start
-        $seo['title'] = '美橙互联-商城';
-        $seo['keyword'] = '美橙互联-商城|美橙';
-        $seo['description'] = '美橙互联-商城|美橙';
+        $seo = model('Config')->getConfigById(1);
         $this->assign('seo',$seo);
         // 获取SEO信息 end
 
@@ -201,6 +201,12 @@ class Base extends Controller
         $baseInfo['qq'] = '761243073';
         $this->assign('baseInfo',$baseInfo);
         // 获取基本信息 end
+
+        // 获取用户的购物车商品数量
+        if($userId = session('pcshopUserId')){
+            $cartsNumber = model('Carts')->where(['userId'=>$userId])->count('id');
+        }
+        $this->assign('cartsNumber',isset($cartsNumber) ? $cartsNumber : 0);
     }
 
     public function getColumn($model,$condition=[],$column)

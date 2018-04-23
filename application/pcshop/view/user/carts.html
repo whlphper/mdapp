@@ -1,0 +1,268 @@
+{include file="pcshop@public/header"}
+<body>
+{include file="pcshop@public/top"}
+<div class="wrap">
+    <div class="cart-list">
+        <div class="cart-list-hd">
+            全部商品
+            <b><em id="strAllHeadCount"></em></b>
+        </div>
+        <div class="cart-list-bd">
+            <div class="cart-title ui-border-tb clearfloat" style="width: 100%">
+                <span style="text-align: left; width: 10%;"> </span>
+                <span style="width: 40%;">商品名称</span>
+                <span style="width: 5%;margin-left: 2%;">单价</span>
+                <span style="width: 10%;">数量</span>
+                <span style="width: 10%;">总价</span>
+                <span style="margin-left: 15%;"><!--操作--></span>
+            </div>
+            <ul id="tableCart"></ul>
+        </div>
+        <div class="cart-shaixuan ui-border clearfloat" style="width: 100%;height: auto;">
+            <em><img src="__PUBLIC__/pcshop/images/arrow-bottom.png"/></em>
+            {foreach $data as $k=>$v}
+            <li class="cart-baosui ui-border-b c_goods" data-id="{$v.proId}" data-num="{$v.number}" data-memberprice="{$v.shopPrice}" data-price="{$v.shopPrice}">
+                <input style="float: left;width: 3%;" type="checkbox"  name="chk_list" data-baskid="{$v.proId}" class="col-sel" onclick="getCartsInfo($(this))"/>
+                <div class="col-row col-img" style="width: 5%;">
+                    <a href="{:url('/pcshop/Product/detail',['id'=>$v.proId])}"  target="_blank">
+                    <img src="__PUBLIC__{$v.albumPath}" style="width:120px;height: 80px;"/></a>
+                </div>
+                <div class="col-row col-name" style="width: 25%;">
+                    <a href="{:url('/pcshop/Product/detail',['id'=>$v.proId])}">{$v.name}</a>
+                </div>
+                <div class="col-row col-price" style="width: 5%;" >
+                    <b>{$v.shopPrice}</b>
+                    <p><s>{$v.marketPrice}元</s></p>
+                </div>
+                <div class="col-row col-num" style="width: 20%;" >
+                    <!--<div class="num-btn"><span class="cart-jian" onclick="cartN.updateCartNum(this,'-1',{$v.proId})">-</span>-->
+                        <input class="cart-input"  type="text" value="{$v.number}">
+                        <!--<span class="cart-add"  onclick="cartN.updateCartNum(this,'1',{$v.proId})">+</span>
+                    </div>-->
+                </div>
+                <div class="col-row col-money" style="width: 10%;" >
+                    <b>{$v.number * $v.marketPrice}</b>
+                    <p>省
+                        {$v.number * $v.marketPrice - $v.number * $v.shopPrice}元
+                    </p>
+                </div>
+                <div class="col-row col-del" onclick="delCar($(this),{$v.id})" style="width: 15%;cursor: pointer" title="删除此商品"><i>×</i></div>
+            </li>
+            {/foreach}
+        </div>
+        <div class="clear"></div>
+        <div class="cart-next ui-border clearfloat">
+            <div class="cart-next-right">
+                <strong>已选商品<b class="cart-num" id="strFootCount">0</b>件<i></i></strong><!--
+                <em style="margin-right: 0px; margin-left: 25px;">优惠<b><i class="cart-all"
+                                                                          id="totalcartYH"></i></b></em>-->
+                <em>合计<b>&yen; <i class="cart-all" id="str_allPrice">0.00</i></b></em>
+                <a href="javascript:goPay();" id="go-Confirm">去结算</a>
+            </div>
+            <span> <input type="checkbox"  class="col-sel-all"/>全选</span>
+            <a href="{:url('/pcshop/Category/all')}">继续购物</a>
+        </div>
+    </div>
+</div>
+<style>
+    #cend_phone {
+        position: fixed;
+        width: 440px;
+        background: #fff;
+        z-index: 9999;
+        top: 100px;
+        height: 315px;
+        box-shadow: 2px 2px 4px #444;
+        border: solid 1px #ccc;
+        z-index: 19901028;
+    }
+
+    #cend_phone h3 {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: solid 1px #eee;
+        color: #333;
+        margin-bottom: 20px;
+        background: #f4f4f4;
+    }
+
+    #cend_phone h3 b {
+        font-size: 16px;
+        font-family: microsoft yahei;
+        margin-left: 10px;
+        float: left;
+    }
+
+    #cend_phone p {
+        line-height: 25px;
+        margin: 10px 10px 0 10px;
+    }
+
+    #cend_phone p span {
+        color: #999;
+    }
+
+    #cend_phone p b {
+        display: inline-block;
+        width: 65px;
+        float: left;
+        font-weight: normal;
+        text-align: right;
+    }
+
+    #cend_phone p input {
+        height: 25px;
+        width: 150px;
+        margin-right: 10px;
+        border: solid 1px #ccc;
+        line-height: 25px \9;
+    }
+
+    #cend_phone p textarea {
+        width: 340px;
+        height: 120px;
+        border: solid 1px #ccc;
+        background: #f4f4f4;
+    }
+
+    #closesend {
+        float: right;
+        color: #ff5a00;
+        margin-right: 10px;
+    }
+
+    #cend_phone p img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    #cend_phone button {
+        margin-left: 75px;
+        width: 120px;
+        height: 30px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    #tipBox {
+        z-index: 19911028;
+    }
+</style>
+{include file="pcshop@public/footer"}
+<script>
+    $(document).ready(function(){
+        // 全选/反选
+        $(".col-sel-all").click(function(){
+            var number = 0;
+            var total = 0;
+            if($(this).is(':checked'))
+            {
+                $(".c_goods").each(function (i) {
+                    $(this).find("input[type='checkbox']").prop("checked",true);
+                    // 计算总数量以及价格
+                    var curNum = parseInt($(this).find('.cart-input').val());
+                    number = number + curNum;
+                    total = total + $(this).attr("data-price")*curNum.toFixed(2);
+                });
+                $("#str_allPrice").text(total);
+                $("#strFootCount").text(number);
+            }else{
+                $(".c_goods").each(function (i) {
+                    $(this).find("input[type='checkbox']").prop("checked",false);
+                });
+                // 将总数量和价格清空
+                $("#str_allPrice").text(0.00);
+                $("#strFootCount").text(0);
+            }
+        });
+    });
+
+    /**
+     * 计算购物车价格以及数量
+     * @param obj
+     */
+    function getCartsInfo(obj)
+    {
+        if(obj.is(':checked')){
+            obj.prop("checked",true);
+        }else{
+            obj.prop("checked",false);
+        }
+        var number = 0;
+        var total = 0;
+        $(".c_goods").each(function (i) {
+            if($(this).find("input[type='checkbox']").is(':checked')){
+                // 计算总数量以及价格
+                var curNum = parseInt($(this).find('.cart-input').val());
+                number = number + curNum;
+                total = total + $(this).attr("data-price")*curNum.toFixed(2);
+            }
+        });
+        $("#str_allPrice").text(total);
+        $("#strFootCount").text(number);
+    }
+
+    /**
+     * 删除购物车中商品
+     * @param obj
+     * @param id
+     */
+    function delCar(obj,id){
+        //询问框
+        layer.confirm('确定删除此商品吗', {
+            btn: ['确定','再等等'] //按钮
+        }, function(){
+            var url = '{:url("/pcshop/Carts/deleteToTable")}';
+            var data = {};
+            data.id = id;
+            mdAjax($(this),url,data,function(res){
+                obj.parent("div").parent('li').remove();
+                layer.msg(res.msg,{icon:1});
+                layer.closeAll('loading');
+            });
+        });
+    }
+
+    /**
+     * 获取购物车中购买的商品信息
+     * @returns {string}
+     */
+    function getPayCarts()
+    {
+        var number = 0;
+        var total = 0;
+        var info = '';
+        $(".c_goods").each(function (i) {
+            if($(this).find("input[type='checkbox']").is(':checked')){
+                // 计算总数量以及价格
+                var curNum = parseInt($(this).find('.cart-input').val());
+                var proId = $(this).attr("data-id");
+                number = number + curNum;
+                total = total + $(this).attr("data-price")*curNum.toFixed(2);
+                if(info == ''){
+                    info = info + proId + ':' + number;
+                }else{
+                    info = info + '|' + proId + ':' + number;
+                }
+            }
+        });
+        return info;
+    }
+
+    /**
+     * 跳转至支付页面
+     */
+    function goPay()
+    {
+        var info = getPayCarts();
+        if(info == ''){
+            layer.msg('请选择要结算的商品',{icon:0});
+            return;
+        }
+        var url = "{:url('/pcshop/Order/checkoutOrder')}";
+        url = url+'?orderGoods='+info;
+        location.href=url;
+    }
+</script>
+</body>
+</html>

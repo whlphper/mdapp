@@ -13,5 +13,15 @@ use think\Db;
 
 class Search extends Base
 {
-
+    public function byKeyword($keyword='')
+    {
+        // 记录用户搜索记录
+        $data['userId'] = session('pcshopUserId');
+        $data['searchName'] = $keyword;
+        $data['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+        if(!empty($keyword)){
+            model('SearchHistory')->insert($data);
+        }
+        $this->redirect(url('/pcshop/Category/all',['id'=>false,'keyWord'=>$keyword]));
+    }
 }

@@ -13,11 +13,6 @@
         <i class="iconfont"></i>当前位置：
         <a href="{:url('/pcshop')}">首页</a>
         <a href="#"></a> &gt; {$pageInfo.proInfo.name}
-        <span style="margin-right: 8px">在线咨询：<a href="javascript:void(0)" id="qqOline" onclick="window.open(" http:=""
-                                                b.qq.com=""
-                                                ebc.htm?new="0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=&quot;+document.location,&quot;_blank&quot;,&quot;height=544,"
-                                                width="644,toolbar=no,scrollbars=no,menubar=no,status=no&quot;);&quot;"><img
-                style="CURSOR: pointer" border="0" src="__PUBLIC__/pcshop/images/qq.gif"/>800058139</a></span>
     </div>
     <!--放大镜部分-->
     <div class="detail-top clearfloat">
@@ -201,27 +196,7 @@
     </div>
     <div class="list-left detail-left">
         <h1>全部商品分类</h1>
-        <ul class="list-menu">
-            <!--全部分类-->
-            {foreach $category as $k=>$v}
-            <li class="ui-border-lrb">
-                <a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}" target="_blank">{$v.name}</a><i>+</i>
-                {if isset($v.subCategory) && $v.subCategory}
-                {foreach $v.subCategory as $k2=>$v2}
-                <div class="list-menu-down ui-border-t">
-                    <dl class="clearfloat">
-                        <dt>
-                            <a title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}" target="_blank">{$v2.name}</a>
-                        </dt>
-                    </dl>
-                </div>
-                {/foreach}
-                {/if}
-            </li>
-            {/foreach}
-
-            <!--全部分类-->
-        </ul>
+        {include file="pcshop@public/allCate"}
         <!--商品详情页页面广告位-->
         <div class="list-ad">
             <div class="list-ad-hd">
@@ -580,11 +555,22 @@
 <script>
     $(document).ready(function(){
         $('.add-cart').click(function(){
-            // 检查是否登录 获取当前用户ID
-            var userId = checkShopUserLogin();
+            // 登录URI
+            var shopLoginUrl = $("#shopLoginUrl").val();
+            // 是否登录-用户ID
+            var shopUserId = $("#shopUserId").val();
+            if(!shopUserId || shopUserId == ''){
+                //询问框
+                layer.confirm('您尚未登录,请登录后操作', {
+                    btn: ['去登陆','再等等'] //按钮
+                }, function(){
+                    location.href=shopLoginUrl;
+                });
+                return;
+            }
             var url = '{:url("/pcshop/Carts/saveToTable")}';
             var data = {};
-            data.userId = userId;
+            data.userId = shopUserId;
             data.productId = $(this).attr('data-ppid');
             data.number = $("#buy_count").val();
             mdAjax($(this),url,data,function(res){
@@ -596,6 +582,19 @@
 
     function buyNow(url,productId)
     {
+        // 登录URI
+        var shopLoginUrl = $("#shopLoginUrl").val();
+        // 是否登录-用户ID
+        var shopUserId = $("#shopUserId").val();
+        if(!shopUserId || shopUserId == ''){
+            //询问框
+            layer.confirm('您尚未登录,请登录后操作', {
+                btn: ['去登陆','再等等'] //按钮
+            }, function(){
+                location.href=shopLoginUrl;
+            });
+            return;
+        }
         var number = $("#buy_count").val();
         if (isNaN(number)) {
             layer.msg('您输入的内容必须是数字', {icon: 5});

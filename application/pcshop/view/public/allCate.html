@@ -1,0 +1,21 @@
+<ul class="list-menu">
+    <!--全部分类-->
+    {foreach $category as $k=>$v}
+    <li class="ui-border-lrb">
+        <a title="{$v.name}" href="{:url('/pcshop/Category/all',['id'=>$v.id])}" target="_blank">{$v.name}</a><i>+</i>
+        {if isset($v.subCategory) && $v.subCategory}
+        {foreach $v.subCategory as $k2=>$v2}
+        <div class="list-menu-down ui-border-t">
+            <dl class="clearfloat">
+                <dt>
+                    <a title="{$v2.name}" href="{:url('/pcshop/Category/all',['id'=>$v2.id])}" target="_blank">{$v2.name}</a>
+                </dt>
+            </dl>
+        </div>
+        {/foreach}
+        {/if}
+    </li>
+    {/foreach}
+
+    <!--全部分类-->
+</ul>

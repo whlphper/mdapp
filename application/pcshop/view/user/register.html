@@ -4,7 +4,7 @@
     <div class="wrap-small" style="padding:20px 0 20px; border-bottom:1px solid #e7e7e7;">
         <span><img src="__PUBLIC__/pcshop/images/severs.jpg?v=1"/></span>
         <div class="logo" style="margin-top:10px;">
-            <a href="{:url('/pcshop')}"><img src="__PUBLIC__/pcshop/images/logo.png"/></a>
+            <a href="{:url('/pcshop')}"><img src="__PUBLIC__{$seo.siteLogo|default='pcshop/images/logo1.png'}"/></a>
         </div>
     </div>
 </div>
@@ -46,14 +46,8 @@
 </div>
 <div class="login-foot">
     <div class="wrap-small">
-        <p>订购热线：{$baseInfo.telephone|default='0008-55555555'}　邮箱：{$baseInfo.email|default='761243073@qq.com'}
-            ICP备：滇06002001号-6</p>
-        <p>地址：{$baseInfo.address|default='山东省青岛市'}<a style="color: #f9484e; padding: 0 5px;"
-                                                     href="__PUBLIC__/pcshop/http://j.map.baidu.com/t2wPK"
-                                                     target="_blank">[地图]</a> QQ在线咨询：<a
-                onclick="window.open(http://b.qq.com/webc.htm?new=0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=+document.location,_blank,height=544, width=644,toolbar=no,scrollbars=no,menubar=no,status=no);"
-                href="__PUBLIC__/pcshop/javascript:"><img style="margin-right: 8px"
-                                                          src="__PUBLIC__/pcshop/images/qq.gif"/>800058139</a></p>
+        <p>{$seo.siteCopryright|default='MengD'}</p>
+        <p>{$seo.siteRecord|default=''}</p>
     </div>
 </div>
 <div class="regtext-box  hide">

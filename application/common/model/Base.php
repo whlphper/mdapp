@@ -180,7 +180,7 @@ class Base extends Model
             if($result){
                 $request = \think\Request::instance();
                 $curAction = model("Menus")->getRow(['url'=>$request->path()],'id,url,name');
-                if($curAction){
+                if($curAction['code'] == 1){
                     $curAction = $curAction->toArray();
                     $logData['name'] = $curAction['name'];
                     $logData['code'] = $curAction['id'];
@@ -201,7 +201,7 @@ class Base extends Model
                 if(!empty($new)){
                     $logData['new'] = serialize($new);
                 }
-                $log = model("Log")::create($logData);
+                $log = model("Log")->create($logData);
                 if($log && !empty($log['id'])){
                     $return =  ['code'=>1,'msg'=>'日志记录成功','data'=>$log['id']];
                 }else{
@@ -288,7 +288,7 @@ class Base extends Model
                 }
             }
             $logData['data_id'] = $dataId;
-            $log = model("Log")::create($logData);
+            $log = model("Log")->create($logData);
             if(empty($log->data['id'])){
                 throw new \Exception('日志记录失败');
             }

@@ -1,0 +1,190 @@
+{include file="pcshop@public/header"}
+<body>
+{include file="pcshop@public/top"}
+<div class="wrap">
+    <div class="now-addr">
+        <i class="iconfont"></i>当前位置：
+        <a href="{:url('/pcshop')}">分类</a>
+
+    </div>
+    <div class="list-left">
+        <h1>全部商品分类</h1>
+        {include file="pcshop@public/allCate"}
+        <div class="list-ad" style="display: none">
+            <div class="list-ad-hd">
+                <ul>
+                    <li class="list-ad-on">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
+            </div>
+            <div class="list-ad-bd">
+                <ul>
+                    <li><a href="/ad?aid=8-7" targer="_blank"><img src="images/by_1.jpg"/></a></li>
+                    <li><a href="/ad?aid=8-8" targer="_blank"><img src="images/zb.jpg"/></a></li>
+                    <li><a href="/ad?aid=8-9" targer="_blank"><img src="images/zx.jpg"/></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="list-tab ui-border-lrb" style="display: none">
+            <ul class="list-tab-btn clearfloat">
+                <li class="ui-border-rb list-tab-on">热卖商品</li>
+                <li class="ui-border-b">热评商品</li>
+            </ul>
+            <div class="list-tab-view">
+                <ul style="display:block">
+                </ul>
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="list-right">
+        <div id="proCuxiao" class="list-hot ui-border clearfloat">
+            <h1 class="ui-border-b">商品列表<i class="iconfont"></i></h1>
+            <ul style="display: none;">
+                {foreach $data as $k=>$v}
+                <li><span><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank"><img
+                        data-url="__PUBLIC__/{$v.album}"
+                        src="__PUBLIC__/{$v.album}"/></a></span>
+                    <h3><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank">{$v.name}</a></h3><strong class="nowPrice" isy="1"
+                                                                                             ppid="543">&yen;
+                        {$v.shopPrice}</strong>
+                    <p><a href="/product/543.html">立即购买</a></p></li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="list-screening ui-border" style="display: none;">
+            <div class="list-screening-view clearfloat">
+                <span>品牌：</span>
+                <ul>
+                    <em>更多↓</em>
+                    <li class="list-screening-on"><a href="/list/2-0-0-0-0-0-0-0-0-0-1.html">全部</a></li>
+                    <li><a href="/list/2-179-0-0-0-0-0-0-0-0-1.html">荷兰牛栏</a></li>
+                </ul>
+            </div>
+            <div class="list-screening-view clearfloat">
+                <span>奶粉来源：</span>
+                <ul>
+                    <em>更多↓</em>
+                    <li class="list-screening-on"><a href="/list/2-0-0-0-0-0-0-0-0-0-1.html">全部</a></li>
+                    <li><a href="/list/2-0-0-0-0-0-1933-0-0-0-1.html">经销商</a></li>
+                    <li><a href="/list/2-0-0-0-0-0-1934-0-0-0-1.html">跨境购</a></li>
+                    <li><a href="/list/2-0-0-0-0-0-1935-0-0-0-1.html">保税仓</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="list-sort ui-border" style="display: none;">
+            排序：
+            <strong>
+                <span class="list-sort-on"><a href="/list/2-0-0-0-0-0-0-0-0-0-1.html" title="销量从高到低">销量</a></span>
+                <span><a href="/list/2-0-0-0-0-0-0-1-0-0-1.html">价格</a></span>
+                <span><a href="/list/2-0-0-0-0-0-0-2-0-0-1.html">上架时间</a></span>
+                <em>共<b>181</b>件商品</em>
+            </strong>
+        </div>
+        <div class="list-shop clearfloat">
+            <ul>
+                {foreach $data as $k=>$v}
+                <li><strong onclick="like(438,this)"><i class="iconfont"></i>收藏</strong> <span><a
+                        href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank"><img width="180" height="180"
+                                                                      data-url="__PUBLIC__/{$v.album}"
+                                                                      src="__PUBLIC__/{$v.album}"
+                                                                      alt="{$v.name}"/></a></span>
+                    <h1><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" title="{$v.name}" target="_blank">{$v.name}</a>
+                    </h1>
+                    <h2>&yen;<b class="nowPrice" tofixed="1" ppid="438">{$v.shopPrice}</b>
+                        <s>
+                            &yen;{$v.marketPrice}
+                        </s><em><a href="{:url('/pcshop/Product/detail',['id'=>$v.id])}" target="_blank">立即购买</a></em></h2></li>
+                {/foreach}
+            </ul>
+        </div>
+        {$page}
+    </div>
+</div>
+<style>#cend_phone {
+    position: fixed;
+    width: 440px;
+    background: #fff;
+    z-index: 9999;
+    top: 100px;
+    height: 315px;
+    box-shadow: 2px 2px 4px #444;
+    border: solid 1px #ccc;
+    z-index: 19901028;
+}
+
+#cend_phone h3 {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: solid 1px #eee;
+    color: #333;
+    margin-bottom: 20px;
+    background: #f4f4f4;
+}
+
+#cend_phone h3 b {
+    font-size: 16px;
+    font-family: microsoft yahei;
+    margin-left: 10px;
+    float: left;
+}
+
+#cend_phone p {
+    line-height: 25px;
+    margin: 10px 10px 0 10px;
+}
+
+#cend_phone p span {
+    color: #999;
+}
+
+#cend_phone p b {
+    display: inline-block;
+    width: 65px;
+    float: left;
+    font-weight: normal;
+    text-align: right;
+}
+
+#cend_phone p input {
+    height: 25px;
+    width: 150px;
+    margin-right: 10px;
+    border: solid 1px #ccc;
+    line-height: 25px \9;
+}
+
+#cend_phone p textarea {
+    width: 340px;
+    height: 120px;
+    border: solid 1px #ccc;
+    background: #f4f4f4;
+}
+
+#closesend {
+    float: right;
+    color: #ff5a00;
+    margin-right: 10px;
+}
+
+#cend_phone p img {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#cend_phone button {
+    margin-left: 75px;
+    width: 120px;
+    height: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#tipBox {
+    z-index: 19911028;
+}</style>
+{include file="pcshop@public/footer"}
+</body>
+</html>

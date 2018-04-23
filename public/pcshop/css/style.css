@@ -1091,7 +1091,7 @@ a:hover { color: #f9484e; transition: color .3s; -moz-transition: color .3s; -we
 .cart-shaixuan .col-row li img { width: 100%; height: 100%; }
 .cart-shaixuan .col-row li del { position: absolute; text-align: center; width: 80px; line-height: 23px; background: url(../images/alpha-black.png); cursor: pointer; color: #fff; display: none; }
 .cart-shaixuan .col-row li del:hover { color: #fff000; }
-.cart-shaixuan .col-row span { padding: 15px 10px; width: 97px; height: 90px; float: right; background: #FFFDF6; font-size: 13px; }
+.cart-shaixuan .col-row span { padding: 15px 10px; width: 97px;/* height: 90px;*/ /*float: right;*/ background: #FFFDF6; font-size: 13px; }
 .cart-shaixuan .col-row span i { position: absolute; margin: 40px 0 0 -11px; }
 .cart-shaixuan .col-row span h3 { text-align: right; }
 .cart-shaixuan .col-row span h4 { margin-top: 18px; text-align: right; font-size: 20px; font-weight: bold; }

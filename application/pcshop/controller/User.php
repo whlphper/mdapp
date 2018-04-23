@@ -106,4 +106,39 @@ class User extends Base
         }
     }
 
+    public function carts()
+    {
+        $data = model('Carts')->getPcShopCarts(['userId'=>session('pcshopUserId')]);
+        return view('',['data'=>$data['data']]);
+    }
+
+    public function orderList()
+    {
+        $object  = model('Order')->alias('a')->where(['userId'=>session('pcshopUserId'),'deleted_at'=>null])->field('a.id,a.product,a.tradeNumber,a.created_at,a.total,a.progress,a.status')->order('a.created_at desc')->join([])->paginate(1,false,[
+            'type'     => 'Pcshoppage',
+            'var_page' => 'p',
+        ]);
+        $return['data'] = $object->toArray();
+        $return['page'] = $object->render();
+        return view('',['data'=>$return['data']['data'],'page'=>$return['page']]);
+    }
+
+    public function intro()
+    {
+        $info = model('User')->getRow(['id'=>session('pcshopUserId')],'a.id,a.account_number,a.nick_name,a.mobile,a.email');
+        return view('',['data'=>$info['data']]);
+    }
+
+    public function saveInfo(Request $request)
+    {
+        $data = $request->only(['id','nick_name']);
+        $result = model('User')->save(['nick_name'=>$data['nick_name']],['id'=>$data['id']]);
+        if($result){
+            $row = model('User')->get($data['id']);
+            session('pcshopUser',$row);
+            return ['code'=>1,'msg'=>'信息保存成功'];
+        }else{
+            return ['code'=>0,'msg'=>'没有可以更改的数据'];
+        }
+    }
 }

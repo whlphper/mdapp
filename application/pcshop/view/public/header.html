@@ -8,13 +8,13 @@
     <meta name="format-detection" content="telephone=no" />
     <title>
         {if isset($seo)}
-        {$seo.title}
+        {$seo.siteName}
         {else}
         B2B2C商城
         {/if}
     </title>
-    <meta name="description" content="{if isset($seo)}{$seo.description|default='B2B2C商城'}{else}B2B2C商城{/if}" />
-    <meta name="Keywords" content="{if isset($seo)}{$seo.keyword|default='B2B2C商城'}{else}B2B2C商城{/if}" />
+    <meta name="description" content="{if isset($seo)}{$seo.siteDescription|default='B2B2C商城'}{else}B2B2C商城{/if}" />
+    <meta name="Keywords" content="{if isset($seo)}{$seo.siteKeyword|default='B2B2C商城'}{else}B2B2C商城{/if}" />
     <meta name="mobile-agent" content="format=html5;url=http://m.ch999.com/list/2-0-0-0-0-0-0-0-0-0-1.html" />
     <link rel="icon" href="__PUBLIC__/pcshop/images/favicon.ico" type="image/x-icon" />
     <link href="__PUBLIC__/pcshop/css/style.css?debug=13" rel="stylesheet" />

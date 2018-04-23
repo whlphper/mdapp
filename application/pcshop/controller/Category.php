@@ -13,14 +13,18 @@ use think\Db;
 
 class Category extends Base
 {
+
     /**
      * 获取某个分类下所有商品
      * @param int $id
+     * @param bool $keyWord
      * @return \think\response\View
      */
-    public function all($id=0)
+    public function all($id=1,$keyWord=false)
     {
-        return view();
+        $info = model('Category')->getCategoryProduct(true,$id,$keyWord);
+        // 暂时先获取此分类下的商品
+        return view('',['cateId'=>$id,'total'=>$info['data']['total'],'data'=>$info['data']['data'],'page'=>$info['page']]);
     }
 
 }
