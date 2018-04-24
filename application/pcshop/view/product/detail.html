@@ -247,17 +247,13 @@
     <div class="detail-right">
         <div class="detail-right-tab">
             <div class="detail-info-kefu">
-                <span style="margin-right: 8px">在线咨询：<a href="javascript:void(0)" id="qqOline" onclick="window.open("
-                                                        http:="" b.qq.com=""
-                                                        ebc.htm?new="0&amp;sid=800058139&amp;eid=2188z8p8p8p8R8z8q8P80&amp;o=www.mama999.com&amp;q=7&amp;ref=&quot;+document.location,&quot;_blank&quot;,&quot;height=544,"
-                                                        width="644,toolbar=no,scrollbars=no,menubar=no,status=no&quot;);&quot;"><img
-                        style="CURSOR: pointer" border="0" src="__PUBLIC__/pcshop/images/qq.gif"/>800058139</a></span>
+
             </div>
             <ul class="detail-right-tab-btn ui-border clearfloat">
                 <li class="detail-right-tab-on ui-border-r" onclick="go_top($('.detail-left').offset().top - 45);">
                     商品详情
                 </li>
-                <li class="ui-border-r" onclick="go_top($('#detail-pingjia').offset().top - 45)">商品评价</li>
+                <!--<li class="ui-border-r" onclick="go_top($('#detail-pingjia').offset().top - 45)">商品评价</li>-->
             </ul>
         </div>
         <div class="detail-tab-view">
@@ -298,7 +294,7 @@
             <input type="hidden" id="comPageSize" value="20"/>
             <input type="hidden" id="revPageSize" value="8"/>
             <input type="hidden" id="imgBasePath" value="http://imgma.ch999img.com/"/>
-            <div id="divPjContainer">
+            <div id="divPjContainer" style="display: none;">
                 <h2 class="pjnzx_tit"><a name="pjmao"></a>商品评价</h2>
                 <!--<div class="pinglun_01" id="pingjiamao">
                     <div class="ping01_box">
@@ -414,7 +410,7 @@
             </div>
         </div>
 
-        <div class="detail-comment clearfloat" id="detail-comment">
+        <div class="detail-comment clearfloat" id="detail-comment" style="display: none;">
             <div class="detail-comment clearfloat" id="thistop5">
                 <!--商品咨询区域-->
                 <div id="comContent">

@@ -82,7 +82,7 @@ class Unionpay{
             $def_url .= '	<input type = "hidden" name = "dealReturn"			value = "'.$dealReturn.'">';
             //支付完成后将结果通知到此url
             $def_url .= '	<input type = "hidden" name = "dealNotify"			value = "'.$dealNotify.'">';
-            $def_url .= '	<input type=submit value="立即付款">';
+            $def_url .= '	<input style="padding: 5px;width: 100%;background-color: darkseagreen;cursor: pointer;" type=submit value="立即付款">';
             $def_url .= '</form>';
             return $def_url;
         }catch(\Exception $e){

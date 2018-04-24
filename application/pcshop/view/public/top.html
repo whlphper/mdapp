@@ -159,7 +159,9 @@
         </ul>
         <!--购物车数量提醒-->
         <div class="cart">
+            {if $Think.session.pcshopUserId}
             <a title="购物车" href="{:url('/pcshop/User/carts')}">购物车<i id="cartcount">{$cartsNumber|default=0}</i></a>
+            {/if}
         </div>
     </div>
 </div>

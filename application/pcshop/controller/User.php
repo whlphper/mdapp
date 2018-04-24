@@ -50,7 +50,7 @@ class User extends Base
                 throw new \think\Exception('系统出错'.$result['msg']);
             }
             if(empty($result['data'])){
-                $code = 1;
+                $code = 0;
                 throw new \think\Exception('账号不存在');
             }
             if(md5($param['password']) != $result['data'][0]['password']){
