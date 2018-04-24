@@ -22,4 +22,54 @@ class Order extends Base{
         $status = [0=>'未支付',1=>'代发货',2=>'已经发货',3=>'订单完成','4'=>'取消订单'];
         return $status[$value];
     }
+
+
+    /**
+     * 支付成功后的回调       修改订单支付状态以及物流状态- 以及商品库存的减少以及商品销量的增加
+     * @param $tradeNumber  订单号
+     * @param int $progress 订单发货状态
+     * @return array|null|static
+     * @throws \think\exception\PDOException
+     */
+    public function orderNoytify($tradeNumber,$progress=1)
+    {
+        $this->startTrans();
+        try{
+            $curOrder = $this->getRow(['tradeNumber'=>$tradeNumber],'a.id,a.product,a.desc,a.total,a.created_at,a.tradeNumber');
+            if($curOrder['code'] == 0){
+                throw new \Exception('订单号不存在'.$curOrder['msg']);
+            }
+            $data['id'] = $curOrder['data']['id'];
+            $data['status'] = 1;
+            $data['progress'] = $progress;
+            $orderRes = $this->saveData($data,'Order','订单支付成功','666');
+            if($orderRes['code'] == 0){
+                throw new \Exception('订单状态修改失败'.$orderRes['msg']);
+            }
+            // 获取买到的商品信息
+            $proList = explode('|',$curOrder['data']['product']);
+            foreach($proList as $k=>$v){
+                $idNumber = explode(':',$v);
+                // 商品ID
+                $proId = $idNumber[0];
+                // 商品数量
+                $proNum= $idNumber[1];
+                // 减少库存  增加销量
+                $incSales = model('Product')->where('id',$proId)->setInc('sales',$proNum);
+                if(!$incSales){
+                    throw new \Exception('商品销量+失败');
+                }
+                $decStock = model('Product')->where('id',$proId)->setDec('stock',$proNum);
+                if(!$decStock){
+                    throw new \Exception('商品库存-失败');
+                }
+            }
+            $this->commit();
+            return $curOrder;
+        }catch(\Exception $e){
+            $this->rollback();
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
 }

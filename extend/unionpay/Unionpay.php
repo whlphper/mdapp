@@ -9,6 +9,7 @@
 namespace unionpay;
 use think\Db;
 use think\Exception;
+use think\Request;
 /**
  * 对接支付接口类
  * Class Unionpay
@@ -39,7 +40,7 @@ class Unionpay{
     }
 
     function __construct(){
-        $this->ecpay();
+        //$this->ecpay();
     }
 
     /**
@@ -48,24 +49,25 @@ class Unionpay{
      * @param   array   $payment    支付方式信息
      * @return string
      */
-    public function get_code($order, $payment){
+    public function get_code($order, $payment=[]){
         try{
+            $domain = Request::instance()->domain();
             //商户代码（merId）
             $merId = $this->merId;
             //商户系统生成的订单号
-            $dealOrder = $order['readeNumber'];
+            $dealOrder = $order['tradeNumber'];
             //支付金额，保留两个小数位
-            $dealFee	= number_format($order['total'],2);;
+            $dealFee	= number_format(0.01,2);;
             //订单支付结果同步返回地址  也就是对用户呈现的界面
-            $dealReturn = url('pcshop/Order/orderSuccess');
+            $dealReturn = $domain.url('pcshop/Order/orderSuccess');
             //订单支付结果异步返回地址  也就是异步修改订单状态的接口
-            $dealNotify = url('pcshop/Order/unionpayNoyify');
+            $dealNotify = $domain.url('pcshop/Order/unionpayNoyify');
             //生成签名
             $dealSignure=sha1($merId.$dealOrder.$dealFee.$dealReturn.$this->key);
             //获得表单传过来的数据
             $def_url  = '<br />';
             //测试地址
-            $def_url  = '<form method="post" action="http://user.sdecpay.com/paygate.html"  >';
+            $def_url  = '<form method="post" action="http://user.sdecpay.com/paygate.html"  target="_blank" >';
             //商户编号
             $def_url .= '	<input type = "hidden" name = "merId"	value = "'.$merId.'">';
             //商品名称

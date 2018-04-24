@@ -173,6 +173,9 @@ class Base extends Model
     {
         Db::startTrans();
         try{
+            if(empty($idStr)){
+                throw new \Exception('删除的数据为空');
+            }
             $condition['id'] = ['in',$idStr];
             $result = self::save(['deleted_at'=>date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']),'updated_at'=>date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME'])],function($query)use($condition){
                 $query->where($condition);
@@ -208,7 +211,7 @@ class Base extends Model
                     throw new \Exception('日志记录失败');
                 }
             }else{
-                throw new \think\Exception('数据删除失败');
+                $return =  ['code'=>1,'msg'=>'没有可以删除的数据'];
             }
             Db::commit();
             return $return;

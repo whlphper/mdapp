@@ -10,6 +10,7 @@ namespace app\pcshop\controller;
 use app\common\controller\Base;
 use think\Request;
 use think\Db;
+use think\Exception;
 
 class Order extends Base
 {
@@ -35,7 +36,7 @@ class Order extends Base
         try{
             $flag = true;
             $orderData['product'] = $orderGoods;
-            $orderExists = model('Order')->getRow(['userId'=>session("pcshopUserId"),'product'=>$orderGoods],'id');
+            $orderExists = model('Order')->getRow(['userId'=>session("pcshopUserId"),'product'=>$orderGoods,'status'=>0],'id');
             if($orderExists['code'] == 1){
                 $flag = false;
             }
@@ -45,6 +46,7 @@ class Order extends Base
             $total = 0;
             $info = '';
             $orderDetail = [];
+            $proIdArr = [];
             foreach($orderGoods as $k=>$v){
                 $proNum = explode(":",$v);
                 // 订单中商品信息  将其返回页面供查看
@@ -55,6 +57,7 @@ class Order extends Base
                 $total += $proNum[1]*$cartGoods['shopPrice'];
                 $allNumber += $proNum[1];
                 $multyGoods[] = $cartGoods;
+                $proIdArr[] = $proNum[0];
                 if($flag){
                     // 订单详情数据
                     $curDetail['productId'] = $cartGoods['id'];
@@ -62,9 +65,12 @@ class Order extends Base
                     $curDetail['shopPrice'] = $cartGoods['shopPrice'];
                     $curDetail['marketPrice'] = $cartGoods['marketPrice'];
                     $orderDetail[] = $curDetail;
+
                 }
             }
             if($flag) {
+                // 把用户的购物车删除下
+                $cartRes = model('Carts')->save(['deleted_at'=>date('Y-m-d H:i:s',time())],['userId'=>session('pcshopUserId'),'productId'=>['in',$proIdArr]]);
                 // 写入订单信息
                 $orderData['userId'] = session("pcshopUserId");
                 $orderData['desc'] = $info;
@@ -117,14 +123,46 @@ class Order extends Base
 
     }
 
+    // 同步回调
     public function orderSuccess()
     {
-        return view();
+        try{
+            $response = $this->request->request();
+            $tradeNumber = $response['dealOrder'];
+            $status = $response['dealState'];
+            if($status != 'SUCCESS'){
+                throw new \Exception('支付失败,请重试');
+            }
+            // 修改订单状态
+            $result = model('Order')->orderNoytify($tradeNumber,1);
+            if($result['code'] == 0){
+                throw new \Exception('订单状态修改失败'.$result['msg']);
+            }
+            return view('',['data'=>$result['data']]);
+        }catch(\Exception $e){
+            mdLog($e);
+            echo $e->getMessage();
+        }
     }
 
+    // 异步回调
     public function unionpayNoyify()
     {
-
+        try{
+            $response = $this->request->request();
+            $tradeNumber = $response['dealOrder'];
+            $status = $response['dealState'];
+            if($status != 'SUCCESS'){
+                throw new \Exception('支付失败,请重试');
+            }
+            // 修改订单状态
+            $result = model('Order')->orderNoytify($tradeNumber,1);
+            if($result['code'] == 0){
+                throw new \Exception('订单状态修改失败'.$result['msg']);
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+        }
     }
 
     private function merchantOrder()

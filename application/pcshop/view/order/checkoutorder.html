@@ -100,6 +100,7 @@
             <ul>
                 <li class="ui-border cur" onclick="cartStep.setPayId(this,1)" data-id="1">支付宝</li>
                 <li class="ui-border " onclick="cartStep.setPayId(this,2)" data-id="3">微信</li>
+                <li class="ui-border " onclick="cartStep.setPayId(this,3)" data-id="3">银联支付</li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -123,7 +124,7 @@
                 </div>
                 <div class="col-row col-price">{$v.shopPrice}<p><s>{$v.marketPrice}元</s></p></div>
                 <div class="col-row col-num">{$v.number}</div>
-                <div class="col-row col-money">{$v.number * $v.marketPrice}<p>省
+                <div class="col-row col-money">{$v.number * $v.shopPrice}<p>省
                     {$v.number * $v.marketPrice - $v.number * $v.shopPrice}元</p>
                 </div>
             </li>
@@ -342,8 +343,8 @@
 <script>
     $(document).ready(function () {
         session('curOrderPayType', 1);
-        {if empty($address)}
-        session('curOrderAddressId', false);
+        {if count($address) == 0}
+        session('curOrderAddressId', 'noaddrress');
         {else}
         session('curOrderAddressId', {$address[0]['id']});
         {/if}}
@@ -421,20 +422,48 @@
     function submitOrder(obj) {
         var pay = session('curOrderPayType');
         var address = session('curOrderAddressId');
-        if (!address) {
+        if (address == 'noaddrress') {
             layer.msg('请选择收货地址', {icon: 0});
             return;
         }
         // 先完善订单信息
         var data = {};
+        if(!$("#orderId").val()){
+            layer.msg('订单失效,请重新支付', {icon: 0});
+            location.reload();
+            return;
+        }
+
         data.id = $("#orderId").val();
         data.payType = pay;
         data.addressId = address;
         var url = "{:url('/pcshop/Order/saveToTable')}";
         mdAjax(false,url,data,function (res) {
-            layer.msg(res.msg, {icon: 1});
+            //layer.msg(res.msg, {icon: 1});
             layer.closeAll('loading');
         })
+        if(pay == 3)
+        {
+            layer.msg('银联支付');
+            // 这里请求银联支付需要的表单
+            var payUrl = "{:url('pcshop/Pay/unionPay')}";
+            var pdata = {};
+            pdata.orderId = $("#orderId").val();
+            mdAjax(false,payUrl,pdata,function (res) {
+                //layer.msg(res.msg, {icon: 1});
+                layer.closeAll('loading');
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    shadeClose: true, //开启遮罩关闭
+                    area: '516px', //宽高
+                    title: '订单支付-银联支付',
+                    content: res.data,
+                });
+            })
+            return
+        }
+
 
         var qrcode = '<img src="__PUBLIC__/pcshop/images/wxpay.jpg" class="">';
         layer.open({
