@@ -56,11 +56,13 @@ class Pay extends Base
             {
                 throw new \Exception($notifyRes['msg']);
             }
+            file_put_contents("notifyRes.txt",json_encode($notifyRes));
             $tradeNumber = $notifyRes['data'];
             // 订单金额
             $dealFee = $notifyRes['total'];
             // 判断订单是否已经支付成功了
             $sucOrder = model('Order')->getRow(['tradeNumber'=>$tradeNumber],'a.id,a.tradeNumber,a.status,a.total');
+            file_put_contents("orderInfo.txt",json_encode($sucOrder));
             if($sucOrder['code'] == 0){
                 throw new \Exception('订单不存在');
             }
@@ -68,7 +70,9 @@ class Pay extends Base
                 throw new \Exception('订单金额不一致');
             }
             if($sucOrder['data']['status'] == 1){
-                throw new \Exception('订单已经支付成功,请勿重复操作');
+                echo 'notify_success';
+                file_put_contents("unipayAlreadySuccess.txt",'已经修改了状态');
+                exit;
             }
             // 修改订单状态
             $result = model('Order')->orderNoytify($tradeNumber,1);
@@ -76,6 +80,7 @@ class Pay extends Base
                 throw new \Exception('订单状态修改失败'.$result['msg']);
             }
             echo 'notify_success';
+            file_put_contents("unipaySuccess.txt",json_encode($result));
             exit;
         }catch(\Exception $e){
             mdLog($e);

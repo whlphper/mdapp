@@ -34,7 +34,7 @@
                     <b class="col-row">
                         {if $v.progress == '未支付'}
                         <a href="#" onclick="cancelOrder({$v.id});return false;">取消订单</a>
-                        <a href="{:url('/pcshop/Order/checkoutOrder',['orderGoods'=>$v.product])}" target="_blank">去付款</a>
+                        <a href="{:url('/pcshop/Order/checkoutOrder',['orderGoods'=>$v.product,'orderId'=>$v.id])}" target="_blank">去付款</a>
                         {/if}
                     </b>
                 </li>

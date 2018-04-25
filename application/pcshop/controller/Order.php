@@ -26,19 +26,24 @@ class Order extends Base
         $this->model = model($this->modelName);
     }
 
+
     /**
      * 生成订单信息
      * @param $orderGoods
+     * @param bool $orderId
      * @return \think\response\Json|\think\response\View
      */
-    public function checkoutOrder($orderGoods)
+    public function checkoutOrder($orderGoods,$orderId=false)
     {
         Db::startTrans();
         try{
             $flag = true;
+            if(empty(session("pcshopUserId"))){
+                $this->redirect(url('/pcshop/User/login'));
+            }
             $orderData['product'] = $orderGoods;
-            $orderExists = model('Order')->getRow(['userId'=>session("pcshopUserId"),'product'=>$orderGoods,'status'=>0],'id');
-            if($orderExists['code'] == 1){
+            // 当支付未支付订单的时候
+            if($orderId){
                 $flag = false;
             }
             // 将需要购买的商品列出
@@ -92,9 +97,8 @@ class Order extends Base
                     throw new \think\Exception('下单失败,订单详情记录出错');
                 }
             }else{
-                $orderId = $orderExists['data']['id'];
+                $orderId = $orderId;
             }
-
             // 获取当前用户所有收货地址
             $userAddress = model('Address')->getDataList(['userId'=>session('pcshopUserId')],'a.id,a.address,a.userId,a.region,a.mobile,a.reciver,a.isDefault',[],'a.isDefault desc,a.created_at desc');
             Db::commit();

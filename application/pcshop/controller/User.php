@@ -114,7 +114,7 @@ class User extends Base
 
     public function orderList()
     {
-        $object  = model('Order')->alias('a')->where(['userId'=>session('pcshopUserId'),'deleted_at'=>null])->field('a.id,a.product,a.tradeNumber,a.created_at,a.total,a.progress,a.status')->order('a.created_at desc')->join([])->paginate(1,false,[
+        $object  = model('Order')->alias('a')->where(['userId'=>session('pcshopUserId'),'deleted_at'=>null])->field('a.id,a.product,a.tradeNumber,a.created_at,a.total,a.progress,a.status')->order('a.created_at desc')->join([])->paginate(5,false,[
             'type'     => 'Pcshoppage',
             'var_page' => 'p',
         ]);

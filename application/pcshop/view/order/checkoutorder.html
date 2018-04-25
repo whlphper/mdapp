@@ -344,12 +344,14 @@
     $(document).ready(function () {
         session('curOrderPayType', 3);
         $("#unionpay").click();
+        session('curOrderId',"{$orderId|default=0}");
         {if count($address) == 0}
         session('curOrderAddressId', 'noaddrress');
         {else}
         session('curOrderAddressId', {$address[0]['id']});
         {/if}}
     );
+
     function editToAddr(obj, id) {
         var url = '{:url("/pcshop/Address/getRowData")}';
         var regionUrl = '{:url("/pcshop/Order/addrRegion")}';
