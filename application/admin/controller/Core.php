@@ -32,7 +32,7 @@ class Core extends Base
     {
         $id = $request->only('id');
         if (!empty($id)) {
-            $result = model('Menus')::get($id);
+            $result = model('Menus')->get($id);
             return ['code'=>1,'msg'=>'','data'=>$result];
         }
         return ['code'=>0,'msg'=>'菜单数据不存在'];
@@ -59,7 +59,7 @@ class Core extends Base
                 // 控制下level
                 // 获取父级level
                 if($data['pid'] > 0){
-                    $parentLevel = model("Menus")::where(['id'=>$data['pid'],'deleted_at'=>null])->column('level');
+                    $parentLevel = model("Menus")->where(['id'=>$data['pid'],'deleted_at'=>null])->column('level');
                     $data['level'] = ++$parentLevel[0];
                 }
                 $result = model('Menus')->saveData($data,'Menus',$name, $code);
@@ -116,7 +116,7 @@ class Core extends Base
     {
         $id = $request->only('id');
         if (!empty($id)) {
-            $result = model('Roles')::get($id);
+            $result = model('Roles')->get($id);
             return ['code'=>1,'msg'=>'','data'=>$result];
         }
         return ['code'=>0,'msg'=>'用户组数据不存在'];
