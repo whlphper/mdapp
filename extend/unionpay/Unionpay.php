@@ -51,7 +51,7 @@ class Unionpay{
             //获得表单传过来的数据
             $def_url  = '<br />';
             //测试地址
-            $def_url  = '<form method="post" action="http://user.sdecpay.com/paygate.html"  target="_blank" >';
+            $def_url  = '<form method="post" action="http://user.sdecpay.com/paygate.html"  >';
             //商户编号
             $def_url .= '	<input type = "hidden" name = "merId"	value = "'.$merId.'">';
             //商品名称
