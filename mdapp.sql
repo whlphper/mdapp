@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-23 18:00:06
+Date: 2018-04-25 17:16:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `md_address` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_address
@@ -41,6 +41,7 @@ INSERT INTO `md_address` VALUES ('1', '1', '河北省石家庄市', '测试1', '
 INSERT INTO `md_address` VALUES ('2', '1', '山东省青岛市崂山区', '收货人2222', '15369197307', '收货人2收货人2收货人2', '0', '2018-04-20 15:04:36', null, '2018-04-20 15:04:36', null);
 INSERT INTO `md_address` VALUES ('4', '1', '山东省济南市', '第三个收货人', '15896968548', '的撒旦撒旦撒', '0', '2018-04-20 15:10:18', null, null, null);
 INSERT INTO `md_address` VALUES ('5', '3', '山东青岛市北', '加把劲', '15020081045', '辽宁路', '1', '2018-04-23 13:55:23', null, null, null);
+INSERT INTO `md_address` VALUES ('6', '4', '山东省青岛市崂山区', '测试一', '13555555555', '市北区', '0', '2018-04-24 11:25:07', null, null, null);
 
 -- ----------------------------
 -- Table structure for md_advertisement
@@ -115,18 +116,13 @@ CREATE TABLE `md_carts` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_carts
 -- ----------------------------
-INSERT INTO `md_carts` VALUES ('1', '1', '113', '1', '2018-04-20 11:08:17', null, null, null);
-INSERT INTO `md_carts` VALUES ('3', '2', '54', '1', '2018-04-20 12:36:26', null, null, null);
-INSERT INTO `md_carts` VALUES ('4', '1', '54', '1', '2018-04-20 12:39:12', null, null, null);
-INSERT INTO `md_carts` VALUES ('5', '1', '109', '1', '2018-04-20 17:22:18', null, null, null);
-INSERT INTO `md_carts` VALUES ('6', '1', '110', '1', '2018-04-23 13:30:19', null, null, null);
-INSERT INTO `md_carts` VALUES ('7', '3', '110', '1', '2018-04-23 16:04:56', null, '2018-04-23 16:04:29', null);
-INSERT INTO `md_carts` VALUES ('8', '3', '89', '1', '2018-04-23 16:05:06', null, null, null);
+INSERT INTO `md_carts` VALUES ('1', '3', '82', '1', '2018-04-25 12:27:01', null, null, '2018-04-25 12:27:01');
+INSERT INTO `md_carts` VALUES ('2', '3', '39', '1', '2018-04-24 11:10:29', null, null, '2018-04-24 11:10:29');
 
 -- ----------------------------
 -- Table structure for md_catalog
@@ -319,6 +315,31 @@ CREATE TABLE `md_consulation` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for md_crmorder
+-- ----------------------------
+DROP TABLE IF EXISTS `md_crmorder`;
+CREATE TABLE `md_crmorder` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pickupUrl` varchar(255) DEFAULT NULL COMMENT '付款客户成功后的页面',
+  `receiveUrl` varchar(255) DEFAULT NULL COMMENT '服务器接受支 付结果的后台 地址',
+  `signType` varchar(255) DEFAULT NULL COMMENT '签名类型',
+  `orderNo` varchar(255) DEFAULT NULL COMMENT '订单号',
+  `orderAmount` varchar(255) DEFAULT NULL COMMENT '订单金额',
+  `orderCurrency` varchar(255) DEFAULT NULL COMMENT '货币类型-CNY,USD',
+  `customerId` int(11) DEFAULT NULL COMMENT '客户交易者账号',
+  `sign` varchar(255) DEFAULT NULL COMMENT '签名',
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_user` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of md_crmorder
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for md_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `md_dict`;
@@ -445,7 +466,7 @@ CREATE TABLE `md_log` (
   PRIMARY KEY (`id`),
   KEY `操作人` (`created_user`) USING BTREE,
   KEY `操作码以及操作的数据表` (`code`,`table`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of md_log
@@ -539,6 +560,43 @@ INSERT INTO `md_log` VALUES ('102', '0', '新增购物车', 'pcshop/Carts/saveTo
 INSERT INTO `md_log` VALUES ('103', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '21', '2018-04-23 16:27:51', null, null, '1', null, null);
 INSERT INTO `md_log` VALUES ('104', '999', '用户下单', 'pcshop/Order/checkoutOrder/orderGoods/89:1|110:2', '127.0.0.1', 'order', '22', '2018-04-23 17:23:12', null, null, null, null, null);
 INSERT INTO `md_log` VALUES ('105', '1002001', '删除订单', 'pcshop/Order/deleteToTable', '127.0.0.1', 'Menus', '22', '2018-04-23 17:34:23', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('106', '999', '用户下单', 'pcshop/Order/checkoutOrder/orderGoods/89:1|110:2', '127.0.0.1', 'order', '23', '2018-04-24 09:07:33', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('107', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:33', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('108', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:35', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('109', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:36', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('110', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:55', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('111', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:11:03', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('112', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:11:16', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('113', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:27:14', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('114', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:29:55', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('115', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:31:11', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('116', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:32:07', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('117', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:34:45', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('118', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:37:42', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('119', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:38:26', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('120', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:40:07', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('121', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:40:46', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('122', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:41:08', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('123', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '1', '2018-04-24 11:09:44', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('124', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '2', '2018-04-24 11:09:51', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('125', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-24 11:10:28', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('126', '0', '新增商城用户', 'pcshop/User/saveToTable', '127.0.0.1', 'user', '4', '2018-04-24 11:15:38', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('127', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-24 11:23:31', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('128', '0', '新增收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '6', '2018-04-24 11:25:07', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('129', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '2', '2018-04-24 11:25:18', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('130', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '3', '2018-04-24 14:05:43', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('131', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '4', '2018-04-24 14:36:31', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('132', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 11:22:55', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('133', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 11:25:19', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('134', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-25 11:26:38', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('135', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 12:27:00', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('136', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '1', '2018-04-25 12:33:42', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('137', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '1', '2018-04-25 12:33:53', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('138', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-25 12:46:10', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('139', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '2', '2018-04-25 12:46:15', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('140', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '3', '2018-04-25 12:46:20', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('141', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '4', '2018-04-25 12:53:50', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('142', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-25 12:53:53', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_menus
@@ -603,16 +661,14 @@ CREATE TABLE `md_order` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `progress` (`progress`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order
 -- ----------------------------
-INSERT INTO `md_order` VALUES ('18', '20180423101755212', '2', '1', '1', '91:3', ' 双层立体10厘米 羽绒床垫 床褥 95%白鹅绒床垫x3', '1734.00', '0', '0', '2018-04-23 10:17:52', '2018-04-20 17:18:08', null, null);
-INSERT INTO `md_order` VALUES ('19', '\r\n\r\n201804231017557845', '2', '1', '2', '109:1', '16款奥迪A6改装方口排气管12-15款奥迪A6LC7升级方形尾嘴尾喉后唇x1', '1889.00', '0', '0', '2018-04-23 10:17:59', '2018-04-20 17:31:47', null, null);
-INSERT INTO `md_order` VALUES ('20', '201804231017557548', '2', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-23 13:55:59', '2018-04-23 13:55:40', null, null);
-INSERT INTO `md_order` VALUES ('21', '2018042355535557', '1', '3', null, '89:1|110:2', '出口法国五星级酒店加厚可折叠羽绒床垫x1新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x2', '6083.00', '0', '0', '2018-04-23 16:27:51', null, null, null);
-INSERT INTO `md_order` VALUES ('22', '2018042348565548', '1', '3', null, '89:1', '出口法国五星级酒店加厚可折叠羽绒床垫x1', '723.00', '0', '0', '2018-04-23 17:34:24', '2018-04-23 17:34:23', null, '2018-04-23 17:34:23');
+INSERT INTO `md_order` VALUES ('1', '2018042553489853', '3', '3', '5', '82:1', '宝马5系6系7系X5 X6 BO升降中置喇叭 原厂B&O全车音响喇叭x1', '8000.00', '0', '0', '2018-04-25 12:33:54', '2018-04-25 12:33:53', null, null);
+INSERT INTO `md_order` VALUES ('2', '2018042551545652', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-25 12:46:16', '2018-04-25 12:46:15', null, null);
+INSERT INTO `md_order` VALUES ('4', '2018042510110155', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-25 12:53:55', '2018-04-25 12:53:53', null, null);
 
 -- ----------------------------
 -- Table structure for md_order_detail
@@ -630,17 +686,15 @@ CREATE TABLE `md_order_detail` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order_detail
 -- ----------------------------
-INSERT INTO `md_order_detail` VALUES ('4', '18', '91', '3', '578.00', '1740.00', null, null, null, null);
-INSERT INTO `md_order_detail` VALUES ('5', '19', '109', '1', '1889.00', '3990.00', null, null, null, null);
-INSERT INTO `md_order_detail` VALUES ('6', '20', '110', '1', '2680.00', '4680.00', null, null, null, null);
-INSERT INTO `md_order_detail` VALUES ('7', '21', '89', '1', '723.00', '1230.00', null, null, null, null);
-INSERT INTO `md_order_detail` VALUES ('8', '21', '110', '2', '2680.00', '4680.00', null, null, null, null);
-INSERT INTO `md_order_detail` VALUES ('9', '22', '89', '1', '723.00', '1230.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('1', '1', '82', '1', '8000.00', '16000.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('2', '2', '110', '1', '2680.00', '4680.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('3', '3', '110', '1', '2680.00', '4680.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('4', '4', '110', '1', '2680.00', '4680.00', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_product
@@ -678,7 +732,7 @@ CREATE TABLE `md_product` (
 INSERT INTO `md_product` VALUES ('19', '0', '新疆棉花被手工棉被加厚冬被双人', '11', '1', '手工棉被 加厚 冬被', '350.00', '500.00', '4566', '0.00000', '28', '', '', '0', '3', '1', '10', '2018-04-23 13:15:18', '1499919035', '2018-04-19 10:25:25', null);
 INSERT INTO `md_product` VALUES ('20', '0', '飞虎1080P夜视高清汽车行车记录仪双镜头带电子狗', '15', '1', '行车 飞虎', '378.00', '499.00', '15', '0.00000', '29', '', '', '0', '3', '1', '10', '2018-04-23 13:15:21', '1499918278', null, null);
 INSERT INTO `md_product` VALUES ('22', '0', '正品1080P超高清汽车行车记录仪双镜头 夜视广角', '15', '1', '行车 双镜头', '68.00', '135.00', '16', '0.00000', '30', '', '', '0', '3', '1', '10', '2018-04-23 13:15:23', '1499918233', null, null);
-INSERT INTO `md_product` VALUES ('24', '0', '羽绒被95白鹅绒加厚保暖被子被芯冬被双人鸭绒被', '11', '1', '被子  羽绒被 ', '685.00', '857.00', '0', '0.00000', '31', '', '', '0', '3', '1', '10', '2018-04-23 13:15:31', '1499918991', null, null);
+INSERT INTO `md_product` VALUES ('24', '0', '羽绒被95白鹅绒加厚保暖被子被芯冬被双人鸭绒被', '11', '1', '被子  羽绒被 ', '685.00', '857.00', '156', '0.00000', '31', '', '', '0', '3', '1', '10', '2018-04-25 14:01:23', '1499918991', null, null);
 INSERT INTO `md_product` VALUES ('27', '0', '民越现代简约茶几电视柜组合茶桌北欧客厅家具套装电视柜茶几组合', '7', '1', '客厅，家居，家具，茶几', '4000.00', '5000.00', '10', '0.00000', '32', '', '', '0', '27', '1', '10', '2018-04-23 13:15:36', '1499918699', null, null);
 INSERT INTO `md_product` VALUES ('33', '0', '整体移门衣柜 推拉门衣柜 卧室家具板式衣柜 定做定制衣柜衣帽间', '6', '1', '卧室，衣柜，家居，家具', '3900.00', '4900.00', '20', '0.00000', '33', '', '', '0', '19', '1', '10', '2018-04-23 13:15:50', '1499918635', null, null);
 INSERT INTO `md_product` VALUES ('35', '0', '凯立德7英寸汽车载GPS便携式导航仪电子狗测速一体机', '16', '1', '车载 导航 电子狗', '499.00', '1590.00', '100', '0.00000', '34', '', '', '0', '3', '1', '10', '2018-04-23 13:15:53', '1499918139', null, null);
@@ -4575,7 +4629,7 @@ CREATE TABLE `md_user` (
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
   `created_user` int(11) DEFAULT NULL COMMENT '添加人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of md_user
@@ -4583,3 +4637,4 @@ CREATE TABLE `md_user` (
 INSERT INTO `md_user` VALUES ('1', null, '1', 'whlphper', '202cb962ac59075b964b07152d234b70', '', 'whlphper', null, '15369197307', '1001001', '王红亮', '2018-04-19 09:31:40', null, null, null);
 INSERT INTO `md_user` VALUES ('2', null, null, '15689923785', 'f46ef81f2464441ba58aeecbf654ee41', null, '15689923785', null, '15689923785', '1001004', null, '2018-04-23 14:11:03', null, null, null);
 INSERT INTO `md_user` VALUES ('3', null, null, '15020081046', 'f46ef81f2464441ba58aeecbf654ee41', null, '额呵呵西', null, '15020081046', '1001004', null, '2018-04-23 17:57:54', null, null, null);
+INSERT INTO `md_user` VALUES ('4', null, null, '15369696969', 'f46ef81f2464441ba58aeecbf654ee41', null, '嘻嘻嘻', null, '15369696969', '1001004', null, '2018-04-24 11:16:11', null, null, null);

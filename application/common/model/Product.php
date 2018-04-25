@@ -10,10 +10,21 @@ namespace app\common\model;
 use app\common\model\Base;
 class Product extends Base{
 
-    public $proField = 'a.id,a.name,a.album,a.shopPrice,a.marketPrice,a.desc,a.stock,a.detail,a.brandId,b.savePath as albumPath';
+    public $proField = 'a.id,a.name,a.album,a.shopPrice,a.marketPrice,a.status,a.type,a.desc,a.stock,a.detail,a.brandId,b.savePath as albumPath';
     public $proJoin = [['File b','a.album=b.id','left']];
     public $proOrder= 'a.sort desc';
 
+    public function getStatusAttr($value)
+    {
+        $status = [1=>'正常',2=>'下架'];
+        return $status[$value];
+    }
+
+    public function getTypeAttr($value)
+    {
+        $status = [1=>'新品',2=>'热销',3=>'赠品',4=>'促销',5=>'团购'];
+        return $status[$value];
+    }
 
     public function getProductDetail($id=0)
     {

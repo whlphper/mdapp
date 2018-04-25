@@ -23,9 +23,11 @@ class Unionpay{
     // 在计算签名时加入这个授权码，通过验证签名就可以确认合作商户的身份。
     // 授权码只在联行支付和特定合作商户之间共享使用，请合作商户妥善包管此授权码，
     // 一旦发生丢失或泄漏，必须马上和支付平台联系。（建议授权码定期更换）';
-    private $key = 'sZEYTSOzxCtSiEqs9kHVHasNMkX98Qdzw3BwUBZInZ1qg3p2PU3MYI0XsEpfgqtbhjmHRzutKX2xVALmumnXECoFO8DM4JoArK80SgeiE4jhF7guxtf1rVcfdEK7u0eP';
+    //private $key = 'sZEYTSOzxCtSiEqs9kHVHasNMkX98Qdzw3BwUBZInZ1qg3p2PU3MYI0XsEpfgqtbhjmHRzutKX2xVALmumnXECoFO8DM4JoArK80SgeiE4jhF7guxtf1rVcfdEK7u0eP';
+    private $key = 'vuTHjC5lCUy2Yfvz0nKNoTluktcgVjWcGPXMzeDqf8aJkoZg5xixVz8Q9cZnX09QyxEmQ1oyihNC1YJoYHB8jYrl1WlG5ovsQDOgieaR76Z7QbVVpc3maraD2tISiHjS';
     private $merName = '北京汇众成信息技术服务有限公司';
-    private $merId = '114571';
+    //private $merId = '114571';
+    private $merId = '879711';
 
     /**
      * 生成支付代码
@@ -51,7 +53,7 @@ class Unionpay{
             //获得表单传过来的数据
             $def_url  = '<br />';
             //测试地址
-            $def_url  = '<form method="post" action="http://user.sdecpay.com/paygate.html"  >';
+            $def_url  = '<form method="post" action="https://user.ecpay.cn/paygate.html"  >';
             //商户编号
             $def_url .= '	<input type = "hidden" name = "merId"	value = "'.$merId.'">';
             //商品名称

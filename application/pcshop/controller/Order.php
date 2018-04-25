@@ -39,7 +39,13 @@ class Order extends Base
         try{
             $flag = true;
             if(empty(session("pcshopUserId"))){
-                $this->redirect(url('/pcshop/User/login'));
+                $strUrl = url('/pcshop/User/login');
+                $domain = Request::instance()->domain();
+                header('Location: ' . $domain.$strUrl);
+                exit;
+            }
+            if(empty($orderGoods)){
+                throw new \Exception('购买信息为空');
             }
             $orderData['product'] = $orderGoods;
             // 当支付未支付订单的时候
