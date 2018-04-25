@@ -11,6 +11,7 @@ use app\common\controller\Base;
 use think\Request;
 use think\Db;
 use think\Exception;
+use unionpay\Unionpay;
 
 class Order extends Base
 {
@@ -123,10 +124,17 @@ class Order extends Base
 
     }
 
-    // 同步回调
+    // 银联 同步回调
     public function orderSuccess()
     {
         try{
+            $unionpay = new Unionpay();
+            $notifyRes = $unionpay->respond();
+            if($notifyRes['code'] == 0)
+            {
+                throw new \Exception($notifyRes['msg']);
+            }
+            /*
             $response = $this->request->request();
             $tradeNumber = $response['dealOrder'];
             $status = $response['dealState'];
@@ -138,35 +146,26 @@ class Order extends Base
             if($result['code'] == 0){
                 throw new \Exception('订单状态修改失败'.$result['msg']);
             }
-            return view('',['data'=>$result['data']]);
+            */
+            return view('',['data'=>['tradeNumber'=>$notifyRes['data']]]);
         }catch(\Exception $e){
             mdLog($e);
             echo $e->getMessage();
         }
     }
 
-    // 异步回调
-    public function unionpayNoyify()
-    {
-        try{
-            $response = $this->request->request();
-            $tradeNumber = $response['dealOrder'];
-            $status = $response['dealState'];
-            if($status != 'SUCCESS'){
-                throw new \Exception('支付失败,请重试');
-            }
-            // 修改订单状态
-            $result = model('Order')->orderNoytify($tradeNumber,1);
-            if($result['code'] == 0){
-                throw new \Exception('订单状态修改失败'.$result['msg']);
-            }
-        }catch(\Exception $e){
-            mdLog($e);
-        }
-    }
-
+    /**
+     * 生成唯一订单号
+     * @return string
+     */
     private function merchantOrder()
     {
-        return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+        $number = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+        $order = model('Order')->getRow(['tradeNumber'=>$number],'a.tradeNumber');
+        if($order['code'] == 1){
+            $this->merchantOrder();
+        }else{
+            return $number;
+        }
     }
 }

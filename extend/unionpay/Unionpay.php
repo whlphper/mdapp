@@ -27,22 +27,6 @@ class Unionpay{
     private $merName = '北京汇众成信息技术服务有限公司';
     private $merId = '114571';
 
-
-    /**
-     * 构造函数
-     *
-     * @access  public
-     * @param
-     *
-     * @return void
-     */
-    function ecpay(){
-    }
-
-    function __construct(){
-        //$this->ecpay();
-    }
-
     /**
      * 生成支付代码
      * @param   array   $order      订单信息
@@ -61,7 +45,7 @@ class Unionpay{
             //订单支付结果同步返回地址  也就是对用户呈现的界面
             $dealReturn = $domain.url('pcshop/Order/orderSuccess');
             //订单支付结果异步返回地址  也就是异步修改订单状态的接口
-            $dealNotify = $domain.url('pcshop/Order/unionpayNoyify');
+            $dealNotify = $domain.url('pcshop/Pay/unionpayNoyify');
             //生成签名
             $dealSignure=sha1($merId.$dealOrder.$dealFee.$dealReturn.$this->key);
             //获得表单传过来的数据
@@ -101,14 +85,14 @@ class Unionpay{
             $dealOrder = $_REQUEST['dealOrder'];
             $dealFee = $_REQUEST['dealFee'];
             $dealState = $_REQUEST['dealState'];
-            $dealSignature = $_REQUEST['dealSignature'];
+            $dealSignature = $_REQUEST['dealSignure'];
             $dealId = isset($_REQUEST['dealId']) ? $_REQUEST['dealId'] : null ;
             //生成签名
             $strSignature = sha1($dealOrder.$dealState.$this->key);
             //记录下返回的订单信息
-            \think\Log::notice('记录下返回的订单信息'.$_REQUEST);
+            file_put_contents("unipayresponse.txt",json_encode($_REQUEST));
             //我们自己生成的签名
-            \think\Log::notice('我们自己的签名'.$strSignature);
+            file_put_contents("unipaySign.txt",$strSignature);
             if ( empty($dealSignature) || ($dealSignature != $strSignature)){
                 throw new Exception('签名校验失败');
             }else{

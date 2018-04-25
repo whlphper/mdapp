@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单支付</title>
+</head>
+<body>
+<div style="margin: 0 auto;">
+<form action="{:url('/pcshop/Pay/cbPay')}" method="post">
+    <label>订单编号：</label>
+    <input type="text" name="tradeSn" />
+    <br />
+    <label>订单金额：</label>
+    <input type="text" name="orderAmount" />
+    <br />
+    <label>选择银行：</label>
+    <select name="bankSegment">
+        <option value ="1004" selected>建设银行</option>
+        <option value ="1002">农业银行</option>
+        <option value="1001">工商银行</option>
+        <option value ="1003">中国银行</option>
+        <option value ="1014">浦发银行</option>
+        <option value="1008">光大银行</option>
+        <option value ="1011">平安银行</option>
+        <option value ="1013">兴业银行</option>
+        <option value="1006">邮政储蓄银行</option>
+        <option value ="1007">中信银行</option>
+        <option value ="1009">华夏银行</option>
+        <option value="1012">招商银行</option>
+        <option value ="1017">广发银行</option>
+        <option value ="1016">北京银行</option>
+        <option value="1025">上海银行</option>
+        <option value ="1010">民生银行</option>
+        <option value ="1005">交通银行</option>
+        <option value="1103">北京农村商业银行</option>
+    </select>
+    <br />
+    <label>渠道类型：</label>
+    <select name="channelType">
+        <option value ="1" selected>PC</option>
+        <option value ="2">手机端</option>
+    </select>
+    <br />
+    <input type="submit"  name="" value="提交订单"/>
+</form>
+</div>
+</body>
+</html>

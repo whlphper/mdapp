@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>公众号JS接口整理</title>
+    <!--JQ-->
+    <script src="__PUBLIC__/vendor/jquery/jquery.js"></script>
+    <!--WXjs-->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+</body>
+<script>
+    $(document).ready(function () {
+        initConfig();
+        // 朋友圈
+        wx.onMenuShareTimeline({
+            title: '', // 分享标题
+            link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        // 好友
+        wx.onMenuShareAppMessage({
+            title: '', // 分享标题
+            desc: '', // 分享描述
+            link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+
+    // wx js 配置
+    function initConfig() {
+        var url = "{:url('wechat/Test/index')}";
+        $.post(url, {}, function (res) {
+            if (res.code == 0) {
+                alert(res.msg);
+                return
+            }
+            wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: res['appId'], // 必填，公众号的唯一标识
+                timestamp: res['timestamp'], // 必填，生成签名的时间戳
+                nonceStr: res['nonceStr'], // 必填，生成签名的随机串
+                signature: res['signature'],// 必填，签名
+                jsApiList: [
+                    'onMenuShareTimeline',//分享到朋友圈
+                    'onMenuShareAppMessage',//分享朋友
+                ] // 必填，需要使用的JS接口列表
+            });
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 图片相关接口 START
+    // +----------------------------------------------------------------------
+    // 拍照或从手机相册中选图接口
+    function chooseImage()
+    {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                return localIds;
+            },
+            error:function(){
+                console.log('chooseImage error')
+            }
+        });
+    }
+
+    /**
+     * 上传图片
+     * @param  localId  chooseImage 返回的 localIds
+     * @return 返回图片的服务器端ID
+     */
+    function uploadImage(localId)
+    {
+        wx.uploadImage({
+            localId: localId,
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var serverId = res.serverId;
+                return serverId;
+            },
+            error:function(){
+                console.log('uploadImage error')
+            }
+        });
+    }
+
+    /**
+     * 下载图片
+     * @param serverId 需要下载的图片的服务器端ID，由uploadImage接口获得
+     * @return 返回图片下载后的本地ID
+     */
+    function downLoadIamge(serverId)
+    {
+        wx.downloadImage({
+            serverId: serverId,
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var localId = res.localId;
+                return localId;
+            },
+            error:function(){
+                console.log('downLoadIamge error')
+            }
+        });
+    }
+
+    /**
+     * 获取下载后的base64图片 如要存储在服务器
+     * @param  localId  图片的localID  由downLoadImage获得
+     * @return base64   localData是图片的base64数据，可以用img标签显示
+     */
+    function getBase64(localId)
+    {
+        wx.getLocalImgData({
+            localId: localId, //
+            success: function (res) {
+                var localData = res.localData;
+                var url = "{:url('wechat/Test/baseToIamge')}";
+                $.post(url,{imgBase:localData},function(res){
+                    console.log(res);
+                });
+            },
+            error:function(){
+                console.log('getBase64 error')
+            }
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 图片相关接口  END
+    // +----------------------------------------------------------------------
+
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 音频相关接口  START
+    // +----------------------------------------------------------------------
+    // 开始录音
+    function startRecord()
+    {
+        wx.startRecord();
+    }
+
+    /**
+     * 停止录音
+     * @return 停止前所录音的本地ID
+     */
+    function stopRecord()
+    {
+        wx.stopRecord({
+            success: function (res) {
+                var localId = res.localId;
+                return localId;
+            },
+            error : function(){
+                console.log('stopRedcord error')
+            }
+        });
+    }
+
+    /**
+     * 播放录音
+     * @param localId 需要播放的音频的本地ID，由stopRecord接口获得
+     */
+    function playVoice(localId)
+    {
+        wx.playVoice({
+            localId: localId
+        });
+    }
+
+    /**
+     * 暂停录音
+     * @param localId 需要暂停的音频的本地ID，由stopRecord接口获得
+     */
+    function pauseVoice(localId)
+    {
+        wx.pauseVoice({
+            localId: localId // 需要暂停的音频的本地ID，由stopRecord接口获得
+        });
+    }
+
+    /**
+     * 停止录音
+     * @param localId 需要停止的音频的本地ID，由stopRecord接口获得
+     */
+    function stopVoice(localId)
+    {
+        wx.stopVoice({
+            localId: localId
+        });
+    }
+
+    /**
+     *
+     * @param localId 要上传的音频的本地ID，由stopRecord接口获得
+     * @return 返回音频的服务器端ID
+     */
+    function uploadVoice(localId)
+    {
+        wx.uploadVoice({
+            localId: localId,
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var serverId = res.serverId;
+                return serverId;
+            },
+            error:function(){
+                console.log('uploadVoice error')
+            }
+        });
+    }
+
+    /**
+     * 上传语音到服务器
+     * @param serverId 需要下载的音频的服务器端ID，由uploadVoice接口获得
+     * @return 返回音频的本地ID
+     */
+    function downLoadVoice(serverId)
+    {
+        wx.downloadVoice({
+            serverId: serverId,
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var localId = res.localId;
+                return localId;
+            },
+            error:function(){
+                console.log('downLoadVoice error');
+            }
+        });
+    }
+
+    /**
+     * 语音转文字
+     * @param localId 需要识别的音频的本地Id，由录音相关接口获得
+     * @return  语音识别的结果
+     */
+    function voiceToWord(localId)
+    {
+        wx.translateVoice({
+            localId: localId,
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                return res.translateResult;
+            },
+            error:function(){
+                console.log('voiceToWord error');
+            }
+        });
+    }
+
+
+
+    wx.onVoiceRecordEnd({
+        //录音时间超过一分钟没有停止的时候会执行 complete 回调
+        complete: function (res) {
+            var localId = res.localId;
+            console.log('录音时间超过一分钟;'+'localId='+localId)
+        }
+    });
+
+    //监听语音播放完毕接口
+    wx.onVoicePlayEnd({
+        success: function (res) {
+            var localId = res.localId; // 返回音频的本地ID
+            console.log('语音播放完毕;'+'localId='+localId)
+        }
+    });
+    // +----------------------------------------------------------------------
+    // | JSSDK 音频相关接口  END
+    // +----------------------------------------------------------------------
+
+
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 设备信息  START
+    // +----------------------------------------------------------------------
+
+    /**
+     * 返回网络类型2g，3g，4g，wifi
+     * 可以根据当前的网络状况来提示些什么
+     */
+    function getNetWork()
+    {
+        wx.getNetworkType({
+            success: function (res) {
+                var networkType = res.networkType;
+                return networkType;
+            },
+            error:function(){
+                console.log('getNetWork error');
+            }
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 设备信息  END
+    // +----------------------------------------------------------------------
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 地理位置  START
+    // +----------------------------------------------------------------------
+
+    /**
+     * 获取位置信息
+     */
+    function getLocation()
+    {
+        wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function (res) {
+                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                var speed = res.speed; // 速度，以米/每秒计
+                var accuracy = res.accuracy; // 位置精度
+                var result = {};
+                result.latitude = latitude;
+                result.longitude = longitude;
+                return result;
+            },
+            error:function(){
+                console.log('getLocation error')
+            }
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 地理位置  END
+    // +----------------------------------------------------------------------
+
+
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 微信扫一扫  START
+    // +----------------------------------------------------------------------
+
+    /**
+     * 扫码
+     * @param type == 1  返回扫描结果
+     */
+    function scan(type)
+    {
+        var type = type ? type : 0;
+        wx.scanQRCode({
+            needResult: type, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) {
+                var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                return result;
+            }
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 微信扫一扫  END
+    // +----------------------------------------------------------------------
+
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 微信支付  START
+    // +----------------------------------------------------------------------
+
+    /**
+     * 扫码
+     * @param type == 1  返回扫描结果
+     */
+    function wxPay(out_trade_no)
+    {
+        // 需要先获取支付参数
+        var url = "{:url('/user/Test/getPayParam')}";
+        $.get(url,{out_trade_no:out_trade_no},function(param){
+            if(param.code == 0){
+                console.log(param.msg);
+                return;
+            }
+            wx.chooseWXPay({
+                timestamp: param.data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                nonceStr: param.data.nonceStr, // 支付签名随机串，不长于 32 位
+                package: param.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                signType: param.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                paySign: param.data.paySign, // 支付签名
+                success: function (res) {
+                    // 支付成功后的回调函数
+                },
+                error:function(){
+                    console.log('error');
+                },
+                cancel:function(){
+                    console.log('cancel');
+                }
+            });
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 微信支付  END
+    // +----------------------------------------------------------------------
+
+    // +----------------------------------------------------------------------
+    // | JSSDK 共享收货地址接口  START
+    // +----------------------------------------------------------------------
+    function getWxAddress()
+    {
+        wx.openAddress({
+            success: function (res) {
+                var userName = res.userName; // 收货人姓名
+                var postalCode = res.postalCode; // 邮编
+                var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+                var cityName = res.cityName; // 国标收货地址第二级地址（市）
+                var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+                var detailInfo = res.detailInfo; // 详细收货地址信息
+                var nationalCode = res.nationalCode; // 收货地址国家码
+                var telNumber = res.telNumber; // 收货人手机号码
+            }
+        });
+    }
+    // +----------------------------------------------------------------------
+    // | JSSDK 共享收货地址接口  END
+    // +----------------------------------------------------------------------
+</script>
+</html>
