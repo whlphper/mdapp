@@ -128,26 +128,19 @@ class Order extends Base
     public function orderSuccess()
     {
         try{
-            $unionpay = new Unionpay();
+            /*$unionpay = new Unionpay();
             $notifyRes = $unionpay->respond();
             if($notifyRes['code'] == 0)
             {
                 throw new \Exception($notifyRes['msg']);
-            }
-            /*
+            }*/
             $response = $this->request->request();
             $tradeNumber = $response['dealOrder'];
             $status = $response['dealState'];
             if($status != 'SUCCESS'){
                 throw new \Exception('支付失败,请重试');
             }
-            // 修改订单状态
-            $result = model('Order')->orderNoytify($tradeNumber,1);
-            if($result['code'] == 0){
-                throw new \Exception('订单状态修改失败'.$result['msg']);
-            }
-            */
-            return view('',['data'=>['tradeNumber'=>$notifyRes['data']]]);
+            return view('',['data'=>['tradeNumber'=>$tradeNumber]]);
         }catch(\Exception $e){
             mdLog($e);
             echo $e->getMessage();

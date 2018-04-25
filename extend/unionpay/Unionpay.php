@@ -103,7 +103,7 @@ class Unionpay{
                     throw new Exception('订单支付失败');
                 }
             }
-            return ['code'=>1,'msg'=>'支付成功','data'=>$dealOrder];
+            return ['code'=>1,'msg'=>'支付成功','data'=>$dealOrder,'total'=>$dealFee,'dealId'=>$dealId];
         }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage()];

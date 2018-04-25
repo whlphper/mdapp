@@ -50,17 +50,25 @@ class Pay extends Base
     public function unionpayNoyify()
     {
         try{
-            $response = input('request.');
-            $tradeNumber = $response['dealOrder'];
-            $status = $response['dealState'];
-            if($status != 'SUCCESS'){
-                throw new \Exception('支付失败,请重试');
+            $unionpay = new Unionpay();
+            $notifyRes = $unionpay->respond();
+            if($notifyRes['code'] == 0)
+            {
+                throw new \Exception($notifyRes['msg']);
             }
+            $tradeNumber = $notifyRes['data'];
+            // 订单金额
+            $dealFee = $notifyRes['total'];
             // 判断订单是否已经支付成功了
-            $sucOrder = model('Order')->getRow(['tradeNumber'=>$tradeNumber,'status'=>1],'a.id,a.tradeNumber,a.status');
-            if($sucOrder['code'] == 1){
-                echo 'notify_success';
-                exit;
+            $sucOrder = model('Order')->getRow(['tradeNumber'=>$tradeNumber],'a.id,a.tradeNumber,a.status,a.total');
+            if($sucOrder['code'] == 0){
+                throw new \Exception('订单不存在');
+            }
+            if($sucOrder['data']['total'] != $dealFee){
+                throw new \Exception('订单金额不一致');
+            }
+            if($sucOrder['data']['status'] == 1){
+                throw new \Exception('订单已经支付成功,请勿重复操作');
             }
             // 修改订单状态
             $result = model('Order')->orderNoytify($tradeNumber,1);
