@@ -45,9 +45,9 @@ class Unionpay{
             //支付金额，保留两个小数位
             $dealFee	= number_format($order['orderAmount'],2);;
             //订单支付结果同步返回地址  也就是对用户呈现的界面
-            $dealReturn = $domain.url('pcshop/Order/orderSuccess');
+            $dealReturn = $order['pickupUrl'];
             //订单支付结果异步返回地址  也就是异步修改订单状态的接口
-            $dealNotify = $domain.url('pcshop/Pay/unionpayNoyify');
+            $dealNotify = $domain.url('pcshop/Pay/lwUnionpayNoyify');
             //生成签名
             $dealSignure=sha1($merId.$dealOrder.$dealFee.$dealReturn.$this->key);
             //获得表单传过来的数据
@@ -74,7 +74,7 @@ class Unionpay{
             return $def_url;
         }catch(\Exception $e){
             mdLog($e);
-            return ['code'=>0,'msg'=>$e->getMessage()];
+            return $e->getMessage();
         }
 
     }

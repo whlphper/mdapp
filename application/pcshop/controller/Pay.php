@@ -98,7 +98,7 @@ class Pay extends Base
     {
         try{
             /***************************  对方的文档 */
-            $md5Key = '386125028475603';
+            $md5Key = '098756421346975';
             $data = $request->only(['pickupUrl','receiveUrl','signType','orderNo','orderAmount','orderCurrency','customerId','sign']);
             if(empty($data['orderNo'])){
                 throw new \Exception('请输入订单编号');
@@ -114,7 +114,7 @@ class Pay extends Base
             $oldOrder = model('Crmorderunion')->getRow(['orderNo'=>$data['orderNo']],'a.id,a.orderNo');
             if($oldOrder['code'] == 0){
                 $data['transactionId'] = $this->getTransId();
-                $orderRes = model('Crmorderunion')->saveData($data,'Crmorderunion','CRM订单-inonpay','0424');
+                $orderRes = model('Crmorderunion')->saveData($data,'Crmorderunion','CRM订单-inonpay','0425');
                 if($orderRes['code'] == 0){
                     throw new \Exception('订单保存失败'.$orderRes['msg']);
                 }
@@ -126,6 +126,7 @@ class Pay extends Base
             $unionPay = new Unionpay();
             $form = $unionPay->get_code($order);
             Log::notice('银联支付表单信息'.$form);
+            echo $form;
         }catch(\Exception $e){
             mdLog($e);
             return json(['code'=>0,'msg'=>$e->getMessage()]);
