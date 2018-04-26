@@ -42,7 +42,7 @@ class Core extends Base
     {
         if (strtolower($request->method()) == 'post') {
             try {
-                $data = $request->param();
+                $data = $request->post();
                 // 校验
                 if (empty($data['id'])) {
                     $name = '新增菜单';
@@ -81,18 +81,18 @@ class Core extends Base
         try {
             $data = $request->only('id');
             if (empty($data['id'])) {
-                throw new \think\Exception('数据不存在');
+                throw new \Exception('数据不存在');
             }
             $list = model('Menus')->getCommonCollection(['pid'=>$data['id']],'id');
             if($list['code'] == 0){
-                throw new \think\Exception('父级菜单出错');
+                throw new \Exception('父级菜单出错');
             }
             if(!empty($list['data'])){
-                throw new \think\Exception('存在子菜单,不可删除');
+                throw new \Exception('存在子菜单,不可删除');
             }
             $result = model("Menus")->deleteData($data['id'], 'Menus','删除菜单', '1002001');
             if ($result['code'] == 0) {
-                throw new \think\Exception('删除失败' . $result['msg']);
+                throw new \Exception('删除失败' . $result['msg']);
             }
             return ['code' => 1, 'msg' => '菜单删除成功', 'data' => $data['id']];
         } catch (\Exception $e) {
@@ -152,6 +152,8 @@ class Core extends Base
                 $data['pid'] = end($level);
                 $data['level'] = $levelLength;
                 unset($data['morelevel']);
+            }else{
+                unset($data['morelevel']);
             }
             $result = model('Roles')->saveData($data,'Roles',$name, $code);
             if ($result['code'] == 0) {
@@ -169,18 +171,18 @@ class Core extends Base
         try {
             $data = $request->only('id');
             if (empty($data['id'])) {
-                throw new \think\Exception('数据不存在');
+                throw new \Exception('数据不存在');
             }
             $list = model('Roles')->getCommonCollection(['pid'=>$data['id']],'id');
             if($list['code'] == 0){
-                throw new \think\Exception('父级菜单出错');
+                throw new \Exception('父级菜单出错');
             }
             if(!empty($list['data'])){
-                throw new \think\Exception('存在子角色,不可删除');
+                throw new \Exception('存在子角色,不可删除');
             }
             $result = model("Roles")->deleteData($data['id'], 'Roles','删除角色', '1002004');
             if ($result['code'] == 0) {
-                throw new \think\Exception('删除失败' . $result['msg']);
+                throw new \Exception('删除失败' . $result['msg']);
             }
             return ['code' => 1, 'msg' => '角色删除成功', 'data' => $data['id']];
         } catch (\Exception $e) {

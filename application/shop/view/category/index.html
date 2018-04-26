@@ -51,11 +51,6 @@
             var url = "{:url('/shop/Category/deleteToTable/id/" + row.id + "')}";
             var table = 'sysCategoryTable';
             mdConfirmModal('modal-sm','提示','确定删除此分类吗?',url,table);
-            /*mdAjax($(this),url,{},function(res){
-             swal('提示', res["msg"], "success");
-             $("#sysCategoryTable").bootstrapTable('refresh');
-
-             },'GET');*/
         },
         'click .edit': function (e, value, row, index) {
             var url = "{:url('/shop/Category/storeCategory/id/" + row.id + "')}";

@@ -11,39 +11,40 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $(".insert").click(function(){
-            var url = "{:url('/admin/Core/storeRole')}";
-            sessionStorage.removeItem("mdRoleId");
+            var url = "{:url('/shop/Order/storeOrder')}";
+            sessionStorage.removeItem("mdOrderId");
             mdAjax($(this),url,{},function(res){
                 mdFormModal(res);
                 layer.closeAll("loading");
             },'get','html');
+        });
+        $(".deleteMore").click(function(){
+            var table = $(this).attr('data-table');
+            var checked = mdGetTableChecked(table);
+            if(!checked){
+                layer.msg('请选择要删除的数据',{icon:0});
+                return
+            }
+            checked = checked.join(',');
+            var url = "{:url('/shop/Order/deleteToTable/id/" + checked + "')}";
+            mdConfirmModal('modal-sm','提示','确定批量删除此数据吗?',url,table);
         });
     });
     //每行操作渲染
     function actionFormatter() {
         return '<div class="btn-group"><button class="btn bg-olive btn-sm edit">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn  bg-orange btn-sm delete">删除</button></div>';
     }
-    function iconFormatter(value,row,index){
-        return '<i class="fa '+value+'"></i>';
-    }
     //每行操作对应事件
     window.actionEvents = {
         'click .delete': function (e, value, row, index) {
-            var url = "{:url('/admin/Core/deleteRole/id/" + row.id + "')}";
-            var table = 'sysRoleTable';
-            mdConfirmModal('modal-sm','提示','确定删除此菜单吗?',url,table);
-            /*mdAjax($(this),url,{},function(res){
-             swal('提示', res["msg"], "success");
-             $("#sysRoleTable").bootstrapTable('refresh');
-
-             },'GET');*/
+            var url = "{:url('/shop/Order/deleteToTable/id/" + row.id + "')}";
+            var table = 'sysOrderTable';
+            mdConfirmModal('modal-sm','提示','确定删除此订单吗?',url,table);
         },
         'click .edit': function (e, value, row, index) {
-            var url = "{:url('/admin/Core/storeRole/id/" + row.id + "')}";
-            session("mdRoleId",row.id);
-            var data = {};
-            data.id = row.id;
-            mdAjax($(this),url,data,function(res){
+            var url = "{:url('/shop/Order/storeOrder/id/" + row.id + "')}";
+            session("mdOrderId",row.id);
+            mdAjax($(this),url,{},function(res){
                 mdFormModal(res);
             },'get','html');
         },
@@ -62,7 +63,7 @@
                     <div class="col-sm-3" style="padding-left: 0;">
                         <div class="input-group">
                             <button type="button" class="btn btn-success btn-sm insert"><i class="fa fa-fw fa-plus-square-o">&nbsp;&nbsp;</i>新增</button>&nbsp;&nbsp;
-                            <button type="button" class="btn btn-warning btn-sm"><i class="fa fa-fw fa-trash-o">&nbsp;&nbsp;</i>批量删除</button>
+                            <button type="button" class="btn btn-warning btn-sm deleteMore" data-table="sysOrderTable"><i class="fa fa-fw fa-trash-o">&nbsp;&nbsp;</i>批量删除</button>
                         </div>
                     </div>
                 </div>
@@ -71,35 +72,38 @@
                     <div id="toolbar">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form id="sysRolesSearch">
+                                <form id="sysOrdersSearch">
                                     <div class="col-lg-6" style="padding-left: 0;">
                                         <div class="input-group col-lg-3">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control" name="name" placeholder="请输入角色名称" data-mask>
+                                            <input type="text" class="form-control" name="name" placeholder="请输入订单名称" data-mask>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <button type="button" class="btn btn-info btn-sm bootstrap-search" refreshTableID="sysRoleTable"><i class="fa fa-fw fa-search">&nbsp;</i>搜索</button>&nbsp;
-                                        <button type="button" class="btn bgm-teal btn-sm bootstrap-reset" refreshTableID="sysRoleTable"><i class="fa fa-fw fa-refresh">&nbsp;</i>重置</button>&nbsp;
+                                        <button type="button" class="btn btn-info btn-sm bootstrap-search" refreshTableID="sysOrderTable"><i class="fa fa-fw fa-search">&nbsp;</i>搜索</button>&nbsp;
+                                        <button type="button" class="btn bgm-teal btn-sm bootstrap-reset" refreshTableID="sysOrderTable"><i class="fa fa-fw fa-refresh">&nbsp;</i>重置</button>&nbsp;
                                         <button type="button" class="btn bgm-amber btn-sm"><i class="fa fa-fw fa-cloud-download">&nbsp;</i>导出</button>&nbsp;
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <table id="sysRoleTable" class="table table-vmiddle table-condensed table-boedered" data-side-pagination="server"
-                           data-url="{:url('/admin/Core/getRoles')}" data-toggle="table" data-toolbar="#toolbar"
-                           data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]">
+                    <table id="sysOrderTable" class="table table-vmiddle table-condensed table-boedered" data-side-pagination="server"
+                           data-url="{:url('/shop/Order/getTableData')}" data-toggle="table" data-toolbar="#toolbar"
+                           data-pagination="true" data-page-list="[10, 20, 50, 100, 200]">
                         <thead>
                         <tr>
                             <th data-checkbox="true"></th>
-                            <th data-field="name" data-formatter="">组名称</th>
-                            <th data-field="franchName">所属店铺</th>
-                            <th data-field="sort" data-sortable="true">排序</th>
+                            <th data-field="tradeNumber" >订单编号</th>
+                            <th data-field="userId" >下单用户</th>
+                            <th data-field="payType" >支付方式</th>
+                            <th data-field="total"  data-sortable="true">订单总额</th>
+                            <th data-field="desc">订单商品</th>
+                            <th data-field="status">订单状态</th>
+                            <th data-field="progress">发货状态</th>
                             <th data-field="created_at" data-align="center" data-sortable="true">创建时间</th>
-                            <th data-field="userName" >创建人</th>
                             <th data-field="action" data-formatter="actionFormatter" data-align="center" data-events="actionEvents"></th>
                         </tr>
                         </thead>

@@ -31,13 +31,13 @@ class Base extends Model
      * @ $join       链接查询
      * @ $curOrder   排序
      */
-    public function getBootstrapeTable($CurrentCon = array(), $field = '*', $join = [], $curOrder = '')
+    public function getBootstrapeTable($CurrentCon = array(), $field = 'a.*', $join = [], $curOrder = '')
     {
         try{
             if (!$join || $join == '') {
                 $join = array();
             }
-            $condition = array_merge($CurrentCon, array('a.deleted_at' => null));
+            $condition = array_merge($CurrentCon,[]);
             $tableData = input("request.");
             if(isset($tableData['_tm'])){
                 unset($tableData['_tm']);
@@ -70,17 +70,14 @@ class Base extends Model
                     $condition['a.' . $fields] = ['like', "%$value%"];
                 }
             }
-            $list = self::all(function($query)use($condition,$field,$join,$order,$offset,$limit){
-                $query->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit);
-            });
-            $collection = array();
-            foreach($list as $k=>$v){
-                $collection[] = $v->data;
-            }
-            $total = self::all(function($query)use($condition,$join){
-                $query->alias('a')->where($condition)->join($join)->field('a.id')->count();
-            });
-            return ['total'=>count($total),'rows'=>$collection];
+            $list = $this->alias('a')->where($condition)->where('a.deleted_at',null)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select();
+            /*$collation = [];
+            foreach ($list as $k=>$v)
+            {
+                $collation[] = $list[$k]->toArray();
+            }*/
+            $total = $this->alias('a')->where($condition)->where('a.deleted_at',null)->join($join)->field('a.id')->count();
+            return ['total'=>$total,'rows'=>$list];
         }catch(\Exception $e){
             mdLog($e);
             return ['total'=>0,'rows'=>[],'error'=>$e->getMessage()];
@@ -244,23 +241,23 @@ class Base extends Model
                 $old = [];
                 $new = [];
             }
-            $request = \think\Request::instance();
+            $request = Request::instance();
             // 当数据操作成功 记录日志
             $logData['created_user'] = session("userId");
             $curAction = model("Menus")->getRow(['url'=>$request->path()],'id,url,name');
             if($curAction['code'] == 1){
-                $curAction = $curAction['data']['name'];
-                $logData['code'] = $curAction['id'];
+                $logData['code'] = $curAction['data']['id'];
             }else{
                 $logData['code'] = $code;
             }
             $logData['table']= strtolower($table);
-            $logData['name']= $name;
+            $logData['name']= $name ? $name : $this->name;
             $logData['url'] = $request->path();
             $logData['ip'] = $request->ip();
             $logData['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
             if(empty($data['id'])){
                 $data['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+                $data['created_user'] = session("userId");
                 if($this->name == 'User'){
                     $data['account_number'] = $data['mobile'];
                     $data['password'] = md5($data['password']);

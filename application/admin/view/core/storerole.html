@@ -37,12 +37,13 @@
     $(document).ready(function () {
         // 获取所有权限菜单
         var authUrl = "{:url('user/Login/getAllMenu')}";
-        var id = session("mdRoleId")
+        var id = session("mdRoleId");
         var data = {};
         data.id = id ? id : '';
         mdAjax(false, authUrl, data, function (res) {
             var zNodes = res.data;
             $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            layer.closeAll("loading");
         });
         if (id) {
             var url = "{:url('admin/Core/getRoleRow')}";
@@ -52,8 +53,6 @@
                 assign(res.data, 'mdRolesForm');
                 layer.closeAll("loading");
             });
-        } else {
-            layer.closeAll("loading");
         }
 
     });
@@ -121,7 +120,7 @@
                     </div>
 
                     <div class="form-group col-lg-12 no-padding morelevel">
-                        <select style="width: 20%;float: left;" class="form-control Rolelist" type="select" name="morelevel" required onchange="changeLevel($(this))">
+                        <select style="width: 20%;float: left;" class="form-control Rolelist" type="select" name="morelevel"  onchange="changeLevel($(this))">
                             <option value="">请选择</option>
                             <option value="0">平台运营</option>
                         </select>

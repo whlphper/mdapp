@@ -34,35 +34,7 @@
     function actionFormatter() {
         return '<div class="btn-group"><button class="btn bg-olive btn-sm edit">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn  bg-orange btn-sm delete">删除</button></div>';
     }
-    function statusFormatter(value,row,index){
-        switch(value){
-            case 1:
-                return '<p style="color:darkgreen">正常</p>';
-                break;
-            case 2:
-                return '<p style="color:darkred">下架</p>';
-                break;
-        }
-    }
-    function typeFormatter(value,row,index){
-        switch(value){
-            case 1:
-                return '<p style="color:darkgreen">新品</p>';
-                break;
-            case 2:
-                return '<p style="color:hotpink">热销</p>';
-                break;
-            case 3:
-                return '<p style="color:navajowhite">赠品</p>';
-                break;
-            case 4:
-                return '<p style="color:yellowgreen">促销</p>';
-                break;
-            case 5:
-                return '<p style="color:peru">团购</p>';
-                break;
-        }
-    }
+
     function albumPathFormatter(value)
     {
         if(value){
@@ -141,8 +113,8 @@
                             <th data-field="shopPrice" data-formatter="" data-sortable="true">店内价格</th>
                             <th data-field="marketPrice" data-formatter="" data-sortable="true">市场价格</th>
                             <th data-field="stock" data-formatter="" data-sortable="true">库存</th>
-                            <th data-field="type" data-formatter="typeFormatter">类型</th>
-                            <th data-field="status" data-formatter="statusFormatter">状态</th>
+                            <th data-field="type" >类型</th>
+                            <th data-field="status" >状态</th>
                             <th data-field="desc" data-formatter="">商品简介</th>
                             <!--<th data-field="franchName">所属店铺</th>-->
                             <th data-field="sort" data-sortable="true">排序</th>

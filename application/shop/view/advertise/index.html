@@ -42,49 +42,6 @@
             return '<img class="img-responsive" style="width:120px;height:40px;" src="__PUBLIC__'+value+'">';
         }
     }
-
-    function positionFormatter(value, row, index) {
-        switch (value) {
-            case 1:
-                return '<p style="color:darkgreen">首页</p>';
-                break;
-            case 2:
-                return '<p style="color:darkred">商品详情页</p>';
-                break;
-            case 3:
-                return '<p style="color:darkred">分类页</p>';
-                break;
-        }
-    }
-
-    function typeFormatter(value, row, index) {
-        switch (value) {
-            case 1:
-                return '<p style="color:darkgreen">站内商品</p>';
-                break;
-            case 2:
-                return '<p style="color:hotpink">站内分类</p>';
-                break;
-            case 3:
-                return '<p style="color:navajowhite">站内新闻</p>';
-                break;
-            case 4:
-                return '<p style="color:yellowgreen">外部链接</p>';
-                break;
-        }
-    }
-
-    function blankFormatter(value, row, index) {
-        switch (value) {
-            case 1:
-                return '<p style="color:darkgreen">是</p>';
-                break;
-            case 0:
-                return '<p style="color:hotpink">否</p>';
-                break;
-        }
-    }
-
     //每行操作对应事件
     window.actionEvents = {
         'click .delete': function (e, value, row, index) {
@@ -168,10 +125,10 @@
                             <th data-checkbox="true"></th>
                             <th data-field="posterPath" data-formatter="posterPathFormatter">图片</th>
                             <th data-field="name" data-formatter="">广告位名称</th>
-                            <th data-field="position" data-formatter="positionFormatter" data-sortable="true">位置</th>
-                            <th data-field="type" data-formatter="typeFormatter" data-sortable="true">类型</th>
+                            <th data-field="position" data-sortable="true">位置</th>
+                            <th data-field="type" data-sortable="true">类型</th>
                             <th data-field="url" data-formatter="">链接</th>
-                            <th data-field="isBlank" data-formatter="blankFormatter">新标签打开</th>
+                            <th data-field="isBlank" >新标签打开</th>
                             <th data-field="sort" data-sortable="true">排序</th>
                             <th data-field="created_at" data-align="center" data-sortable="true">创建时间</th>
                             <th data-formatter="actionFormatter" data-align="center" data-events="actionEvents"></th>

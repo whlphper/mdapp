@@ -113,11 +113,16 @@ class Login extends Controller {
                 return ['code'=>0,'msg'=>'角色权限获取失败'];
             }
             $idStr = explode(',',$idStr['data']);
-            foreach ($list as $k => $v) {
-                \think\Log::notice($v['id']);
-                \think\Log::notice($idStr);
-                if (in_array($v['id'], $idStr)) {
+            if($menus['pid'] == '0'){
+                foreach ($list as $k => $v) {
                     $list[$k]['checked'] = true;
+                }
+                return ['code'=>1,'msg'=>'','data'=>$this->getMenuSubs($list,0,1,'pid')];
+            }else{
+                foreach ($list as $k => $v) {
+                    if (in_array($v['id'], $idStr)) {
+                        $list[$k]['checked'] = true;
+                    }
                 }
             }
         }

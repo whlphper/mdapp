@@ -21,7 +21,7 @@ class Roles extends Validate
     ];
 
     protected $scene = [
-        'insert'  =>  ['name'=>'require|unique:Roles','sort','morelevel','menu_ids'],//'url',
-        'update'  =>  ['name'=>'require|unique:Roles,name^id','sort','morelevel','menu_ids'],//,'url'
+        'insert'  =>  ['name'=>'require|unique:Roles','sort','menu_ids'],//'url',,'morelevel'
+        'update'  =>  ['name'=>'require|unique:Roles,name^id','sort','menu_ids'],//,'url','morelevel'
     ];
 }

@@ -66,7 +66,7 @@ class Base extends Controller
 
     public function getTableData()
     {
-        $list = $this->model->getBootstrapeTable($this->condition, $this->field, $this->join, $this->order);
+        $list = model($this->modelName)->getBootstrapeTable($this->condition, $this->field, $this->join, $this->order);
         return $list;
     }
 
