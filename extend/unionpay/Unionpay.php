@@ -41,9 +41,9 @@ class Unionpay{
             //商户代码（merId）
             $merId = $this->merId;
             //商户系统生成的订单号
-            $dealOrder = $order['tradeNumber'];
+            $dealOrder = $order['orderNo'];
             //支付金额，保留两个小数位
-            $dealFee	= number_format($order['total'],2);;
+            $dealFee	= number_format($order['orderAmount'],2);;
             //订单支付结果同步返回地址  也就是对用户呈现的界面
             $dealReturn = $domain.url('pcshop/Order/orderSuccess');
             //订单支付结果异步返回地址  也就是异步修改订单状态的接口
@@ -53,7 +53,7 @@ class Unionpay{
             //获得表单传过来的数据
             $def_url  = '<br />';
             //测试地址
-            $def_url  = '<form method="post" action="https://user.ecpay.cn/paygate.html"  >';
+            $def_url  = '<form id="unionpaysubmit" method="post" action="https://user.ecpay.cn/paygate.html" >';
             //商户编号
             $def_url .= '	<input type = "hidden" name = "merId"	value = "'.$merId.'">';
             //商品名称
@@ -68,8 +68,9 @@ class Unionpay{
             $def_url .= '	<input type = "hidden" name = "dealReturn"			value = "'.$dealReturn.'">';
             //支付完成后将结果通知到此url
             $def_url .= '	<input type = "hidden" name = "dealNotify"			value = "'.$dealNotify.'">';
-            $def_url .= '	<input style="padding: 5px;width: 100%;background-color: darkseagreen;cursor: pointer;" type=submit value="立即付款">';
+            $def_url .= '	<input  style="padding: 5px;width: 100%;background-color: darkseagreen;cursor: pointer;" type=submit value="立即付款">';
             $def_url .= '</form>';
+            $def_url .= '<script>unionpaysubmit.submit();</script>';
             return $def_url;
         }catch(\Exception $e){
             mdLog($e);

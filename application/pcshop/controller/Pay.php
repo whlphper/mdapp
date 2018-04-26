@@ -17,7 +17,7 @@ use think\Log;
 class Pay extends Base
 {
     /**
-     * 银联支付
+     * 银联支付 - pcshop
      * @param $orderId
      * @return array|\think\response\Json
      */
@@ -45,7 +45,7 @@ class Pay extends Base
     }
 
     /**
-     * 银联支付异步回调
+     * 银联支付异步回调 - pcshop
      */
     public function unionpayNoyify()
     {
@@ -82,6 +82,126 @@ class Pay extends Base
             echo 'notify_success';
             file_put_contents("unipaySuccess.txt",json_encode($result));
             exit;
+        }catch(\Exception $e){
+            mdLog($e);
+            echo $e->getMessage();
+        }
+    }
+
+
+    /**
+     * 银联支付 - LW
+     * @param Request $request
+     * @return \think\response\Json
+     */
+    public function lwUnionPay(Request $request)
+    {
+        try{
+            /***************************  对方的文档 */
+            $md5Key = '386125028475603';
+            $data = $request->only(['pickupUrl','receiveUrl','signType','orderNo','orderAmount','orderCurrency','customerId','sign']);
+            if(empty($data['orderNo'])){
+                throw new \Exception('请输入订单编号');
+            }
+            if(empty($data['orderAmount'])){
+                throw new \Exception('请输入订单金额');
+            }
+            $trueSign = md5($data['pickupUrl'].$data['receiveUrl'].$data['signType'].$data['orderNo'].$data['orderAmount'].$data['orderCurrency'].$data['customerId'].$md5Key);
+            if($trueSign != $md5Key){
+                // throw new \Exception('签名校验失败');
+            }
+            // 插入crm过来订单
+            $oldOrder = model('Crmorderunion')->getRow(['orderNo'=>$data['orderNo']],'a.id,a.orderNo');
+            if($oldOrder['code'] == 0){
+                $data['transactionId'] = $this->getTransId();
+                $orderRes = model('Crmorderunion')->saveData($data,'Crmorderunion','CRM订单-inonpay','0424');
+                if($orderRes['code'] == 0){
+                    throw new \Exception('订单保存失败'.$orderRes['msg']);
+                }
+            }
+            $order['tradeSn'] = $data['orderNo'];
+            $order['orderAmount'] = $data['orderAmount'];
+            $order['receiveUrl'] = $data['receiveUrl'];
+            $order['pickupUrl'] = $data['pickupUrl'];
+            $unionPay = new Unionpay();
+            $form = $unionPay->get_code($order);
+            Log::notice('银联支付表单信息'.$form);
+        }catch(\Exception $e){
+            mdLog($e);
+            return json(['code'=>0,'msg'=>$e->getMessage()]);
+        }
+    }
+
+    /**
+     * 由于联行支付没有返回第三方流水号,所以在这里自己生成
+     * @return string
+     */
+    public function getTransId()
+    {
+        //订购日期
+        $order_date = date('Y-m-d');
+        //订单号码主体（YYYYMMDDHHIISSNNNNNNNN）
+        $order_id_main = date('YmdHis') . rand(10000000,99999999);
+        //订单号码主体长度
+        $order_id_len = strlen($order_id_main);
+        $order_id_sum = 0;
+        for($i=0; $i<$order_id_len; $i++){
+            $order_id_sum += (int)(substr($order_id_main,$i,1));
+        }
+        //唯一订单号码（YYYYMMDDHHIISSNNNNNNNNCC）
+        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100,2,'0',STR_PAD_LEFT);
+        $old = model('Crmorderunion')->getRow(['transactionId'=>$order_id],'a.id');
+        if($old['code'] == 1){
+            $this->getTransId();
+        }
+        return $order_id;
+    }
+
+    /**
+     * 银联支付异步回调 - LW
+     */
+    public function lwUnionpayNoyify()
+    {
+        try{
+            $unionpay = new Unionpay();
+            $notifyRes = $unionpay->respond();
+            if($notifyRes['code'] == 0)
+            {
+                throw new \Exception($notifyRes['msg']);
+            }
+            file_put_contents("notifyRes.txt",json_encode($notifyRes));
+            $tradeNumber = $notifyRes['data'];
+            // 订单金额
+            $dealFee = $notifyRes['total'];
+            // 判断订单是否已经支付成功了
+            $sucOrder = model('Crmorderunion')->getRow(['orderNo'=>$tradeNumber],'a.*');
+            file_put_contents("orderInfo.txt",json_encode($sucOrder));
+            if($sucOrder['code'] == 0){
+                throw new \Exception('订单不存在');
+            }
+            if($sucOrder['data']['orderAmount'] != $dealFee){
+                throw new \Exception('订单金额不一致');
+            }
+            echo 'notify_success';
+            file_put_contents("unipaySuccess.txt",'6666666');
+            $orderInfo = $sucOrder['data'];
+            // LW md5key
+            $md5Key = '386125028475603';
+            $notifyUrl = $orderInfo['receiveUrl'];
+            $trueSign = md5($orderInfo['signType'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$orderInfo['transactionId'].'success'.$md5Key);
+            $param = 'signType=MD5&orderNo='.$orderInfo['tradeSn'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$orderInfo['transactionId'].'&status=success&sign='.$trueSign;
+            // 回调我们的时候需要再次回调给Leanwork
+            /**********************************/
+            $regularUrl = $notifyUrl.'?'.$param;
+            // 用curl代替file_get_contents
+            $ch = curl_init();
+            $timeout = 5;
+            curl_setopt ($ch, CURLOPT_URL, $regularUrl);
+            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            $file_contents = curl_exec($ch);
+            curl_close($ch);
+            exit();
         }catch(\Exception $e){
             mdLog($e);
             echo $e->getMessage();
