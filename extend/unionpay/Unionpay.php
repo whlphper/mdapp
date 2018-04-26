@@ -41,7 +41,7 @@ class Unionpay{
             //商户代码（merId）
             $merId = $this->merId;
             //商户系统生成的订单号
-            $dealOrder = $order['orderNo'];
+            $dealOrder = $order['tradeSn'];
             //支付金额，保留两个小数位
             $dealFee	= number_format($order['orderAmount'],2);;
             //订单支付结果同步返回地址  也就是对用户呈现的界面

@@ -18,7 +18,9 @@ class Product extends Base{
         $this->theme = '商品';
         $this->order = 'a.sort desc,a.created_at desc';
         $this->field = 'a.*,b.savePath as albumPath';
+        $this->rowField = 'a.*';
         $this->join = [['File b','a.album=b.id','left']];
+        $this->rowJoin = [];
         $this->model = model($this->modelName);
     }
 

@@ -18,6 +18,8 @@ class Base extends Controller
     public $theme = null;
     public $condition = [];
     public $field = '*';
+    public $rowField = '*';
+    public $rowJoin = [];
     public $join = [];
     public $order = '';
 
@@ -80,6 +82,9 @@ class Base extends Controller
         if (strtolower($request->method()) == 'post') {
             try {
                 $data = $request->post();
+                if(!empty($data['test'])){
+                    unset($data['test']);
+                }
                 // 校验
                 if (empty($data['id'])) {
                     $name = '新增' . $this->theme;
@@ -117,14 +122,13 @@ class Base extends Controller
     /**
      * @param Request $request
      * @return array
-     * @throws \think\exception\DbException
      */
     public function getRowData(request $request)
     {
         $id = $request->only('id');
         $id = $id['id'];
         if (!empty($id)) {
-            $result = $this->model->getRow(['a.id'=>$id], $this->field, $this->join, $this->order);
+            $result = $this->model->getRow(['a.id'=>$id], $this->rowField, $this->rowJoin, $this->order);
             if($result['code'] == 0){
                 return ['code' => 0, 'msg' => $this->theme . '数据不存在'.$result['msg']];
             }

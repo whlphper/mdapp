@@ -14,7 +14,7 @@ class Product extends Validate
         'name|商品名称'  => 'require|unique:Category',
         'sort|商品排序'   => 'require|number',
         'stock|商品库存'   => 'require|number',
-        'album|商品图片'   => 'require|number',
+        'album|商品图片'   => 'require',
         'shopPrice|店内价格'   => 'require|decimal',
         'marketPrice|市场价格'   => 'require|decimal',
         'categoryId|分类'   => 'require',

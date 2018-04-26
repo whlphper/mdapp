@@ -434,7 +434,14 @@ function assign(data, formId) {
                 $(this).val(data[inputName]);
                 break;
             case 'checkbox':
-                inputAssign(formId, 'checkbox', data[inputName], inputName,data[inputName]);
+                if(data[inputName] && data[inputName] != ''){
+                    var fieldArr = data[inputName].split(',');
+                    if(in_array(inputVal,fieldArr)){
+                        $(this).attr('checked',true);
+                    }else{
+                        $(this).attr('checked',false);
+                    }
+                }
                 break;
             case 'select':
                 $(this).find("option").each(function () {
@@ -446,33 +453,43 @@ function assign(data, formId) {
                 });
                 break;
             case 'radio':
-                    inputAssign(formId, 'radio', data[inputName], inputName, data[inputName]);
+                if(inputVal == data[inputName]){
+                    $(this).attr('checked',true);
+                }
                 break;
             case 'summernote':
                 $('#summernote').summernote('code',data[inputName])
                 break;
             case 'file':
                 var dataId = $(this).attr("data-id");
-                var previewBox = dataId+'Preview';
+                var isMulty = $(this).attr("multiple");
                 var imgList = data[dataId+'Array'];
-                if(imgList != undefined){
-                    for(var i=0;i<imgList.length;i++){
-                        if(imgList[i].id && imgList[i].path){
-                            var html = '<img id="' + imgList[i].id + '" src="/public/'+ imgList[i].path +'" alt="" class="img-responsive" style="height:100px;"><button type="button" class="btn btn-danger" onclick="removePreview($(this),'+imgList[i].id+',\''+dataId+'\');"><i class="fa fa-remove"></i>删除</button>';
-                            $("#"+previewBox).append(html);
+                if(isMulty){
+                    if(imgList != undefined){
+                        for(var i=0;i<imgList.length;i++){
+                            if(imgList[i].id && imgList[i].path){
+                                var html = '<div class="img col-lg-3"><img class="img-responsive" id="'+imgList[i].id+'" src="/public'+imgList[i].path+'"> <span class="close" onclick="removePreview($(this),'+imgList[i].id+',\'\'+dataId+\'\');"><i class="fa fa-remove"></i>删除</span></div>';
+                                $(this).parent('div').append(html);
+                            }
+                        }
+                    }
+                }else{
+                    var previewBox = dataId+'Preview';
+                    if(imgList != undefined){
+                        for(var i=0;i<imgList.length;i++){
+                            if(imgList[i].id && imgList[i].path){
+                                var html = '<img id="' + imgList[i].id + '" src="/public/'+ imgList[i].path +'" alt="" class="img-responsive" style="height:100px;"><button type="button" class="btn btn-danger" onclick="removePreview($(this),'+imgList[i].id+',\''+dataId+'\');"><i class="fa fa-remove"></i>删除</button>';
+                                $("#"+previewBox).append(html);
+                            }
                         }
                     }
                 }
                 break;
         }
     });
-    $("#"+formId).find('input').iCheck({
-        checkboxClass: 'icheckbox_flat-green',
-        radioClass: 'iradio_flat-green',
-        increaseArea: '30%', // optional
-        labelHover: false
-    });
 }
+
+
 
 function initDataList(url, dom, table, condition, field, sort, pField, cField) {
     var data = {};
@@ -552,6 +569,7 @@ function inputAssign(formId, type, code, name, initial) {
     $("#" + formId).find('input[name=' + name + ']').remove();
     parent.html(html);
 }
+
 // 获取icon 并添加至input
 function getCurIcon(obj) {
     var flag = obj.find("i").attr("class");
@@ -653,6 +671,8 @@ function ajaxUpload(curObject,id,url,preview)
 {
     var preview = preview ? preview : false;
     var isMultyple = curObject.attr("multiple") ? true : false;
+    var floder = curObject.attr('data-dir') ? curObject.attr('data-dir') : 'default';
+    var size = curObject.attr('data-size') ? curObject.attr('data-size') : '0.8';
     var curObject = curObject;
     //获取上传所有文件信息
     var files = curObject.get(0).files;
@@ -663,6 +683,8 @@ function ajaxUpload(curObject,id,url,preview)
         //装需要上传文件的数组
         data = new FormData();
         data.append("file", obj);
+        data.floder = floder;
+        data.size = size;
         $.ajax({
             data: data,
             type: "POST",
@@ -684,13 +706,12 @@ function ajaxUpload(curObject,id,url,preview)
                 }else{
                     $("#"+id).val(res.data);
                 }
-
                 if(preview){
                     parent.layer.msg("文件上传成功",{icon:1});
                     preview = preview.replace(/\s/g, "");
                     if(isMultyple){
-                        var html = '<div class="img"><img  id="' + res.data + '" src="'+res.path+'"> <span class="close" onclick="removePreview($(this),'+res.data+',\''+id+'\');"></span></div>';
-                        $(curObject).parent().before(html);
+                        var html = '<div class="img col-lg-3"><img class="img-responsive" id="' + res.data + '" src="'+res.path+'"> <span class="close" onclick="removePreview($(this),'+res.data+',\''+id+'\');"><i class="fa fa-remove"></i>删除</span></div>';
+                        $(curObject).parent().append(html);
                     }else{
                         $("#"+preview).html('<img id="' + res.data + '" src="'+ res.path +'" alt="" class="img-responsive" style="height:100px;"><button type="button" class="btn btn-danger" onclick="removePreview($(this),'+res.data+',\''+id+'\');"><i class="fa fa-remove"></i>删除</button>')
                     }
@@ -717,6 +738,9 @@ function removePreview(obj,imgId,valueId)
     var curpath = $("#"+imgId).attr("id");
     obj.remove();
     $("#"+imgId).remove();
+    if(obj.parent('div').hasClass('img')){
+        obj.parent('div').remove();
+    }
     var oldVal = $("#"+valueId).val();
     oldVal = oldVal.split(",");
     var newVal = new Array();

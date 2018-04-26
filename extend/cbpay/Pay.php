@@ -96,6 +96,9 @@ class Pay{
                 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
                 $file_contents = curl_exec($ch);
+                if($file_contents){
+                    file_put_contents('cbpaySuccess.txt',$file_contents);
+                }
                 curl_close($ch);
                 exit();
             }else{

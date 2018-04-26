@@ -1,18 +1,12 @@
 {include file="admin@public/store"}
+<!--单选复选框-->
+<link rel="stylesheet" href="__PUBLIC__/bootstrap/css/build.css">
 <!-- 编辑器 -->
 <link rel="stylesheet" href="__PUBLIC__/plugins/summernote/summernote.css">
 <script src="__PUBLIC__/plugins/summernote/summernote.min.js"></script>
 <script src="__PUBLIC__/plugins/summernote/lang/summernote-zh-CN.min.js"></script>
 <!-- 编辑器 -->
 <!--这里引入本页面需要的JS 以及脚本-->
-<!--select-->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-select/dist/css/bootstrap-select.css">
-<!-- iCheck -->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
-<!--select-->
-<script src="__PUBLIC__/plugins/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<!--ickeck-->
-<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
 <!-- validate-->
 <script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
 <script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
@@ -50,6 +44,7 @@
             var data = {};
             data.id = id;
             mdAjax(false, url, data, function (res) {
+                res.data.test = '1,2';
                 assign(res.data, 'mdProductForm');
                 layer.closeAll("loading");
             });
@@ -84,11 +79,8 @@
                     <div class="form-group">
                         <label>商品图片:</label>
                         <div class="input-group">
-                            <input type="file" class="add-btn" onchange="reayUpload($(this))" accept="image/*"  capture="camera"  data-id="album" data-url="{:url('/admin/Index/uploadImage')}" data-preview="albumPreview">
+                            <input type="file" class="add-btn" onchange="reayUpload($(this))" accept="image/*" multiple="multiple" capture="camera"  data-id="album" data-url="{:url('/admin/Index/uploadImage')}" data-preview="albumPreview">
                             <input type="hidden" id="album" name="album" required value="" class="validata_hidden" placeholder="上传广告位图片">
-                        </div>
-                        <div id="albumPreview" class="col-lg-12">
-
                         </div>
                     </div>
                     <div class="form-group">
@@ -121,7 +113,7 @@
                         <label>店内价格:</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa fa-send"></i>
                             </div>
                             <input type="text" name="shopPrice" class="form-control" required>
                         </div>
@@ -130,7 +122,7 @@
                         <label>市场价格:</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa fa-send"></i>
                             </div>
                             <input type="text" name="marketPrice" class="form-control" required>
                         </div>
@@ -139,7 +131,7 @@
                         <label>库存:</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa fa-send"></i>
                             </div>
                             <input type="text" name="stock" class="form-control" required>
                         </div>
@@ -158,7 +150,7 @@
                         <label>商品排序:</label>
                         <div class="input-group">
                             <div class="input-group-addon">
-                                <i class="fa fa-phone"></i>
+                                <i class="fa fa-send"></i>
                             </div>
                             <input type="number" name="sort" class="form-control" required>
                         </div>
@@ -180,14 +172,46 @@
                     <div class="form-group">
                         <label>商品状态:</label>
                         <div class="input-group">
-                            <select class="form-control" type="select" name="status" required>
-                                <option value="1">正常</option>
-                                <option value="2">下架</option>
-                            </select>
+                            <!--<select class="form-control" type="select" name="status" required>-->
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="statussuccess" value="1" name="status" >
+                                <label for="statussuccess">正常</label>
+                            </div>
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="statuserror" value="2" name="status">
+                                <label for="statuserror">下架</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>测试复选框:</label>
+                        <div class="input-group">
+                            <div class="checkbox checkbox-info">
+                                <input id="checkbox4" name="test" value="1" class="styled" type="checkbox">
+                                <label for="checkbox4">
+                                    呵呵
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-info">
+                                <input id="checkbox5"  name="test" value="2" class="styled" type="checkbox">
+                                <label for="checkbox4">
+                                    嘻嘻
+                                </label>
+                            </div>
+                            <div class="checkbox checkbox-info">
+                                <input id="checkbox6"  name="test" value="3" class="styled" type="checkbox">
+                                <label for="checkbox6">
+                                    嗷嗷
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+
+            </div>
+            <div>
+                <div class="modal-footer" style="background-color: lightgrey;">
                     <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
                             class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
                     </button>
@@ -196,7 +220,7 @@
                 </div>
             </div><!-- /.modal-content -->
         </form>
-    </div><!-- /.modal -->/
+    </div><!-- /.modal -->
 </div>
 </body>
 <!-- /.content -->

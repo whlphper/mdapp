@@ -170,13 +170,13 @@ class Pay extends Base
             {
                 throw new \Exception($notifyRes['msg']);
             }
-            file_put_contents("notifyRes.txt",json_encode($notifyRes));
+            Log::notice('联行支付回调检查结果'.json_encode($notifyRes));
             $tradeNumber = $notifyRes['data'];
             // 订单金额
             $dealFee = $notifyRes['total'];
             // 判断订单是否已经支付成功了
             $sucOrder = model('Crmorderunion')->getRow(['orderNo'=>$tradeNumber],'a.*');
-            file_put_contents("orderInfo.txt",json_encode($sucOrder));
+            Log::notice('LW订单信息'.json_encode($sucOrder));
             if($sucOrder['code'] == 0){
                 throw new \Exception('订单不存在');
             }
@@ -184,7 +184,7 @@ class Pay extends Base
                 throw new \Exception('订单金额不一致');
             }
             echo 'notify_success';
-            file_put_contents("unipaySuccess.txt",'6666666');
+            Log::notice('联行支付回调成功');
             $orderInfo = $sucOrder['data'];
             // LW md5key
             $md5Key = '386125028475603';
@@ -201,6 +201,10 @@ class Pay extends Base
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
             $file_contents = curl_exec($ch);
+            if($file_contents){
+                file_put_contents('lwUnionpayNoyify.txt',$file_contents);
+                Log::notice('联行支付回调LW后的返回信息为'.$file_contents);
+            }
             curl_close($ch);
             exit();
         }catch(\Exception $e){

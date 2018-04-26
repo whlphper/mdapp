@@ -77,6 +77,7 @@ class Base extends Model
                 $collation[] = $list[$k]->toArray();
             }*/
             $total = $this->alias('a')->where($condition)->where('a.deleted_at',null)->join($join)->field('a.id')->count();
+            $curModelImg = $this->imgField($this->name);
             return ['total'=>$total,'rows'=>$list];
         }catch(\Exception $e){
             mdLog($e);
@@ -371,7 +372,7 @@ class Base extends Model
                 $query->alias('a')->where($condition)->order($order)->join($join)->field($field)->limit(1);
             });
             if(!$list){
-                throw new \think\Exception('数据不存在');
+                throw new \Exception('数据不存在');
             }
             $list = $list->data;
             /******当必要时候,需要处理数据中的图片 start*******/
@@ -381,8 +382,12 @@ class Base extends Model
                 if(!empty($curModelImg)){
                     $docRoot = str_replace('/index.php','/public',Request::instance()->root());
                     foreach($curModelImg as $key=>$value){
-                        if(strpos($field,$value) !== false && $list[$k] && $k == $value){
-                            $list[$value.'Array'][] = ['id'=>$list[$value],'path'=>$list[$value.'Path']];
+                        if($list[$k] && $k == $value){
+                            // 获取对应的多张图片
+                            $imgList = model('File')->where('id','in',$list[$k])->field('id,savePath')->select();
+                            foreach($imgList as $item=>$items){
+                                $list[$value.'Array'][] = ['id'=>$items['id'],'path'=>$items['savePath']];
+                            }
                         }
                     }
                 }
