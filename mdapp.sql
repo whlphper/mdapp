@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-25 17:16:32
+Date: 2018-04-26 18:09:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -70,7 +70,7 @@ CREATE TABLE `md_advertisement` (
 -- Records of md_advertisement
 -- ----------------------------
 INSERT INTO `md_advertisement` VALUES ('1', '首页轮播一', '0', '1', '21', '1', '', '1', '1', '15', '2018-04-18 13:50:25', null, '2018-04-18 11:36:02', null);
-INSERT INTO `md_advertisement` VALUES ('2', '首页轮播二', '0', '1', '22', '2', '', '1', '1', '25', '2018-04-18 11:39:26', null, null, null);
+INSERT INTO `md_advertisement` VALUES ('2', '首页轮播二2', '0', '1', '22', '1', '', '1', '1', '25', '2018-04-25 17:35:29', null, '2018-04-25 17:35:29', null);
 INSERT INTO `md_advertisement` VALUES ('3', '；链接某个商品', '0', '3', '23', '1', '', '4', '1', '25', '2018-04-18 14:07:00', null, '2018-04-18 14:06:59', '2018-04-18 14:06:59');
 INSERT INTO `md_advertisement` VALUES ('4', '商品详情页广告1', '0', '2', '57', '2', '', '1', '1', '15', '2018-04-19 13:19:36', null, null, null);
 INSERT INTO `md_advertisement` VALUES ('5', '商品详情页广告2', '0', '2', '58', '1', '', '1', '1', '19', '2018-04-19 13:20:48', null, null, null);
@@ -100,7 +100,7 @@ CREATE TABLE `md_brand` (
 -- ----------------------------
 INSERT INTO `md_brand` VALUES ('1', null, '飞利浦', null, '飞利浦', '飞利浦', '100', '2018-04-17 15:52:46', null, null, null);
 INSERT INTO `md_brand` VALUES ('2', null, '爱他美', null, '爱他美', '爱他美', '100', '2018-04-17 15:52:54', null, null, null);
-INSERT INTO `md_brand` VALUES ('3', null, '牛栏', '56', '牛栏', '牛栏', '10', '2018-04-19 10:29:59', null, '2018-04-19 10:29:59', null);
+INSERT INTO `md_brand` VALUES ('3', null, '牛栏-up', '56', '牛栏', '', '15', '2018-04-26 09:06:07', null, '2018-04-26 09:06:07', null);
 
 -- ----------------------------
 -- Table structure for md_carts
@@ -340,6 +340,32 @@ CREATE TABLE `md_crmorder` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for md_crmorderunion
+-- ----------------------------
+DROP TABLE IF EXISTS `md_crmorderunion`;
+CREATE TABLE `md_crmorderunion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transactionId` varchar(255) DEFAULT NULL COMMENT '作为第三方流水号',
+  `pickupUrl` varchar(255) DEFAULT NULL COMMENT '付款客户成功后的页面',
+  `receiveUrl` varchar(255) DEFAULT NULL COMMENT '服务器接受支 付结果的后台 地址',
+  `signType` varchar(255) DEFAULT NULL COMMENT '签名类型',
+  `orderNo` varchar(255) DEFAULT NULL COMMENT '订单号',
+  `orderAmount` varchar(255) DEFAULT NULL COMMENT '订单金额',
+  `orderCurrency` varchar(255) DEFAULT NULL COMMENT '货币类型-CNY,USD',
+  `customerId` int(11) DEFAULT NULL COMMENT '客户交易者账号',
+  `sign` varchar(255) DEFAULT NULL COMMENT '签名',
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_user` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of md_crmorderunion
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for md_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `md_dict`;
@@ -380,7 +406,7 @@ CREATE TABLE `md_file` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_file
@@ -444,6 +470,27 @@ INSERT INTO `md_file` VALUES ('56', '微信图片_20180312110404.png', '/upload/
 INSERT INTO `md_file` VALUES ('57', 'by_1 (1).jpg', '/upload/default/201804191319068617331.jpg', '201804191319068617331.jpg', 'jpg', '0.031773567199707', '2018-04-19 13:19:06', '1', null, null);
 INSERT INTO `md_file` VALUES ('58', 'zx.jpg', '/upload/default/201804191320339755851.jpg', '201804191320339755851.jpg', 'jpg', '0.046396255493164', '2018-04-19 13:20:33', '1', null, null);
 INSERT INTO `md_file` VALUES ('99', 'LOGO', '/upload/base/logo_huizhong.png', null, 'png', null, '2018-04-23 09:32:24', null, null, null);
+INSERT INTO `md_file` VALUES ('100', '微信图片_20180312110404.png', '/upload/default/20180426160152894165.png', '20180426160152894165.png', 'png', '0.4374828338623', '2018-04-26 16:01:52', '1', null, null);
+INSERT INTO `md_file` VALUES ('101', '2017-07-13_112409.png', '/upload/default/201804261603341603699.png', '201804261603341603699.png', 'png', '0.69917011260986', '2018-04-26 16:03:34', '1', null, null);
+INSERT INTO `md_file` VALUES ('102', '2017-07-13_115744.png', '/upload/default/201804261603421226807.png', '201804261603421226807.png', 'png', '0.89770984649658', '2018-04-26 16:03:42', '1', null, null);
+INSERT INTO `md_file` VALUES ('103', '2017-07-13_115945.png', '/upload/default/201804261610195918884.png', '201804261610195918884.png', 'png', '1.2776708602905', '2018-04-26 16:10:19', '1', null, null);
+INSERT INTO `md_file` VALUES ('104', '2017-07-13_115744.png', '/upload/default/201804261611117207031.png', '201804261611117207031.png', 'png', '0.89770984649658', '2018-04-26 16:11:11', '1', null, null);
+INSERT INTO `md_file` VALUES ('105', '2017-07-13_115744.png', '/upload/default/201804261612024364319.png', '201804261612024364319.png', 'png', '0.89770984649658', '2018-04-26 16:12:02', '1', null, null);
+INSERT INTO `md_file` VALUES ('106', '2017-07-13_115945-596736a83c585.png', '/upload/default/201804261612076196899.png', '201804261612076196899.png', 'png', '1.2776708602905', '2018-04-26 16:12:07', '1', null, null);
+INSERT INTO `md_file` VALUES ('107', '2017-07-13_115744.png', '/upload/default/201804261612289333801.png', '201804261612289333801.png', 'png', '0.89770984649658', '2018-04-26 16:12:28', '1', null, null);
+INSERT INTO `md_file` VALUES ('108', '2017-07-13_115744.png', '/upload/default/201804261613278916931.png', '201804261613278916931.png', 'png', '0.89770984649658', '2018-04-26 16:13:27', '1', null, null);
+INSERT INTO `md_file` VALUES ('109', '2017-07-13_115659.png', '/upload/default/201804261613428994140.png', '201804261613428994140.png', 'png', '1.2771282196045', '2018-04-26 16:13:42', '1', null, null);
+INSERT INTO `md_file` VALUES ('110', '2017-07-13_114106.png', '/upload/default/201804261614099128723.png', '201804261614099128723.png', 'png', '0.84866905212402', '2018-04-26 16:14:09', '1', null, null);
+INSERT INTO `md_file` VALUES ('111', '2017-07-13_115659.png', '/upload/default/201804261615288495483.png', '201804261615288495483.png', 'png', '1.2771282196045', '2018-04-26 16:15:28', '1', null, null);
+INSERT INTO `md_file` VALUES ('112', '2017-07-13_115315.png', '/upload/default/201804261615327587585.png', '201804261615327587585.png', 'png', '0.89178371429443', '2018-04-26 16:15:32', '1', null, null);
+INSERT INTO `md_file` VALUES ('113', '2017-07-13_114106.png', '/upload/default/201804261615449720459.png', '201804261615449720459.png', 'png', '0.84866905212402', '2018-04-26 16:15:44', '1', null, null);
+INSERT INTO `md_file` VALUES ('114', '2017-07-13_112633.png', '/upload/default/201804261616011141968.png', '201804261616011141968.png', 'png', '0.64964485168457', '2018-04-26 16:16:01', '1', null, null);
+INSERT INTO `md_file` VALUES ('115', '2017-07-13_112900.png', '/upload/default/201804261616481054383.png', '201804261616481054383.png', 'png', '0.25175094604492', '2018-04-26 16:16:48', '1', null, null);
+INSERT INTO `md_file` VALUES ('116', 'u=1521697000,507985562&fm=11&gp=0.jpg', '/upload/default/201804261618582601319.jpg', '201804261618582601319.jpg', 'jpg', '0.032597541809082', '2018-04-26 16:18:58', '1', null, null);
+INSERT INTO `md_file` VALUES ('117', 'u=4170919634,2148755026&fm=27&gp=0.jpg', '/upload/default/20180426161901436097.jpg', '20180426161901436097.jpg', 'jpg', '0.020443916320801', '2018-04-26 16:19:01', '1', null, null);
+INSERT INTO `md_file` VALUES ('118', 'u=893785126,132897796&fm=27&gp=0.jpg', '/upload/default/201804261619039270629.jpg', '201804261619039270629.jpg', 'jpg', '0.012828826904297', '2018-04-26 16:19:03', '1', null, null);
+INSERT INTO `md_file` VALUES ('119', 'u=1521697000,507985562&fm=11&gp=0.jpg', '/upload/default/20180426161943203553.jpg', '20180426161943203553.jpg', 'jpg', '0.032597541809082', '2018-04-26 16:19:43', '1', null, null);
+INSERT INTO `md_file` VALUES ('120', 'u=4170919634,2148755026&fm=27&gp=0.jpg', '/upload/default/201804261640036385803.jpg', '201804261640036385803.jpg', 'jpg', '0.020443916320801', '2018-04-26 16:40:03', '1', null, null);
 
 -- ----------------------------
 -- Table structure for md_log
@@ -466,137 +513,17 @@ CREATE TABLE `md_log` (
   PRIMARY KEY (`id`),
   KEY `操作人` (`created_user`) USING BTREE,
   KEY `操作码以及操作的数据表` (`code`,`table`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of md_log
 -- ----------------------------
-INSERT INTO `md_log` VALUES ('1', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '21', '2018-04-17 09:37:12', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('2', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '22', '2018-04-17 09:43:28', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('3', '1002002', '新增分类', 'shop/category/savecategory', '0.0.0.0', 'category', '1', '2018-04-17 10:45:09', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('4', '1002002', '新增分类', 'shop/category/savecategory', '0.0.0.0', 'category', '2', '2018-04-17 10:51:02', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('5', '1002002', '新增分类', 'shop/category/savecategory', '0.0.0.0', 'category', '3', '2018-04-17 10:56:31', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('6', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '4', '2018-04-17 11:08:29', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('7', '0', '编辑分类', 'shop/category/savetotable', '0.0.0.0', 'category', '3', '2018-04-17 11:16:53', null, null, '1', 'a:1:{s:15:\"是否为导航\";s:1:\"1\";}', 'a:1:{s:15:\"是否为导航\";s:1:\"0\";}');
-INSERT INTO `md_log` VALUES ('8', '1002001', '删除分类', 'shop/Category/deleteToTable/id/4', '0.0.0.0', 'Menus', '4', '2018-04-17 11:30:16', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('9', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '23', '2018-04-17 11:32:53', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('10', '0', '新增品牌', 'shop/brand/savetotable', '0.0.0.0', 'brand', '1', '2018-04-17 11:40:20', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('11', '0', '编辑品牌', 'shop/brand/savetotable', '0.0.0.0', 'brand', '1', '2018-04-17 11:41:44', null, null, '1', 'a:1:{s:12:\"品牌名称\";s:9:\"品牌一\";}', 'a:1:{s:12:\"品牌名称\";s:13:\"品牌一-up1\";}');
-INSERT INTO `md_log` VALUES ('12', '1002001', '删除品牌', 'shop/Brand/deleteToTable/id/1', '0.0.0.0', 'Menus', '1', '2018-04-17 11:41:51', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('13', '1002001', '删除品牌', 'shop/Brand/deleteToTable/id/1', '0.0.0.0', 'Menus', '1', '2018-04-17 13:22:04', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('14', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '24', '2018-04-17 13:27:29', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('15', '0', '新增商品', 'shop/product/savetotable', '0.0.0.0', 'product', '1', '2018-04-17 14:29:26', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('16', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '1', '2018-04-17 15:48:45', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('17', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '2', '2018-04-17 15:48:57', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('18', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '3', '2018-04-17 15:49:07', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('19', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '4', '2018-04-17 15:49:21', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('20', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '5', '2018-04-17 15:49:35', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('21', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '6', '2018-04-17 15:49:45', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('22', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '7', '2018-04-17 15:49:54', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('23', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '8', '2018-04-17 15:50:09', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('24', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '9', '2018-04-17 15:50:18', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('25', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '10', '2018-04-17 15:50:28', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('26', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '11', '2018-04-17 15:50:39', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('27', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '12', '2018-04-17 15:50:49', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('28', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '13', '2018-04-17 15:51:02', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('29', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '14', '2018-04-17 15:51:11', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('30', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '15', '2018-04-17 15:51:23', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('31', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '16', '2018-04-17 15:51:36', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('32', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '17', '2018-04-17 15:51:46', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('33', '0', '新增分类', 'shop/category/savetotable', '0.0.0.0', 'category', '18', '2018-04-17 15:51:55', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('34', '0', '新增品牌', 'shop/brand/savetotable', '0.0.0.0', 'brand', '1', '2018-04-17 15:52:46', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('35', '0', '新增品牌', 'shop/brand/savetotable', '0.0.0.0', 'brand', '2', '2018-04-17 15:52:54', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('36', '0', '新增品牌', 'shop/brand/savetotable', '0.0.0.0', 'brand', '3', '2018-04-17 15:53:03', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('37', '0', '编辑商品', 'shop/product/savetotable', '0.0.0.0', 'product', '57', '2018-04-17 16:21:54', null, null, '1', 'a:5:{s:12:\"商品品牌\";s:0:\"\";s:12:\"商品详情\";s:0:\"\";s:12:\"商品类型\";s:1:\"0\";s:12:\"商品状态\";s:2:\"-1\";s:12:\"商品排序\";s:0:\"\";}', 'a:5:{s:12:\"商品品牌\";s:1:\"1\";s:12:\"商品详情\";s:143:\"<p><img src=\"/mdapp/public//upload/default/201804171621387270813.png\" data-filename=\"image name\" style=\"width: 50%;\"></p><p>的撒旦撒旦</p>\";s:12:\"商品类型\";s:1:\"1\";s:12:\"商品状态\";s:1:\"1\";s:12:\"商品排序\";s:2:\"12\";}');
-INSERT INTO `md_log` VALUES ('38', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '25', '2018-04-17 17:00:50', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('39', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '26', '2018-04-17 17:01:50', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('40', '18', '编辑菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '25', '2018-04-17 17:02:03', null, null, '1', 'a:1:{s:12:\"菜单地址\";s:19:\"admin/Comment/index\";}', 'a:1:{s:12:\"菜单地址\";s:18:\"shop/Comment/index\";}');
-INSERT INTO `md_log` VALUES ('41', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '27', '2018-04-17 17:03:09', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('42', '18', '新增菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '28', '2018-04-18 10:23:55', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('43', '18', '编辑菜单', 'admin/core/savemenu', '0.0.0.0', 'menus', '28', '2018-04-18 10:32:26', null, null, '1', 'a:1:{s:12:\"菜单地址\";s:21:\"shop/Adervitise/index\";}', 'a:1:{s:12:\"菜单地址\";s:22:\"shop/Adervertise/index\";}');
-INSERT INTO `md_log` VALUES ('44', '0', '新增广告位', 'shop/advertise/savetotable', '0.0.0.0', 'advertisement', '1', '2018-04-18 10:59:48', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('45', '1002001', '删除广告位', 'shop/Advertise/deleteToTable/id/1', '0.0.0.0', 'Menus', '1', '2018-04-18 11:04:53', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('46', '0', '编辑广告位', 'shop/advertise/savetotable', '0.0.0.0', 'advertisement', '1', '2018-04-18 11:36:02', null, null, '1', 'a:2:{s:15:\"广告位图片\";s:0:\"\";s:21:\"是否新标签打开\";s:1:\"0\";}', 'a:2:{s:15:\"广告位图片\";s:2:\"21\";s:21:\"是否新标签打开\";s:1:\"1\";}');
-INSERT INTO `md_log` VALUES ('47', '0', '新增广告位', 'shop/advertise/savetotable', '0.0.0.0', 'advertisement', '2', '2018-04-18 11:39:26', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('48', '0', '新增广告位', 'shop/advertise/savetotable', '0.0.0.0', 'advertisement', '3', '2018-04-18 13:53:26', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('49', '1002001', '删除广告位', 'shop/Advertise/deleteToTable/id/3', '0.0.0.0', 'Menus', '3', '2018-04-18 14:06:59', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('50', '0', '新增商城用户', 'pcshop/User/saveToTable', '127.0.0.1', 'user', '2', '2018-04-19 09:34:57', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('51', '0', '新增商城用户', 'pcshop/User/saveToTable', '127.0.0.1', 'user', '3', '2018-04-19 09:38:44', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('52', '0', '编辑商品', 'shop/product/savetotable', '127.0.0.1', 'product', '19', '2018-04-19 10:25:25', null, null, '1', 'a:2:{s:12:\"商品品牌\";s:0:\"\";s:6:\"相册\";s:2:\"28\";}', 'a:2:{s:12:\"商品品牌\";s:1:\"1\";s:6:\"相册\";s:0:\"\";}');
-INSERT INTO `md_log` VALUES ('53', '0', '编辑品牌', 'shop/brand/savetotable', '127.0.0.1', 'brand', '3', '2018-04-19 10:29:59', null, null, '1', 'a:1:{s:12:\"品牌图片\";s:0:\"\";}', 'a:1:{s:12:\"品牌图片\";s:2:\"56\";}');
-INSERT INTO `md_log` VALUES ('54', '0', '新增广告位', 'shop/advertise/savetotable', '127.0.0.1', 'advertisement', '4', '2018-04-19 13:19:36', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('55', '0', '新增广告位', 'shop/advertise/savetotable', '127.0.0.1', 'advertisement', '5', '2018-04-19 13:20:48', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('56', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '1', '2018-04-20 11:08:17', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('57', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '2', '2018-04-20 12:35:21', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('58', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '3', '2018-04-20 12:36:26', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('59', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '4', '2018-04-20 12:39:12', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('60', '0', '新增收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '3', '2018-04-20 14:28:40', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('61', '0', '编辑收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '2', '2018-04-20 14:31:11', null, null, '1', 'a:1:{s:15:\"收货人姓名\";s:10:\"收货人2\";}', 'a:1:{s:15:\"收货人姓名\";s:13:\"收货人2222\";}');
-INSERT INTO `md_log` VALUES ('62', '0', '编辑收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '2', '2018-04-20 15:04:36', null, null, '1', 'a:1:{s:9:\"省市区\";s:6:\"110103\";}', 'a:1:{s:9:\"省市区\";s:27:\"山东省青岛市崂山区\";}');
-INSERT INTO `md_log` VALUES ('63', '0', '编辑收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '1', '2018-04-20 15:04:54', null, null, '1', 'a:1:{s:9:\"省市区\";s:6:\"110103\";}', 'a:1:{s:9:\"省市区\";s:21:\"河北省石家庄市\";}');
-INSERT INTO `md_log` VALUES ('64', '0', '新增收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '4', '2018-04-20 15:10:18', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('65', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-20 16:20:51', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('82', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '18', '2018-04-20 16:37:31', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('83', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:07:04', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('84', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:07:44', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('85', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:15:06', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('86', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:15:20', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('87', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:16:00', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('88', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:16:44', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('89', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '18', '2018-04-20 17:18:08', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('90', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '5', '2018-04-20 17:22:18', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('91', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '19', '2018-04-20 17:22:38', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('92', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '19', '2018-04-20 17:31:43', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('93', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '19', '2018-04-20 17:31:46', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('94', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '19', '2018-04-20 17:31:47', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('95', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '6', '2018-04-23 13:30:19', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('96', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '7', '2018-04-23 13:54:27', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('97', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '20', '2018-04-23 13:54:31', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('98', '0', '新增收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '5', '2018-04-23 13:55:23', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('99', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '20', '2018-04-23 13:55:36', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('100', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '20', '2018-04-23 13:55:40', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('101', '1002001', '删除购物车', 'pcshop/Carts/deleteToTable', '127.0.0.1', 'Menus', '7', '2018-04-23 16:04:29', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('102', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '8', '2018-04-23 16:05:06', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('103', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '21', '2018-04-23 16:27:51', null, null, '1', null, null);
-INSERT INTO `md_log` VALUES ('104', '999', '用户下单', 'pcshop/Order/checkoutOrder/orderGoods/89:1|110:2', '127.0.0.1', 'order', '22', '2018-04-23 17:23:12', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('105', '1002001', '删除订单', 'pcshop/Order/deleteToTable', '127.0.0.1', 'Menus', '22', '2018-04-23 17:34:23', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('106', '999', '用户下单', 'pcshop/Order/checkoutOrder/orderGoods/89:1|110:2', '127.0.0.1', 'order', '23', '2018-04-24 09:07:33', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('107', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:33', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('108', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:35', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('109', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:36', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('110', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:10:55', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('111', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:11:03', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('112', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:11:16', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('113', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:27:14', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('114', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:29:55', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('115', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:31:11', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('116', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:32:07', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('117', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:34:45', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('118', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:37:42', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('119', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:38:26', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('120', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:40:07', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('121', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:40:46', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('122', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '21', '2018-04-24 09:41:08', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('123', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '1', '2018-04-24 11:09:44', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('124', '0', '新增购物车', 'pcshop/Carts/saveToTable', '127.0.0.1', 'carts', '2', '2018-04-24 11:09:51', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('125', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-24 11:10:28', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('126', '0', '新增商城用户', 'pcshop/User/saveToTable', '127.0.0.1', 'user', '4', '2018-04-24 11:15:38', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('127', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-24 11:23:31', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('128', '0', '新增收货地址', 'pcshop/Address/saveToTable', '127.0.0.1', 'address', '6', '2018-04-24 11:25:07', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('129', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '2', '2018-04-24 11:25:18', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('130', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '3', '2018-04-24 14:05:43', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('131', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '4', '2018-04-24 14:36:31', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('132', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 11:22:55', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('133', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 11:25:19', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('134', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-25 11:26:38', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('135', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '1', '2018-04-25 12:27:00', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('136', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '1', '2018-04-25 12:33:42', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('137', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '1', '2018-04-25 12:33:53', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('138', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '2', '2018-04-25 12:46:10', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('139', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '2', '2018-04-25 12:46:15', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('140', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '3', '2018-04-25 12:46:20', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('141', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '4', '2018-04-25 12:53:50', null, null, null, null, null);
-INSERT INTO `md_log` VALUES ('142', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-25 12:53:53', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('1', '1002004', '新增角色', 'admin/core/saverole', '127.0.0.1', 'roles', '4', '2018-04-26 09:39:57', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('2', '18', '新增菜单', 'admin/core/savemenu', '127.0.0.1', 'menus', '29', '2018-04-26 09:42:16', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('3', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-26 11:37:25', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('4', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-26 11:39:36', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('5', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-26 14:27:50', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('6', '0', '新增商品', 'shop/product/savetotable', '127.0.0.1', 'product', '136', '2018-04-26 16:22:36', null, null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for md_menus
@@ -619,12 +546,12 @@ CREATE TABLE `md_menus` (
   `created_user` int(11) DEFAULT '0' COMMENT '添加人-对应user表ID ',
   PRIMARY KEY (`id`),
   KEY `用户索引` (`created_user`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of md_menus
 -- ----------------------------
-INSERT INTO `md_menus` VALUES ('1', '0', '系统首页', 'admin/Index/welcome', 'fa fa-ambulance', '1001001', '1', '1', '76', '0', '2018-03-27 19:48:07', null, null, '0');
+INSERT INTO `md_menus` VALUES ('1', '0', '系统首页2', 'admin/Index/welcome', 'fa fa-ambulance', '1001001', '1', '1', '76', '0', '2018-04-26 09:05:47', '2018-04-26 09:05:47', null, '0');
 INSERT INTO `md_menus` VALUES ('7', '0', '其他-master-up', '', 'fa fa-comment-o', '1001001', '1', '1', '0', '0', '2018-04-07 16:39:35', '2018-04-07 16:39:35', null, '0');
 INSERT INTO `md_menus` VALUES ('11', '0', '系统设置', '', 'fa fa-windows', '1001001', '1', '1', '51', '0', '2018-03-26 21:42:13', null, null, '0');
 INSERT INTO `md_menus` VALUES ('12', '11', '菜单列表', 'admin/core/menus', 'fa fa-bars', '1001001', '1', '1', '55', '1', '2018-03-27 19:49:53', '2018-03-21 22:24:46', null, '0');
@@ -639,6 +566,7 @@ INSERT INTO `md_menus` VALUES ('25', '21', '商品评价', 'shop/Comment/index',
 INSERT INTO `md_menus` VALUES ('26', '21', '购买咨询', 'shop/Consulation/index', 'fa fa-comments', '1001001', '1', '1', '19', '1', '2018-04-17 17:01:50', null, null, '0');
 INSERT INTO `md_menus` VALUES ('27', '0', '订单管理', 'shop/Order/index', 'fa fa-black-tie', '1001001', '1', '1', '22', '0', '2018-04-17 17:03:09', null, null, '0');
 INSERT INTO `md_menus` VALUES ('28', '21', '商城广告位', 'shop/Advertise/index', 'fa fa-bullhorn', '1001001', '1', '1', '26', '1', '2018-04-18 10:48:43', '2018-04-18 10:32:26', null, '0');
+INSERT INTO `md_menus` VALUES ('29', '27', '订单列表', 'shop/Order/index', 'fa fa-line-chart', '1001001', '1', '1', '23', '1', '2018-04-26 09:42:16', null, null, '1');
 
 -- ----------------------------
 -- Table structure for md_order
@@ -667,8 +595,8 @@ CREATE TABLE `md_order` (
 -- Records of md_order
 -- ----------------------------
 INSERT INTO `md_order` VALUES ('1', '2018042553489853', '3', '3', '5', '82:1', '宝马5系6系7系X5 X6 BO升降中置喇叭 原厂B&O全车音响喇叭x1', '8000.00', '0', '0', '2018-04-25 12:33:54', '2018-04-25 12:33:53', null, null);
-INSERT INTO `md_order` VALUES ('2', '2018042551545652', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-25 12:46:16', '2018-04-25 12:46:15', null, null);
-INSERT INTO `md_order` VALUES ('4', '2018042510110155', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-25 12:53:55', '2018-04-25 12:53:53', null, null);
+INSERT INTO `md_order` VALUES ('2', '2018042551545652', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '1', '1', '2018-04-26 09:51:13', '2018-04-25 12:46:15', null, null);
+INSERT INTO `md_order` VALUES ('4', '2018042510110155', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-26 14:27:50', '2018-04-26 14:27:50', null, null);
 
 -- ----------------------------
 -- Table structure for md_order_detail
@@ -724,37 +652,38 @@ CREATE TABLE `md_product` (
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`),
   KEY `shopId` (`shopId`,`categoryId`,`brandId`) USING BTREE COMMENT '店铺/分类/品牌'
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_product
 -- ----------------------------
-INSERT INTO `md_product` VALUES ('19', '0', '新疆棉花被手工棉被加厚冬被双人', '11', '1', '手工棉被 加厚 冬被', '350.00', '500.00', '4566', '0.00000', '28', '', '', '0', '3', '1', '10', '2018-04-23 13:15:18', '1499919035', '2018-04-19 10:25:25', null);
-INSERT INTO `md_product` VALUES ('20', '0', '飞虎1080P夜视高清汽车行车记录仪双镜头带电子狗', '15', '1', '行车 飞虎', '378.00', '499.00', '15', '0.00000', '29', '', '', '0', '3', '1', '10', '2018-04-23 13:15:21', '1499918278', null, null);
-INSERT INTO `md_product` VALUES ('22', '0', '正品1080P超高清汽车行车记录仪双镜头 夜视广角', '15', '1', '行车 双镜头', '68.00', '135.00', '16', '0.00000', '30', '', '', '0', '3', '1', '10', '2018-04-23 13:15:23', '1499918233', null, null);
-INSERT INTO `md_product` VALUES ('24', '0', '羽绒被95白鹅绒加厚保暖被子被芯冬被双人鸭绒被', '11', '1', '被子  羽绒被 ', '685.00', '857.00', '156', '0.00000', '31', '', '', '0', '3', '1', '10', '2018-04-25 14:01:23', '1499918991', null, null);
-INSERT INTO `md_product` VALUES ('27', '0', '民越现代简约茶几电视柜组合茶桌北欧客厅家具套装电视柜茶几组合', '7', '1', '客厅，家居，家具，茶几', '4000.00', '5000.00', '10', '0.00000', '32', '', '', '0', '27', '1', '10', '2018-04-23 13:15:36', '1499918699', null, null);
-INSERT INTO `md_product` VALUES ('33', '0', '整体移门衣柜 推拉门衣柜 卧室家具板式衣柜 定做定制衣柜衣帽间', '6', '1', '卧室，衣柜，家居，家具', '3900.00', '4900.00', '20', '0.00000', '33', '', '', '0', '19', '1', '10', '2018-04-23 13:15:50', '1499918635', null, null);
-INSERT INTO `md_product` VALUES ('35', '0', '凯立德7英寸汽车载GPS便携式导航仪电子狗测速一体机', '16', '1', '车载 导航 电子狗', '499.00', '1590.00', '100', '0.00000', '34', '', '', '0', '3', '1', '10', '2018-04-23 13:15:53', '1499918139', null, null);
-INSERT INTO `md_product` VALUES ('37', '0', '民越 北欧布艺床大小户型1.5米/1.8米双人婚床简约现代卧室软床', '6', '1', '', '3560.00', '4500.00', '40', '0.00000', '35', '', '', '0', '25', '1', '10', '2018-04-23 13:16:00', '1499918570', null, null);
-INSERT INTO `md_product` VALUES ('39', '0', '凯立德7寸 汽车载GPS导航仪 便携式高清导航', '15', '1', '高清 便携 导航', '599.00', '1199.00', '50', '0.00000', '36', '', '', '0', '3', '1', '10', '2018-04-23 13:16:06', '1499918094', null, null);
-INSERT INTO `md_product` VALUES ('48', '0', '奔驰新C级 GLC GLA CLA原厂倒车影像 原装c coupe 后视翻盖', '15', '1', '', '2500.00', '2680.00', '97', '0.00000', '37', '', '原装配件 无损安装', '0', '0', '1', '10', '2018-04-23 13:16:17', '1499917848', null, null);
-INSERT INTO `md_product` VALUES ('49', '0', '60支贡缎长绒棉简约纯色纯棉四件套', '12', '2', '60支 贡缎 长绒棉简约 纯色纯棉 四件套', '350.00', '750.00', '0', '0.00000', '38', '', '', '0', '2', '1', '10', '2018-04-23 13:16:22', '1499918951', null, null);
-INSERT INTO `md_product` VALUES ('51', '0', '纯色珊瑚绒四件套加厚保暖法莱绒韩版', '12', '2', '纯色珊瑚绒   四件套   加厚保暖   法莱绒  韩版', '263.00', '470.00', '670', '0.00000', '39', '', '', '0', '0', '1', '10', '2018-04-23 13:16:44', '1499918906', null, null);
-INSERT INTO `md_product` VALUES ('54', '0', '奔驰S级E级桃木方向盘改装迈巴赫桃木方向盘', '2', '2', '', '9600.00', '19600.00', '100', '0.00000', '40', '', '原装升级 支持上门 立马升级 无损安装 支持验货', '0', '0', '1', '10', '2018-04-23 13:16:56', '1499917791', null, null);
-INSERT INTO `md_product` VALUES ('66', '0', '汽车坐垫冬季大众四季通用车垫', '4', '2', '座垫 大众 通用', '426.00', '854.00', '200', '0.00000', '41', '', '', '0', '3', '1', '10', '2018-04-23 13:16:59', '1499918059', null, null);
-INSERT INTO `md_product` VALUES ('68', '0', '紫风铃2016新款四季通用新款汽车全包坐垫', '3', '2', '座垫 通用', '438.00', '876.00', '154', '0.00000', '42', '', '', '0', '3', '1', '10', '2018-04-23 13:17:09', '1499918012', null, null);
-INSERT INTO `md_product` VALUES ('75', '0', '顾家真皮沙发进口头层牛皮现代简约客厅家具8028X', '7', '2', '客厅，沙发，家居，家具', '13000.00', '15000.00', '6', '0.00000', '43', '', '', '0', '25', '1', '10', '2018-04-23 13:17:15', '1499918531', null, null);
-INSERT INTO `md_product` VALUES ('81', '0', '宝马5系6系7系 X3 X4 X5 X6 原厂装全液晶仪表盘', '3', '2', '', '4500.00', '9000.00', '99', '0.00000', '44', '', '原装升级 立马升级 无损安装 支持验货', '0', '0', '1', '10', '2018-04-23 13:17:17', '1499917750', null, null);
-INSERT INTO `md_product` VALUES ('82', '0', '宝马5系6系7系X5 X6 BO升降中置喇叭 原厂B&O全车音响喇叭', '3', '2', '', '8000.00', '16000.00', '100', null, '45', '', '原厂高配 天籁之音 高端奢华 革新技术', '0', '0', '1', '10', '2018-04-23 13:17:19', '1499917670', null, null);
-INSERT INTO `md_product` VALUES ('83', '0', '赢正现代中式餐边柜实木酒柜茶水柜餐厅碗柜厨房收纳柜储物柜橱柜', '7', '3', '厨房，实木，家具', '2100.00', '3000.00', '0', null, '46', '', '', '0', '25', '1', '10', '2018-04-23 13:22:45', '1499918487', null, null);
-INSERT INTO `md_product` VALUES ('84', '0', '定制餐边柜简约现代 简易储物收纳柜 厨房微波炉柜 阳台单体碗橱', '9', '3', '', '1400.00', '1700.00', '20', '0.00000', '47', '', '', '0', '25', '1', '10', '2018-04-23 13:22:36', '1499936426', null, null);
-INSERT INTO `md_product` VALUES ('89', '0', '出口法国五星级酒店加厚可折叠羽绒床垫', '13', '3', '', '723.00', '1230.00', '6750', null, '48', '', '', '0', '1', '1', '10', '2018-04-23 13:22:24', '1499918867', null, null);
-INSERT INTO `md_product` VALUES ('91', '0', ' 双层立体10厘米 羽绒床垫 床褥 95%白鹅绒床垫', '13', '3', '双层立体10厘米 羽绒床垫 床褥 95%白鹅绒床垫', '578.00', '1740.00', '0', null, '49', '', '', '0', '0', '1', '10', '2018-04-23 13:22:22', '1499918832', null, null);
-INSERT INTO `md_product` VALUES ('109', '0', '16款奥迪A6改装方口排气管12-15款奥迪A6LC7升级方形尾嘴尾喉后唇', '4', '3', '奥迪 排气管 车尾', '1889.00', '3990.00', '159', null, '50', '', '', '0', '3', '1', '10', '2018-04-19 13:04:22', '1499917492', null, null);
-INSERT INTO `md_product` VALUES ('110', '0', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装', '4', '3', '后备箱 奥迪', '2680.00', '4680.00', '97', null, '51', '', '', '0', '3', '1', '10', '2018-04-23 13:22:06', '1499936587', null, null);
-INSERT INTO `md_product` VALUES ('113', '0', '奥迪电动踏板 奥迪自动伸缩电踏板 q5 Q7智能自动脚踏板 奥迪改装', '4', '3', '奥迪 智能 踏板 改装', '4500.00', '6800.00', '159', null, '52', '', '', '0', '3', '1', '10', '2018-04-19 13:04:22', '1499917202', null, null);
-INSERT INTO `md_product` VALUES ('135', '0', 'BMW宝马原装原厂2014款X5 F15改装M款运动大包围 M空气动力学套件 隐形车身套餐', '3', '3', '', '79999.00', '51000.00', '100', null, '53', '', '运动升级 外观保护 持久如新', '0', '11', '1', '10', '2018-04-23 13:22:04', '1499917175', null, null);
+INSERT INTO `md_product` VALUES ('19', '0', '新疆棉花被手工棉被加厚冬被双人', '11', '1', '手工棉被 加厚 冬被', '350.00', '500.00', '4566', '0.00000', '28', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499919035', '2018-04-19 10:25:25', null);
+INSERT INTO `md_product` VALUES ('20', '0', '飞虎1080P夜视高清汽车行车记录仪双镜头带电子狗', '15', '1', '行车 飞虎', '378.00', '499.00', '15', '0.00000', '29', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918278', null, null);
+INSERT INTO `md_product` VALUES ('22', '0', '正品1080P超高清汽车行车记录仪双镜头 夜视广角', '15', '1', '行车 双镜头', '68.00', '135.00', '16', '0.00000', '30', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918233', null, null);
+INSERT INTO `md_product` VALUES ('24', '0', '羽绒被95白鹅绒加厚保暖被子被芯冬被双人鸭绒被', '11', '1', '被子  羽绒被 ', '685.00', '857.00', '156', '0.00000', '31', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918991', null, null);
+INSERT INTO `md_product` VALUES ('27', '0', '民越现代简约茶几电视柜组合茶桌北欧客厅家具套装电视柜茶几组合', '7', '1', '客厅，家居，家具，茶几', '4000.00', '5000.00', '10', '0.00000', '32', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918699', null, null);
+INSERT INTO `md_product` VALUES ('33', '0', '整体移门衣柜 推拉门衣柜 卧室家具板式衣柜 定做定制衣柜衣帽间', '6', '1', '卧室，衣柜，家居，家具', '3900.00', '4900.00', '20', '0.00000', '33', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918635', null, null);
+INSERT INTO `md_product` VALUES ('35', '0', '凯立德7英寸汽车载GPS便携式导航仪电子狗测速一体机', '16', '1', '车载 导航 电子狗', '499.00', '1590.00', '100', '0.00000', '34', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918139', null, null);
+INSERT INTO `md_product` VALUES ('37', '0', '民越 北欧布艺床大小户型1.5米/1.8米双人婚床简约现代卧室软床', '6', '1', '', '3560.00', '4500.00', '40', '0.00000', '35', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918570', null, null);
+INSERT INTO `md_product` VALUES ('39', '0', '凯立德7寸 汽车载GPS导航仪 便携式高清导航', '15', '1', '高清 便携 导航', '599.00', '1199.00', '50', '0.00000', '36', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918094', null, null);
+INSERT INTO `md_product` VALUES ('48', '0', '奔驰新C级 GLC GLA CLA原厂倒车影像 原装c coupe 后视翻盖', '15', '1', '', '2500.00', '2680.00', '97', '0.00000', '37', '', '原装配件 无损安装', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499917848', null, null);
+INSERT INTO `md_product` VALUES ('49', '0', '60支贡缎长绒棉简约纯色纯棉四件套', '12', '2', '60支 贡缎 长绒棉简约 纯色纯棉 四件套', '350.00', '750.00', '0', '0.00000', '38', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918951', null, null);
+INSERT INTO `md_product` VALUES ('51', '0', '纯色珊瑚绒四件套加厚保暖法莱绒韩版', '12', '2', '纯色珊瑚绒   四件套   加厚保暖   法莱绒  韩版', '263.00', '470.00', '670', '0.00000', '39', '', '', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499918906', null, null);
+INSERT INTO `md_product` VALUES ('54', '0', '奔驰S级E级桃木方向盘改装迈巴赫桃木方向盘', '2', '2', '', '9600.00', '19600.00', '100', '0.00000', '40', '', '原装升级 支持上门 立马升级 无损安装 支持验货', '0', '1', '1', '10', '2018-04-26 10:45:50', '1499917791', null, null);
+INSERT INTO `md_product` VALUES ('66', '0', '汽车坐垫冬季大众四季通用车垫', '4', '2', '座垫 大众 通用', '426.00', '854.00', '200', '0.00000', '41', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918059', null, null);
+INSERT INTO `md_product` VALUES ('68', '0', '紫风铃2016新款四季通用新款汽车全包坐垫', '3', '2', '座垫 通用', '438.00', '876.00', '154', '0.00000', '42', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918012', null, null);
+INSERT INTO `md_product` VALUES ('75', '0', '顾家真皮沙发进口头层牛皮现代简约客厅家具8028X', '7', '2', '客厅，沙发，家居，家具', '13000.00', '15000.00', '6', '0.00000', '43', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918531', null, null);
+INSERT INTO `md_product` VALUES ('81', '0', '宝马5系6系7系 X3 X4 X5 X6 原厂装全液晶仪表盘', '3', '2', '', '4500.00', '9000.00', '99', '0.00000', '44', '', '原装升级 立马升级 无损安装 支持验货', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499917750', null, null);
+INSERT INTO `md_product` VALUES ('82', '0', '宝马5系6系7系X5 X6 BO升降中置喇叭 原厂B&O全车音响喇叭', '3', '2', '', '8000.00', '16000.00', '100', null, '45', '', '原厂高配 天籁之音 高端奢华 革新技术', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499917670', null, null);
+INSERT INTO `md_product` VALUES ('83', '0', '赢正现代中式餐边柜实木酒柜茶水柜餐厅碗柜厨房收纳柜储物柜橱柜', '7', '3', '厨房，实木，家具', '2100.00', '3000.00', '0', null, '46', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918487', null, null);
+INSERT INTO `md_product` VALUES ('84', '0', '定制餐边柜简约现代 简易储物收纳柜 厨房微波炉柜 阳台单体碗橱', '9', '3', '', '1400.00', '1700.00', '20', '0.00000', '47', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499936426', null, null);
+INSERT INTO `md_product` VALUES ('89', '0', '出口法国五星级酒店加厚可折叠羽绒床垫', '13', '3', '', '723.00', '1230.00', '6750', null, '48', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918867', null, null);
+INSERT INTO `md_product` VALUES ('91', '0', ' 双层立体10厘米 羽绒床垫 床褥 95%白鹅绒床垫', '13', '3', '双层立体10厘米 羽绒床垫 床褥 95%白鹅绒床垫', '578.00', '1740.00', '0', null, '49', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499918832', null, null);
+INSERT INTO `md_product` VALUES ('109', '0', '16款奥迪A6改装方口排气管12-15款奥迪A6LC7升级方形尾嘴尾喉后唇', '4', '3', '奥迪 排气管 车尾', '1889.00', '3990.00', '159', null, '50', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499917492', null, null);
+INSERT INTO `md_product` VALUES ('110', '0', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装', '4', '3', '后备箱 奥迪', '2680.00', '4680.00', '97', null, '51', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499936587', null, null);
+INSERT INTO `md_product` VALUES ('113', '0', '奥迪电动踏板 奥迪自动伸缩电踏板 q5 Q7智能自动脚踏板 奥迪改装', '4', '3', '奥迪 智能 踏板 改装', '4500.00', '6800.00', '159', null, '52', '', '', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499917202', null, null);
+INSERT INTO `md_product` VALUES ('135', '0', 'BMW宝马原装原厂2014款X5 F15改装M款运动大包围 M空气动力学套件 隐形车身套餐', '3', '3', '', '79999.00', '51000.00', '100', null, '53', '', '运动升级 外观保护 持久如新', '0', '2', '1', '10', '2018-04-26 10:45:55', '1499917175', null, null);
+INSERT INTO `md_product` VALUES ('136', '0', '小猪佩琪', '8', '3', '小猪佩琪', '999.00', '1999.00', '1999', null, '116,117,118', '小猪佩琪小猪佩琪', '<p><img style=\"width: 500px;\" src=\"/public//upload/default/20180426161943203553.jpg\" data-filename=\"image name\"></p><p><br></p><p><b>小猪佩琪小猪佩琪小猪佩琪小猪佩琪</b><br></p>', '0', '2', '1', '97', '2018-04-26 16:22:36', '1', null, null);
 
 -- ----------------------------
 -- Table structure for md_product_copy
@@ -4561,12 +4490,15 @@ CREATE TABLE `md_roles` (
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
   `created_user` int(11) DEFAULT NULL COMMENT '添加人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of md_roles
 -- ----------------------------
 INSERT INTO `md_roles` VALUES ('1', '0', '0', '0', '1', '超级管理员', '', '0', '2018-03-27 20:52:49', null, null, '1');
+INSERT INTO `md_roles` VALUES ('2', '0', '1', '0', '2', '销售组', '27,21,28,24,26,25,22,23', '12', '2018-04-26 09:23:32', null, null, '1');
+INSERT INTO `md_roles` VALUES ('3', '0', '0', '0', '1', '店铺超级管理员', '27,21,28,24,26,25,22,23', '19', '2018-04-26 09:37:19', null, null, '1');
+INSERT INTO `md_roles` VALUES ('4', '0', '0', '0', '1', '客服部', '1,7', '19', '2018-04-26 09:39:57', null, null, '1');
 
 -- ----------------------------
 -- Table structure for md_search_history
