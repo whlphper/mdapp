@@ -14,6 +14,7 @@ use think\Exception;
 use think\Request;
 use ipsPay\IpsPaySubmit;
 use ipsPay\IpsPayNotify;
+use think\Log;
 
 /**
  * IPS环迅支付接口类
@@ -29,11 +30,11 @@ class Ips
     {
         $ipspay_config['Version'] = 'v1.0.0';
         //商戶號
-        $ipspay_config['MerCode'] = '';
+        $ipspay_config['MerCode'] = '208758';
         //交易賬戶號
-        $ipspay_config['Account'] = '';
+        $ipspay_config['Account'] = '2087580011';
         //商戶證書
-        $ipspay_config['MerCert'] = '';
+        $ipspay_config['MerCert'] = '6uBYqTS9QneU3H96X7bo65MbOyMXSZnCtFk94sVDTBVZ3QXFG6VpyLbKuueunNjQVd04vFhXBLlMfE8Y7yk2plZeNtrtr04f2PhcrNZ2xxn0GGN634KLaedsOUCDZ9lo';
         //請求地址
         $ipspay_config['PostUrl'] = 'https://newpay.ips.com.cn/psfp-entry/gateway/payment.do';
         //服务器S2S通知页面路径
@@ -142,9 +143,11 @@ class Ips
                 $paymentResult = $_REQUEST['paymentResult'];
                 $xmlResult = new \SimpleXMLElement($paymentResult);
                 $status = $xmlResult->GateWayRsp->body->Status;
+                Log::notice('IPS通知status='.$status);
                 if($status == "Y"){
                     // 商户订单号
                     $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;
+                    Log::notice('IPS返回了我们给他的订单号='.$merBillNo);
                     // 总额
                     $amount = $xmlResult->GateWayRsp->body->Amount;
                     // IPS订单号

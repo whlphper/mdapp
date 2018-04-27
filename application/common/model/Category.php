@@ -14,6 +14,19 @@ class Category extends Base{
     public $proJoin = [['File b','a.poster=b.id','left']];
     public $proOrder= 'a.sort desc';
 
+    public function getStatusAttr($value)
+    {
+        $status = [0=>'关闭',1=>'开启'];
+        return $status[$value];
+    }
+
+    public function getIsNavAttr($value)
+    {
+        $status = [0=>'非导航',1=>'导航显示'];
+        return $status[$value];
+    }
+
+
     /**
      * 商城首页导航以及左侧商品分类
      * @return mixed

@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
-class Index
+use app\common\model\Crmorder;
+use think\Controller;
+class Index extends Controller
 {
     protected $beforeActionList = [
         //'first',                                //在执行所有方法前都会执行first方法
@@ -11,6 +13,17 @@ class Index
     public function second()
     {
         echo 'second';exit;
+    }
+
+    public function hello()
+    {
+        echo 'hello';exit;
+    }
+
+    public function three()
+    {
+        $this->redirect(url('/pcshop/'));
+        echo 'three';exit;
     }
 
     public function index()

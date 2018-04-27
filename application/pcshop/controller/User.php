@@ -14,6 +14,9 @@ use think\Db;
 class User extends Base
 {
     public $selfModel = null;
+    protected $beforeActionList = [
+        'illegalPcshopUser'=>['except'=>'login,checkuser,logout'],
+    ];
     public function __construct(Request $request = null)
     {
         parent::__construct($request);

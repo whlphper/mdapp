@@ -17,7 +17,7 @@ class Category extends Base{
         $this->modelName = 'Category';
         $this->theme = '分类';
         $this->order = 'a.level asc,a.sort desc';
-        $this->field = 'a.id,a.poster,a.name,a.desc,a.pid,a.top,a.poster,a.sort,a.isNav,a.created_at,a.created_user,b.name as pName,c.savePath as posterPath';
+        $this->field = 'a.id,a.poster,a.name,a.desc,a.pid,a.top,a.poster,a.sort,a.isNav,a.status,a.created_at,a.created_user,b.name as pName,c.savePath as posterPath';
         $this->join = [['Category b','a.pid=b.id','left'],['File c','a.poster=c.id','left']];
         $this->model = model($this->modelName);
     }

@@ -1,37 +1,9 @@
 {include file="admin@public/store"}
 <!--这里引入本页面需要的JS 以及脚本-->
-<!--select-->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-select/dist/css/bootstrap-select.css">
-<!--select-->
-<script src="__PUBLIC__/plugins/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<!-- iCheck -->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
-<!--ickeck-->
-<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
-<!-- validate-->
-<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
-<!--iconlist-->
-<script src="__PUBLIC__/dict/fontawesome.icon.js"></script>
-<style>
-    .mdIconList{border:1px solid #eee;cursor: pointer;padding: 5px;}
-    .fontawesomeList{display: none;position: absolute;left:250px;width:200px;z-index: 200;background: aliceblue;height:200px;overflow: auto;}
-</style>
 <script type="text/javascript">
     $(document).ready(function () {
-        var id = session("mdBrandId");
-        if(id){
-            var url = "{:url('shop/Brand/getRowData')}";
-            var data = {};
-            data.id = id;
-            mdAjax(false,url,data,function(res){
-                assign(res.data,'mdBrandForm');
-                layer.closeAll("loading");
-            });
-        }
-    });
 
+    });
 </script>
 <!--这里引入本页面需要的JS 以及脚本-->
 </head>

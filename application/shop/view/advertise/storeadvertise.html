@@ -5,47 +5,7 @@
 <script src="__PUBLIC__/plugins/summernote/lang/summernote-zh-CN.min.js"></script>
 <!-- 编辑器 -->
 <!--这里引入本页面需要的JS 以及脚本-->
-<!--select-->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-select/dist/css/bootstrap-select.css">
-<!-- iCheck -->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
-<!--select-->
-<script src="__PUBLIC__/plugins/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<!--ickeck-->
-<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
-<!-- validate-->
-<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
-<!--iconlist-->
-<script src="__PUBLIC__/dict/fontawesome.icon.js"></script>
-<script src="__PUBLIC__/core/upImg.js"></script>
-<script src="__PUBLIC__/core/global.js"></script>
-<style>
-    .mdIconList{border:1px solid #eee;cursor: pointer;padding: 5px;}
-    .fontawesomeList{display: none;position: absolute;left:250px;width:200px;z-index: 200;background: aliceblue;height:200px;overflow: auto;}
-</style>
 <script type="text/javascript">
-    $(document).ready(function () {
-        var id = session("mdAdvertiseId");
-        if (id) {
-            var url = "{:url('shop/Advertise/getRowData')}";
-            var data = {};
-            data.id = id;
-            mdAjax(false, url, data, function (res) {
-                assign(res.data, 'mdAdvertiseForm');
-                layer.closeAll("loading");
-            });
-        }else{
-            inputAssign('mdAdvertiseForm','radio','1','isBlank',1);
-            $("#mdAdvertiseForm").find('input').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green',
-                increaseArea: '30%', // optional
-                labelHover: false
-            });
-        }
-    });
 
 </script>
 <!--这里引入本页面需要的JS 以及脚本-->
@@ -55,7 +15,7 @@
 <!--主体内容-->
 <div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow: auto;">
     <div class="modal-dialog">
-        <form action="{:url('shop/Advertise/saveToTable')}" id="mdAdvertiseForm">
+        <form action="{:url('shop/Advertise/saveToTable')}" id="md{$ctrName}Form">
             <input type="hidden" name="id" value="">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,8 +100,15 @@
 
                     <div class="form-group">
                         <label>新标签打开:</label>
-                        <div>
-                            <input  type="radio" name="isBlank" value="1">
+                        <div class="input-group">
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="isblocksuccess" value="1" name="isBlank" >
+                                <label for="isblocksuccess">是</label>
+                            </div>
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="isblockerror" value="0" name="isBlank">
+                                <label for="isblockerror">否</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,7 +116,7 @@
                     <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
                             class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
                     </button>
-                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sysAdvertiseTable"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sys{$ctrName}Table"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
                     </button>
                 </div>
             </div><!-- /.modal-content -->

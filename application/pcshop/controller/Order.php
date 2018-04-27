@@ -16,6 +16,10 @@ use ipsPay\Ips;
 
 class Order extends Base
 {
+    protected $beforeActionList = [
+        'illegalPcshopUser'=>['only'=>'checkoutOrder'],
+    ];
+
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
@@ -26,6 +30,7 @@ class Order extends Base
         $this->join = [['Product b','a.productId=b.id','left'],['File c','b.album=c.id','left']];
         $this->model = model($this->modelName);
     }
+
 
 
     /**
@@ -170,6 +175,11 @@ class Order extends Base
             mdLog($e);
             echo $e->getMessage();
         }
+    }
+
+    public function orderFial()
+    {
+        echo 'system error';
     }
 
     /**

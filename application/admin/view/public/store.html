@@ -1,5 +1,25 @@
+<!--单选复选框-->
+<link rel="stylesheet" href="__PUBLIC__/bootstrap/css/build.css">
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
 <script>
     $(document).ready(function(){
+        /*|--表单是否为编辑--|*/
+        var id = session("md{$ctrName}Id");
+        if (id) {
+            var url = "{$fromDataUrl}";
+            var data = {};
+            data.id = id;
+            mdAjax(false, url, data, function (res) {
+                assign(res.data, 'md{$ctrName}Form');
+                layer.closeAll("loading");
+            });
+        }
+        /*|--表单是否为编辑--|*/
+
+        /*|--表单提交--|*/
         $(".form-submit").click(function(){
             var table = $(this).attr("data-table");
             mdBtnEvent($(this),function(res){
@@ -11,5 +31,6 @@
         $(".form-back").click(function(){
             window.history.back();
         });
+        /*|--表单提交--|*/
     });
 </script>

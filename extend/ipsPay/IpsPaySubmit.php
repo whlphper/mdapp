@@ -105,16 +105,4 @@ class IpsPaySubmit
         $sReqXmlBody .= "</body>";
         return $sReqXmlBody;
     }
-
-    function respond()
-    {
-        $ipspayNotify = new IpsPayNotify($ipspay_config);
-        $verify_result = $ipspayNotify->verifyReturn();
-
-        if ($verify_result) { // 验证成功
-            echo "ipscheckok";
-        } else {
-            echo "ipscheckfail";
-        }
-    }
 }

@@ -135,7 +135,6 @@ function mdBtnEvent(e, callBack) {
         formJson.new = diffNewField;
     }
     mdAjax(e, action, formJson, callBack);
-    //}
 }
 
 /**
@@ -164,71 +163,77 @@ function getOldFormData(formId) {
  * @param resType  返回数据格式 默认JSON
  */
 function mdAjax(_this, action, formJson, callBack, type, resType) {
-    var type = type ? type : "POST";
-    var resType = resType ? resType : "json";
-    if (_this == '' || !_this) {
-        _this = false;
-    }
-    // 发送ajax
-    $.ajax({
-        url: action,    //请求的url地址
-        dataType: resType,   //返回格式为json
-        async: true,//请求是否异步，默认为异步，这也是ajax重要特性
-        data: formJson,    //参数值
-        type: type,   //请求方式
-        beforeSend: function () {
-            //请求前的处理
-            // 禁用按钮
-            if (_this) {
-                _this.attr("disabled", "disabled")
-            }
-            var layerLoadding = layer.load(2, {
-                shade: [0.2, '#fff'] //0.1透明度的白色背景
-            });
-        },
-        success: function (response) {
-            if (resType == 'html') {
-                callBack(response);
-                return;
-            }
-            //请求成功时处理
-            switch (response["code"]) {
-                case 0:
-                    layer.msg(response.msg, {icon: 2});
-                    layer.closeAll("loading");
-                    break;
-                case 1:
-                    if (response.msg != '' && response.msg != undefined) {
-                        layer.msg(response.msg, {icon: 1});
-                    }
-                    if (response["data"]) {
-                        session("oldFormData", JSON.stringify(response["data"]));
-                    }
-                    callBack(response);
-                    break;
-                case 2:
-                    layer.msg(response.msg, {icon: 3});
-                    break;
-                default:
-                    layer.closeAll("loading");
-                    console.log(response);
-                    callBack(response);
-                    break;
-            }
-        },
-        complete: function () {
-            //layer.closeAll("loading");
-            //请求完成的处理
-            if (_this) {
-                _this.removeAttr("disabled");
-            }
-        },
-        error: function () {
-            layer.closeAll("loading");
-            //请求出错处理
-            layer.msg('系统出错,请重试', {icon: 2});
+    try{
+        var type = type ? type : "POST";
+        var resType = resType ? resType : "json";
+        if (_this == '' || !_this) {
+            _this = false;
         }
-    });
+        // 发送ajax
+        $.ajax({
+            url: action,    //请求的url地址
+            dataType: resType,   //返回格式为json
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: formJson,    //参数值
+            type: type,   //请求方式
+            beforeSend: function () {
+                //请求前的处理
+                // 禁用按钮
+                if (_this) {
+                    _this.attr("disabled", "disabled")
+                }
+                var layerLoadding = layer.load(2, {
+                    shade: [0.2, '#fff'] //0.1透明度的白色背景
+                });
+            },
+            success: function (response) {
+                if (resType == 'html') {
+                    callBack(response);
+                    return;
+                }
+                //请求成功时处理
+                switch (response["code"]) {
+                    case 0:
+                        layer.msg(response.msg, {icon: 2});
+                        layer.closeAll("loading");
+                        break;
+                    case 1:
+                        if (response.msg != '' && response.msg != undefined) {
+                            layer.msg(response.msg, {icon: 1});
+                        }
+                        if (response["data"]) {
+                            session("oldFormData", JSON.stringify(response["data"]));
+                        }
+                        callBack(response);
+                        break;
+                    case 2:
+                        layer.msg(response.msg, {icon: 3});
+                        break;
+                    default:
+                        layer.closeAll("loading");
+                        callBack(response);
+                        break;
+                }
+            },
+            complete: function () {
+                //layer.closeAll("loading");
+                //请求完成的处理
+                if (_this) {
+                    _this.removeAttr("disabled");
+                }
+            },
+            error: function () {
+                layer.closeAll("loading");
+                //请求出错处理
+                layer.msg('系统出错,请重试', {icon: 2});
+            }
+        });
+    }catch(err){
+        var errorMsg = '';
+        errorMsg="页面发生错误.\n\n";
+        errorMsg+="错误信息: " + err.message + "\n\n";
+        layer.msg(errorMsg,{icon:0});
+    }
 }
 
 /*

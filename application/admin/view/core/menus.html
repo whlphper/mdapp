@@ -1,5 +1,4 @@
 {include file="admin@public/header"}
-{include file="admin@public/search"}
 <!--这里引入本页面需要的JS 以及脚本-->
 <link rel="stylesheet" href="__PUBLIC__/bootstrap/table/bootstrap-table.css">
 <script src="__PUBLIC__/bootstrap/table/bootstrap-table.js"></script>
@@ -10,6 +9,29 @@
 <script src="__PUBLIC__/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        // 搜索
+        $(".bootstrap-search").click(function(){
+            var form = $(this).closest("form").eq(0);
+            var refreshTable = $(this).attr("refreshTableID");
+            var formId = form.attr("id");
+            var data = $("#"+formId).serializeArray();
+            var d = {};
+            d._tm = new Date();
+            $.each(data, function() {
+                d[this.name] = this.value;
+            });
+            $("#"+refreshTable).bootstrapTable('refresh',{
+                query: d
+            });
+        });
+        // 重置
+        $(".bootstrap-reset").click(function(){
+            var form = $(this).closest("form").eq(0);
+            var formId = form.attr("id");
+            $("#"+formId)[0].reset();
+            var refreshTable = $(this).attr("refreshTableID");
+            $("#"+refreshTable).bootstrapTable('refresh');
+        });
         $(".insert").click(function(){
             var url = "{:url('/admin/Core/storeMenu')}";
             sessionStorage.removeItem("mdMenuId");

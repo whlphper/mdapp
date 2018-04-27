@@ -1,22 +1,10 @@
 {include file="admin@public/store"}
-<!--单选复选框-->
-<link rel="stylesheet" href="__PUBLIC__/bootstrap/css/build.css">
 <!-- 编辑器 -->
 <link rel="stylesheet" href="__PUBLIC__/plugins/summernote/summernote.css">
 <script src="__PUBLIC__/plugins/summernote/summernote.min.js"></script>
 <script src="__PUBLIC__/plugins/summernote/lang/summernote-zh-CN.min.js"></script>
 <!-- 编辑器 -->
 <!--这里引入本页面需要的JS 以及脚本-->
-<!-- validate-->
-<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
-<!--iconlist-->
-<script src="__PUBLIC__/dict/fontawesome.icon.js"></script>
-<style>
-    .mdIconList{border:1px solid #eee;cursor: pointer;padding: 5px;}
-    .fontawesomeList{display: none;position: absolute;left:250px;width:200px;z-index: 200;background: aliceblue;height:200px;overflow: auto;}
-</style>
 <script type="text/javascript">
     $(document).ready(function () {
         var backurl = "{:url('admin/Index/uploadImage')}";
@@ -38,19 +26,7 @@
         var url = "{:url('admin/Index/initSelect')}";
         initDataList(url, 'menulist', 'Category', ['status', 1], 'id,pid,name,level', 'a.level asc,a.sort desc', 'id', 'pid');
         initDataList(url, 'brandlist', 'Brand', '', 'id,name', 'a.sort desc');
-        var id = session("mdProductId");
-        if (id) {
-            var url = "{:url('shop/Product/getRowData')}";
-            var data = {};
-            data.id = id;
-            mdAjax(false, url, data, function (res) {
-                res.data.test = '1,2';
-                assign(res.data, 'mdProductForm');
-                layer.closeAll("loading");
-            });
-        }
     });
-
 </script>
 <!--这里引入本页面需要的JS 以及脚本-->
 </head>
@@ -211,7 +187,7 @@
 
             </div>
             <div>
-                <div class="modal-footer" style="background-color: lightgrey;">
+                <div class="modal-footer" style="background-color: lavender" >
                     <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
                             class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
                     </button>

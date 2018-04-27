@@ -32,7 +32,7 @@ class IpsPayNotify
                 $paymentResult = $_REQUEST['paymentResult'];
                 Log::notice("环迅支付返回报文:" . $paymentResult);
 
-                $xmlResult = new SimpleXMLElement($paymentResult);
+                $xmlResult = new \SimpleXMLElement($paymentResult);
                 $strSignature = $xmlResult->GateWayRsp->head->Signature;
 
                 $retEncodeType =$xmlResult->GateWayRsp->body->RetEncodeType;

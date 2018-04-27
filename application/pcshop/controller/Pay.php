@@ -18,6 +18,10 @@ use ipsPay\IpsPayNotify;
 
 class Pay extends Base
 {
+    protected $beforeActionList = [
+        'illegalPcshopUser'=>['only'=>'unionPay,ipsPay'],
+    ];
+
     /**
      * 银联支付 - pcshop
      * @param $orderId
@@ -292,7 +296,7 @@ class Pay extends Base
     {
         try{
             /***************************  对方的文档 */
-            $md5Key = '098756421346975';
+            $md5Key = '640835760195428';
             $data = Request::instance()->only(['pickupUrl','receiveUrl','signType','orderNo','orderAmount','orderCurrency','customerId','sign']);
             if(empty($data['orderNo'])){
                 throw new \Exception('请输入订单编号');
@@ -307,7 +311,6 @@ class Pay extends Base
             // 插入crm过来订单
             $oldOrder = model('Crmorderips')->getRow(['orderNo'=>$data['orderNo']],'a.id,a.orderNo');
             if($oldOrder['code'] == 0){
-                $data['transactionId'] = $this->getTransId();
                 $orderRes = model('Crmorderips')->saveData($data,'Crmorderips','CRM订单-ipspay','0425');
                 if($orderRes['code'] == 0){
                     throw new \Exception('订单保存失败'.$orderRes['msg']);
@@ -348,6 +351,7 @@ class Pay extends Base
                     // 订单金额
                     $dealFee = $res['amount'];
                     $tradeNumber = $res['merBillNo'];
+                    $transcationId = $res['ipsTradeNo'];
                     // 判断订单是否已经支付成功了
                     $sucOrder = model('Crmorderips')->getRow(['orderNo'=>$tradeNumber],'a.*');
                     Log::notice('LW-环迅ips订单信息'.json_encode($sucOrder));
@@ -361,10 +365,10 @@ class Pay extends Base
                     // 判断LeanWork是否处理成功了该笔订单
                     if($orderInfo['status'] != 'success'){
                         // LW md5key
-                        $md5Key = '098756421346975';
+                        $md5Key = '640835760195428';
                         $notifyUrl = $orderInfo['receiveUrl'];
-                        $trueSign = md5($orderInfo['signType'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$orderInfo['transactionId'].'success'.$md5Key);
-                        $param = 'signType=MD5&orderNo='.$orderInfo['orderNo'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$orderInfo['transactionId'].'&status=success&sign='.$trueSign;
+                        $trueSign = md5($orderInfo['signType'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$transcationId.'success'.$md5Key);
+                        $param = 'signType=MD5&orderNo='.$orderInfo['orderNo'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$transcationId.'&status=success&sign='.$trueSign;
                         // 回调我们的时候需要再次回调给Leanwork
                         /**********************************/
                         $regularUrl = $notifyUrl.'?'.$param;
@@ -376,7 +380,7 @@ class Pay extends Base
                         curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
                         $file_contents = curl_exec($ch);
                         if($file_contents){
-                            file_put_contents('lwUnionpayNoyify.txt',$file_contents);
+                            file_put_contents('lwIpspayNoyify.txt',$file_contents);
                             Log::notice('环迅支付回调LW后的返回信息为'.$file_contents);
                             // 写入订单状态
                             model('Crmorderips')->save(['status'=>$file_contents],['id'=>$orderInfo['id']]);
@@ -412,7 +416,7 @@ class Pay extends Base
             }
             $domain = Request::instance()->domain();
             $pickUrl = $domain.url('pcshop/Order/orderSuccess',['type'=>'ips']);
-            $notify  = $domain.url('pcshop/Order/ipspayNoyify');
+            $notify  = $domain.url('pcshop/Pay/ipspayNoyify');
             $failurl = $domain.url('pcshop/Order/orderFial');
             $ips = new Ips($notify,$pickUrl);
             $orderInfo['data']['orderNo'] = $orderInfo['data']['tradeNumber'];
@@ -440,6 +444,7 @@ class Pay extends Base
             $notify = $domain.url('pcshop/Pay/lwIpspayNoyify');
             $ips = new Ips($notify,$pickUrl);
             $res = $ips->respond();
+            Log::notice('IPS pay 回调返回的数据'.json_encode($res));
             switch ($res['code']){
                 case 0:
                     throw new \Exception($res['msg']);

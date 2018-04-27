@@ -25,7 +25,7 @@ class Order extends Base{
 
     public function getPayTypeAttr($value)
     {
-        $status = [1=>'支付宝',2=>'微信',3=>'银联支付'];
+        $status = [1=>'支付宝',2=>'微信',3=>'银联支付',4=>'环迅支付'];
         return $status[$value];
     }
 

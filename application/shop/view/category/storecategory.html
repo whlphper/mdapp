@@ -1,50 +1,11 @@
 {include file="admin@public/store"}
 <!--这里引入本页面需要的JS 以及脚本-->
-<!--select-->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-select/dist/css/bootstrap-select.css">
-<!-- iCheck -->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
-<!--select-->
-<script src="__PUBLIC__/plugins/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<!--ickeck-->
-<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
-<!-- validate-->
-<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
-<!--iconlist-->
-<script src="__PUBLIC__/dict/fontawesome.icon.js"></script>
-<style>
-    .mdIconList{border:1px solid #eee;cursor: pointer;padding: 5px;}
-    .fontawesomeList{display: none;position: absolute;left:250px;width:200px;z-index: 200;background: aliceblue;height:200px;overflow: auto;}
-</style>
 <script type="text/javascript">
     $(document).ready(function () {
         // 生成select checkbox 信息
         var url = "{:url('admin/Index/initSelect')}";
-            initDataList(url,'menulist','Category',['status',1],'id,pid,name,level','a.sort desc','id','pid');
-        var id = session("mdCategoryId");
-        if(id){
-            var url = "{:url('shop/Category/getRowData')}";
-            var data = {};
-            data.id = id;
-            mdAjax(false,url,data,function(res){
-                assign(res.data,'mdCategoryForm');
-                layer.closeAll("loading");
-            });
-        }else{
-            inputAssign('mdCategoryForm','radio','1','status',1);
-            inputAssign('mdCategoryForm','radio','1','isNav',1);
-            $("#mdCategoryForm").find('input').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green',
-                increaseArea: '30%', // optional
-                labelHover: false
-            });
-            layer.closeAll("loading");
-        }
+        initDataList(url,'menulist','Category',['status',1],'id,pid,name,level','a.sort desc','id','pid');
     });
-
 </script>
 <!--这里引入本页面需要的JS 以及脚本-->
 </head>
@@ -114,14 +75,24 @@
                     </div>
                     <div class="form-group">
                         <label>是否开启:</label>
-                        <div>
-                            <input  type="radio" name="status" value="1">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="statusksuccess" value="1" name="status" >
+                            <label for="statusksuccess">是</label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="statuskerror" value="0" name="status">
+                            <label for="statuskerror">否</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>导航显示:</label>
-                        <div>
-                            <input  type="radio" name="isNav" value="1">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="navksuccess" value="1" name="isNav" >
+                            <label for="navksuccess">是</label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="naverror" value="0" name="isNav">
+                            <label for="naverror">否</label>
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,12 @@ class Base extends Controller
     {
         // 用户访问模块
         $module = Request::instance()->module();
+        $ctr    = Request::instance()->controller();
+        $this->assign('ctrName',$ctr);
+        $this->assign('fromDataUrl',url($module.'/'.$ctr.'/getRowData'));
+        $this->assign('fromSaveUrl',url($module.'/'.$ctr.'/store'.$ctr));
+        $this->assign('delDataUrl',url($module.'/'.$ctr.'/deleteToTable'));
+        $this->assign('tableDataUrl',url($module.'/'.$ctr.'/getTableData'));
         switch ($module) {
             // 后台管理模块
             case 'admin':
@@ -54,6 +60,17 @@ class Base extends Controller
                 break;
         }
 
+    }
+
+    /**
+     * 商户模块用户未登录前置函数
+     */
+    public function illegalPcshopUser()
+    {
+        if(empty(session("pcshopUserId"))){
+            $strUrl = url('/pcshop/User/login');
+            $this->redirect($strUrl);
+        }
     }
 
 

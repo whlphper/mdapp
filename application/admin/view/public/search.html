@@ -1,5 +1,27 @@
 <script>
     $(document).ready(function(){
+        // 新增数据
+        $(".insert").click(function () {
+            var url = "{$fromSaveUrl}";
+            sessionStorage.removeItem("md{$ctrName}Id");
+            mdAjax($(this), url, {}, function (res) {
+                mdFormModal(res);
+                layer.closeAll("loading");
+            }, 'get', 'html');
+        });
+        // 删除数据
+        $(".deleteMore").click(function () {
+            var table = $(this).attr('data-table');
+            var checked = mdGetTableChecked(table);
+            if (!checked) {
+                layer.msg('请选择要删除的数据', {icon: 0});
+                return
+            }
+            checked = checked.join(',');
+            var url = '{$delDataUrl}' + '?id='+ checked;
+            mdConfirmModal('modal-sm', '提示', '确定批量删除此数据吗?', url, table);
+        });
+
         // 搜索
         $(".bootstrap-search").click(function(){
             var form = $(this).closest("form").eq(0);
@@ -24,4 +46,25 @@
             $("#"+refreshTable).bootstrapTable('refresh');
         });
     });
+
+    //每行操作渲染
+    function actionFormatter() {
+        return '<div class="btn-group"><button class="btn bg-olive btn-sm edit">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn  bg-orange btn-sm delete">删除</button></div>';
+    }
+
+    //每行操作对应事件
+    window.actionEvents = {
+        'click .delete': function (e, value, row, index) {
+            var url = "{$delDataUrl}"+'?id='+row.id;
+            var table = 'sys{$ctrName}Table';
+            mdConfirmModal('modal-sm', '提示', '确定删除这些数据吗?删除后不可恢复,请谨慎操作', url, table);
+        },
+        'click .edit': function (e, value, row, index) {
+            var url = "{$fromSaveUrl}";
+            session("md{$ctrName}Id", row.id);
+            mdAjax($(this), url, {}, function (res) {
+                mdFormModal(res);
+            }, 'get', 'html');
+        },
+    };
 </script>
