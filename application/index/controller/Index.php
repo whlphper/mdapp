@@ -2,6 +2,17 @@
 namespace app\index\controller;
 class Index
 {
+    protected $beforeActionList = [
+        //'first',                                //在执行所有方法前都会执行first方法
+        'second' =>  ['except'=>'hello'],       //除hello方法外的方法执行前都要先执行second方法
+        'three'  =>  ['only'=>'hello,data'],    //在hello/data方法执行前先执行three方法
+    ];
+
+    public function second()
+    {
+        echo 'second';exit;
+    }
+
     public function index()
     {
         $menuInfo = model('Roles')->getMenuStr(1);

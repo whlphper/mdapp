@@ -12,6 +12,7 @@ use think\Request;
 use think\Db;
 use think\Exception;
 use unionpay\Unionpay;
+use ipsPay\Ips;
 
 class Order extends Base
 {
@@ -135,7 +136,7 @@ class Order extends Base
     }
 
     // 银联 同步回调
-    public function orderSuccess()
+    public function orderSuccess($type=false)
     {
         try{
             /*$unionpay = new Unionpay();
@@ -144,11 +145,25 @@ class Order extends Base
             {
                 throw new \Exception($notifyRes['msg']);
             }*/
-            $response = $this->request->request();
-            $tradeNumber = $response['dealOrder'];
-            $status = $response['dealState'];
-            if($status != 'SUCCESS'){
-                throw new \Exception('支付失败,请重试');
+            if($type == 'ips'){
+                $domain = Request::instance()->domain();
+                $pickUrl = $domain.url('pcshop/Order/orderSuccess',['type'=>'ips']);
+                $notify = $domain.url('pcshop/Pay/lwIpspayNoyify');
+                $ips = new Ips($notify,$pickUrl);
+                $res = $ips->respond();
+                if($res['code'] == 0){
+                    throw new \Exception($res['msg']);
+                }
+                if($res['code'] == 1){
+                    $tradeNumber = $res['merBillNo'];
+                }
+            }else{
+                $response = $this->request->request();
+                $tradeNumber = $response['dealOrder'];
+                $status = $response['dealState'];
+                if($status != 'SUCCESS'){
+                    throw new \Exception('支付失败,请重试');
+                }
             }
             return view('',['data'=>['tradeNumber'=>$tradeNumber]]);
         }catch(\Exception $e){

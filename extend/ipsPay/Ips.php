@@ -6,130 +6,169 @@
  * Time: 17:28
  * Comment:
  */
+
 namespace ipsPay;
+
 use think\Db;
 use think\Exception;
 use think\Request;
+use ipsPay\IpsPaySubmit;
+use ipsPay\IpsPayNotify;
+
 /**
  * IPS环迅支付接口类
  * Class Ips
  * @package ipsPay
  */
-class Ips{
-    // 商户号
-    private $mchId = '4545';
-    // MD5 key
-    private $key = '4545';
-    private $mchName = 'test';
-    private $account = 'aaa';
+class Ips
+{
 
-    public function getPayParams()
+    public $ipspay_config = [];
+
+    public function __construct($notify,$pickUrl)
     {
-        $ips['GateWayReq'] = [];
-        // 参数-支付请求头数据  start
-        $requestHeader = [];
-        // Version v1.0.0
-        $requestHeader['Version'] = 'v1.0.0';
-        // MerCode 商户号
-        $requestHeader['MerCode'] = $this->mchId;
-        // MerName 商户名
-        $requestHeader['MerName'] = $this->mchName;
-        // Account 账户号
-        $requestHeader['Account'] = $this->account;
-        // MsgId   消息编号
-        $requestHeader['MsgId'] = rand(1000,99999);
-        // ReqDate   商户请求时间
-        $requestHeader['ReqDate'] = time();
-        // 参数-支付请求头数据  end
-
-
-        // 参数-支付请求主题数据  start
-        $requestBody = [];
-        // MerBillNo  订单号
-        // Amount   金额
-        // Date 日期
-        // CurrencyType 币种
-        // GatewayType  支付方式
-        // Lang 语言
-        // Merchanturl  支付成功返回的商户url
-        // FailUrl  支付失败返回的url
-        // Attach   商户数据包
-        // OrdeEncodeType   支付加密方式  5
-        // RetEncodeType    交易返回接口加密方式
-        // RetType  返回方式
-        // ServerUrl 异步回调url
-        // BillEXP  订单有效期
-        // GoodsName    商品名称
-        // IsCredit 直连选项
-        // BankCode 银行号
-        // ProductType  产品类型
-        // UserRealName 姓名
-        // UserId   平台用户名
-        $ips['GateWayReq']['body'] = $requestBody;
-        // 参数-支付请求主题数据  end
-        // Signature   数字签名
-        $requestHeader['Signature'] = $this->makeSign($requestBody);
-        $ips['GateWayReq']['head'] = $requestHeader;
-
-        // 获取form 返回
-        $xml = $this->toXml($ips);
-        $result = $this->getPayForm($xml);
-        return $result;
+        $ipspay_config['Version'] = 'v1.0.0';
+        //商戶號
+        $ipspay_config['MerCode'] = '';
+        //交易賬戶號
+        $ipspay_config['Account'] = '';
+        //商戶證書
+        $ipspay_config['MerCert'] = '';
+        //請求地址
+        $ipspay_config['PostUrl'] = 'https://newpay.ips.com.cn/psfp-entry/gateway/payment.do';
+        //服务器S2S通知页面路径
+        $ipspay_config['S2Snotify_url'] = $notify;
+        //页面跳转同步通知页面路径
+        $ipspay_config['return_url'] = $pickUrl;
+        //156#人民币
+        $ipspay_config['Ccy'] = "156";
+        //GB中文
+        $ipspay_config['Lang'] = "GB";
+        //订单支付接口加密方式 5#订单支付采用Md5的摘要认证方式
+        $ipspay_config['OrderEncodeType'] = "5";
+        //返回方式 1#S2S返回
+        $ipspay_config['RetType'] = "1";
+        //消息ID
+        $ipspay_config['MsgId'] = rand(1000,9999);
+        $this->ipspay_config = $ipspay_config;
     }
 
-    /**
-     * 获取支付form
-     * @param $payParams 支付的form body 内容
-     * @return string
-     */
-    private function getPayForm($payParams)
+    public function getPayParams($order)
     {
-       $form = '<form action="https://neway.ips.com.con/psfp-entry/gateway/payment.do" method="post"><input name="pGateWayReq" type="hidden" value="'.$payParams.'"></form>';
-       return $form;
-    }
-
-    /**
-     * 输出xml字符
-     * @throws \Exception
-     **/
-    public function toXml($data){
         try{
-            if(!is_array($data) || count($data) <= 0){
-                throw new \Exception("数组数据异常！");
-            }
-            $xml = "<xml>";
-            foreach ($data as $key=>$val){
-                if (is_numeric($val)){
-                    $xml.="<".$key.">".$val."</".$key.">";
-                }else{
-                    $xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
-                }
-            }
-            $xml.="</xml>";
-            return $xml;
+            // 商户订单号，商户网站订单系统中唯一订单号，必填
+            $inMerBillNo = $order['orderNo'];
+            //支付方式 01#借记卡 02#信用卡 03#IPS账户支付
+            $selPayType = !empty($order['selPayType']) ? $order['selPayType'] : '01';
+            //商戶名
+            $inMerName = !empty($order['InMerName']) ? $order['InMerName'] : 'test';
+            //订单日期
+            $inDate = date('Ymd');//$order['InDate'];
+            //订单金额
+            $inAmount = $order['orderAmount'];
+            //支付结果失败返回的商户URL
+            $inFailUrl = $order['InFailUrl'];
+            //商户数据包
+            $inAttach = !empty($order['InAttach']) ? $order['InAttach'] : '商品';
+            //交易返回接口加密方式
+            $selRetEncodeType = !empty($order['selRetEncodeType']) ? $order['selRetEncodeType'] : 17;
+            //订单有效期
+            $inBillEXP = !empty($order['InBillEXP']) ? $order['InBillEXP'] : 1;
+            //商品名称
+            $inGoodsName = !empty($order['InGoodsName']) ? $order['InGoodsName'] : '商品';
+            //银行号
+            $inBankCode = !empty($order['InBankCode']) ? $order['InBankCode'] : '';
+            //产品类型  1个人  2企业
+            $selProductType = !empty($order['selProductType']) ? $order['selProductType'] : 1;
+            //直连选项  空 非直连  1直连
+            $selIsCredit = !empty($order['selIsCredit']) ? $order['selIsCredit'] : '';
+
+            /************************************************************/
+            //构造要请求的参数数组
+            $ipspay_config = $this->ipspay_config;
+            $parameter = array(
+                "Version" => $ipspay_config['Version'],
+                "MerCode" => $ipspay_config['MerCode'],
+                "Account" => $ipspay_config['Account'],
+                "MerCert" => $ipspay_config['MerCert'],
+                "PostUrl" => $ipspay_config['PostUrl'],
+                "S2Snotify_url" => $ipspay_config['S2Snotify_url'],
+                "Return_url" => $ipspay_config['return_url'],
+                "CurrencyType" => $ipspay_config['Ccy'],
+                "Lang" => $ipspay_config['Lang'],
+                "OrderEncodeType" => $ipspay_config['OrderEncodeType'],
+                "RetType" => $ipspay_config['RetType'],
+                "MerBillNo" => $inMerBillNo,
+                "MerName" => $inMerName,
+                "MsgId" => $ipspay_config['MsgId'],
+                "PayType" => $selPayType,
+                "FailUrl" => $inFailUrl,
+                "Date" => $inDate,
+                "ReqDate" => date("YmdHis"),
+                "Amount" => $inAmount,
+                "Attach" => $inAttach,
+                "RetEncodeType" => $selRetEncodeType,
+                "BillEXP" => $inBillEXP,
+                "GoodsName" => $inGoodsName,
+                "BankCode" => $inBankCode,
+                "IsCredit" => $selIsCredit,
+                "ProductType" => $selProductType,
+            );
+            //建立请求
+            $ipspaySubmit = new IpsPaySubmit($ipspay_config);
+            $html_text = $ipspaySubmit->buildRequestForm($parameter);
+            return $html_text;
         }catch(\Exception $e){
             mdLog($e);
             echo $e->getMessage();
         }
-
     }
 
-    /**
-     * 生成签名
-     */
-    public function makeSign($body){
-        return md5($body.$this->mchId.$this->key);
-    }
+
 
     /**
-     * 将xml转为array
-     * @param  string $xml xml字符串
-     * @return array       转换得到的数组
+     * 获取支付成功的返回数据
      */
-    public function toArray($xml){
-        //禁止引用外部xml实体
-        libxml_disable_entity_loader(true);
-        $result= json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
-        return $result;
+    public function respond()
+    {
+        try{
+            $ipspayNotify = new IpsPayNotify($this->ipspay_config);
+            $verify_result = $ipspayNotify->verifyReturn();
+            if ($verify_result) {
+                // 验证成功
+                echo "ipscheckok";
+                Log::notice('IPS环迅支付通知成功');
+                // 验证成功
+                $paymentResult = $_REQUEST['paymentResult'];
+                $xmlResult = new \SimpleXMLElement($paymentResult);
+                $status = $xmlResult->GateWayRsp->body->Status;
+                if($status == "Y"){
+                    // 商户订单号
+                    $merBillNo = $xmlResult->GateWayRsp->body->MerBillNo;
+                    // 总额
+                    $amount = $xmlResult->GateWayRsp->body->Amount;
+                    // IPS订单号
+                    $ipsBillNo = $xmlResult->GateWayRsp->body->IpsBillNo;
+                    // IPS交易流水号
+                    $ipsTradeNo = $xmlResult->GateWayRsp->body->IpsTradeNo;
+                    // 银行订单号
+                    $bankBillNo = $xmlResult->GateWayRsp->body->BankBillNo;
+                    $message = "交易成功";
+                    return ['code'=>1,'msg'=>$message,'merBillNo'=>$merBillNo,'amount'=>$amount,'ipsTradeNo'=>$ipsTradeNo];
+                }elseif($status == "N"){
+                    $message = "交易失败";
+                    return ['code'=>2,'msg'=>$message];
+                }else{
+                    $message = "交易处理中";
+                    return ['code'=>3,'msg'=>$message];
+                }
+            }else{
+                echo "ipscheckfail";
+                return ['code'=>0,'msg'=>'ipscheckfail'];
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
     }
 }

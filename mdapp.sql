@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-04-26 18:09:12
+Date: 2018-04-27 13:59:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -340,6 +340,33 @@ CREATE TABLE `md_crmorder` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for md_crmorderips
+-- ----------------------------
+DROP TABLE IF EXISTS `md_crmorderips`;
+CREATE TABLE `md_crmorderips` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transactionId` varchar(255) DEFAULT NULL COMMENT '作为第三方流水号',
+  `pickupUrl` varchar(255) DEFAULT NULL COMMENT '付款客户成功后的页面',
+  `receiveUrl` varchar(255) DEFAULT NULL COMMENT '服务器接受支 付结果的后台 地址',
+  `signType` varchar(255) DEFAULT NULL COMMENT '签名类型',
+  `orderNo` varchar(255) DEFAULT NULL COMMENT '订单号',
+  `orderAmount` varchar(255) DEFAULT NULL COMMENT '订单金额',
+  `orderCurrency` varchar(255) DEFAULT NULL COMMENT '货币类型-CNY,USD',
+  `customerId` int(11) DEFAULT NULL COMMENT '客户交易者账号',
+  `sign` varchar(255) DEFAULT NULL COMMENT '签名',
+  `status` varchar(255) DEFAULT NULL COMMENT '这里记录回调LEANWORK的状态',
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_user` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of md_crmorderips
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for md_crmorderunion
 -- ----------------------------
 DROP TABLE IF EXISTS `md_crmorderunion`;
@@ -354,6 +381,7 @@ CREATE TABLE `md_crmorderunion` (
   `orderCurrency` varchar(255) DEFAULT NULL COMMENT '货币类型-CNY,USD',
   `customerId` int(11) DEFAULT NULL COMMENT '客户交易者账号',
   `sign` varchar(255) DEFAULT NULL COMMENT '签名',
+  `status` varchar(255) DEFAULT NULL COMMENT '这里记录回调LEANWORK的状态',
   `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `created_user` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -513,7 +541,7 @@ CREATE TABLE `md_log` (
   PRIMARY KEY (`id`),
   KEY `操作人` (`created_user`) USING BTREE,
   KEY `操作码以及操作的数据表` (`code`,`table`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of md_log
@@ -524,6 +552,15 @@ INSERT INTO `md_log` VALUES ('3', '0', '编辑订单', 'pcshop/Order/saveToTable
 INSERT INTO `md_log` VALUES ('4', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-26 11:39:36', null, null, '1', null, null);
 INSERT INTO `md_log` VALUES ('5', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '4', '2018-04-26 14:27:50', null, null, '1', null, null);
 INSERT INTO `md_log` VALUES ('6', '0', '新增商品', 'shop/product/savetotable', '127.0.0.1', 'product', '136', '2018-04-26 16:22:36', null, null, '1', null, null);
+INSERT INTO `md_log` VALUES ('7', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '5', '2018-04-27 12:32:22', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('8', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '6', '2018-04-27 12:33:15', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('9', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '7', '2018-04-27 12:33:30', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('10', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '7', '2018-04-27 12:33:32', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('11', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '8', '2018-04-27 12:33:44', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('12', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '9', '2018-04-27 12:33:49', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('13', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '9', '2018-04-27 12:33:56', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('14', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '9', '2018-04-27 12:34:04', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('15', '0', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '9', '2018-04-27 12:35:10', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_menus
@@ -589,7 +626,7 @@ CREATE TABLE `md_order` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `progress` (`progress`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order
@@ -597,6 +634,11 @@ CREATE TABLE `md_order` (
 INSERT INTO `md_order` VALUES ('1', '2018042553489853', '3', '3', '5', '82:1', '宝马5系6系7系X5 X6 BO升降中置喇叭 原厂B&O全车音响喇叭x1', '8000.00', '0', '0', '2018-04-25 12:33:54', '2018-04-25 12:33:53', null, null);
 INSERT INTO `md_order` VALUES ('2', '2018042551545652', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '1', '1', '2018-04-26 09:51:13', '2018-04-25 12:46:15', null, null);
 INSERT INTO `md_order` VALUES ('4', '2018042510110155', '3', '3', '5', '110:1', '新款奥迪A6 allroad Q5 Q7改装升级后备箱行李固定带储物隔板原装x1', '2680.00', '0', '0', '2018-04-26 14:27:50', '2018-04-26 14:27:50', null, null);
+INSERT INTO `md_order` VALUES ('5', '2018042755505010', '1', '3', null, '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', '2018-04-27 12:32:22', null, null, null);
+INSERT INTO `md_order` VALUES ('6', '2018042799551029', '1', '3', null, '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', '2018-04-27 12:33:15', null, null, null);
+INSERT INTO `md_order` VALUES ('7', '2018042797100544', '3', '3', '5', '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', '2018-04-27 12:33:34', '2018-04-27 12:33:32', null, null);
+INSERT INTO `md_order` VALUES ('8', '2018042757101561', '1', '3', null, '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', '2018-04-27 12:33:44', null, null, null);
+INSERT INTO `md_order` VALUES ('9', '2018042710199100', '4', '3', '5', '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', '2018-04-27 12:35:10', '2018-04-27 12:35:10', null, null);
 
 -- ----------------------------
 -- Table structure for md_order_detail
@@ -614,7 +656,7 @@ CREATE TABLE `md_order_detail` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order_detail
@@ -623,6 +665,11 @@ INSERT INTO `md_order_detail` VALUES ('1', '1', '82', '1', '8000.00', '16000.00'
 INSERT INTO `md_order_detail` VALUES ('2', '2', '110', '1', '2680.00', '4680.00', null, null, null, null);
 INSERT INTO `md_order_detail` VALUES ('3', '3', '110', '1', '2680.00', '4680.00', null, null, null, null);
 INSERT INTO `md_order_detail` VALUES ('4', '4', '110', '1', '2680.00', '4680.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('5', '5', '66', '1', '426.00', '854.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('6', '6', '66', '1', '426.00', '854.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('7', '7', '66', '1', '426.00', '854.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('8', '8', '66', '1', '426.00', '854.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('9', '9', '66', '1', '426.00', '854.00', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_product

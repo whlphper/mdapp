@@ -18,12 +18,14 @@
     <div class="detail-top clearfloat">
         <div class="detail-img clearfloat">
             <div class="detail-img-box clearfloat">
-                {foreach $pageInfo.proInfo.albumArray as $k=>$v}
                 <div class="detail-img-bd">
+                    {foreach $pageInfo.proInfo.albumArray as $k=>$v}
+                    {if $k eq 0}
                     <img src="__PUBLIC__{$v.path}"
                          big="__PUBLIC__{$v.path}" class="big-img"/>
+                    {/if}
+                    {/foreach}
                 </div>
-                {/foreach}
                 <div class="detail-arrow">
                     <a href="javascript:;" class="detail-prev ui-border">&lt;</a>
                     <a href="javascript:;" class="detail-next ui-border">&gt;</a>
