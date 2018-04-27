@@ -16,6 +16,7 @@ class ComposerStaticInit2e5892036d673d3746c89dcf7d674944
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
+            'think\\worker\\' => 13,
             'think\\oracle\\' => 13,
             'think\\mongo\\' => 12,
             'think\\migration\\' => 16,
@@ -28,6 +29,10 @@ class ComposerStaticInit2e5892036d673d3746c89dcf7d674944
         array (
             'app\\' => 4,
         ),
+        'W' => 
+        array (
+            'Workerman\\' => 10,
+        ),
         'P' => 
         array (
             'Phinx\\' => 6,
@@ -35,6 +40,10 @@ class ComposerStaticInit2e5892036d673d3746c89dcf7d674944
     );
 
     public static $prefixDirsPsr4 = array (
+        'think\\worker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-worker/src',
+        ),
         'think\\oracle\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-oracle/src',
@@ -68,6 +77,10 @@ class ComposerStaticInit2e5892036d673d3746c89dcf7d674944
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
+        ),
+        'Workerman\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/workerman',
         ),
         'Phinx\\' => 
         array (
