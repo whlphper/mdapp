@@ -141,7 +141,7 @@ function descarte($arr, $tmp = array())
     return $n_arr;
 }
 
-function upload($folder = "default", $extType = "image", $defaultSize = 15)
+function upload($folder = "default", $extType = "image", $defaultSize = 15,$thumb=false)
 {
     $folder = empty($folder) ? 'default' : $folder;
     $accept = array();
@@ -176,6 +176,7 @@ function upload($folder = "default", $extType = "image", $defaultSize = 15)
             }
             $savePath = $folder;
             $saveName = date('YmdHis', time()) . rand(1, 9999999) . "." . $ext;
+            $thumName = $saveName . '_thumb' . "." . $ext;
             $moveInfo = $file->move(ROOT_PATH . 'public/upload/' . $savePath, $saveName);
             $fullPath = $moveInfo->getPathName();
             if ($moveInfo !== false) {
@@ -188,6 +189,15 @@ function upload($folder = "default", $extType = "image", $defaultSize = 15)
                 $sysFileData['created_at'] = date('Y-m-d H:i:s', time());
                 $last = Db::name('File')->insertGetId($sysFileData);
                 if ($last) {
+                    $image = \think\Image::open(ROOT_PATH . 'public/upload/' . $savePath  . '/' . $saveName);
+                    // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+                    $image->thumb(150, 150)->text('MengD','HYQingKongTiJ.ttf',20,'#ffffff')->save(ROOT_PATH . 'public/upload/' . $savePath.'/'.$saveName);
+                    // 如果需要生成缩略图
+                    if($thumb){
+                        $image = \think\Image::open(ROOT_PATH . 'public/upload/' . $savePath  . '/' . $saveName);
+                        // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+                        $image->thumb(150, 150)->text('MengD','HYQingKongTiJ.ttf',8,'#ffffff')->save(ROOT_PATH . 'public/upload/' . $savePath.'/'.$thumName);
+                    }
                     $result[] = $last;
                     $path[] = '/public/'.$sysFileData['savePath'];
                 }

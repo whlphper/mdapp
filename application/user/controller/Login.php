@@ -27,11 +27,15 @@ class Login extends Controller {
             $order = 'a.created_at desc';
             $field = 'a.id,a.account_number,a.roles_id,a.password,a.franchisee_id,a.avatar,a.nick_name,a.mobile,a.type,a.real_name,b.savePath as avatarPath';
             $join = [['File b','a.avatar=b.id','left']];
-            $data = $request->only(['username','password','rememberMe']);
+            $data = $request->only(['username','password','rememberMe','code']);
             // 账号是否合法
             $user = model("User")->getRow(['account_number|mobile'=>$data['username']],$field,$join,$order);
             if($user['code'] == 0){
                 throw new \Exception('用户'.$user['msg']);
+            }
+            if(!captcha_check($data['code'])){
+                //验证失败
+                throw new \Exception('验证码错误');
             }
             $user = $user['data'];
             if($user['password'] != md5($data['password'])){

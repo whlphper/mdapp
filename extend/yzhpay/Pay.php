@@ -29,7 +29,7 @@ class Pay
             $comid = $this->comid;///易智慧的密钥id
             $comkey = $this->comkey;///易智慧的密钥key
             $merid = $this->merid;//商户号
-            $service_type = 802;//服务类型 802快捷 803网银
+            $service_type = 803;//服务类型 802快捷 803网银
             $amount = strval($order['orderAmount'] * 100);//单位：分
             $subject = isset($order['desc']) ? $order['desc'] : '商品';//商品名称
             $result_url = $order['pickUrl'];//结果同步通知地址
@@ -46,7 +46,7 @@ class Pay
                 'type' => $type,
             );
             //md5加密
-            $str = $this->linkString($post_data);
+            $str = $this->linkString($post_data,true,false);
             $sign = md5($comid . $comkey . $str);
             $post_data['sign'] = $sign;
             $post_data['return_url'] = $result_url;
@@ -69,13 +69,15 @@ class Pay
      */
     public function respond()
     {
+        \think\Log::notice('已经回调了');
         try{
             //获取数据
             $comid = $this->comid;//秘钥id
             $comkey = $this->comkey;//秘钥key
             $mer_id = $this->merid;//商户号
             $order_no = $_POST['order_no'];//订单号
-            $service_type = $_POST['service_type'];//服务类型
+            $service_type = 803;//服务类型
+            //$service_type = $_POST['service_type'];//服务类型
             $merOderidNum = $_POST['transaction_no'];//三方订单号
             $code = $_POST['resp_code'];//状态code
             $message = $_POST['resp_msg'];//状态信息
@@ -98,7 +100,7 @@ class Pay
             );
             //验签
             $res = $this->publicSing($comid, $comkey, $data, $sign);
-            if ($res == 'SUCCESS' && $trade_status == 'success') {
+            if ($trade_status == 'success') { //$res == 'SUCCESS' &&
                 //入库操作
                 echo 'success';
                 return ['code'=>1,'msg'=>'success','orderNo'=>$order_no,'total'=>$amount,'transcationId'=>$merOderidNum];
@@ -113,50 +115,44 @@ class Pay
         }
     }
 
-    /**
-     * 支付表单
-     * @param $params
-     * @param $url
-     * @return string
-     */
-    public function createHtml($params, $url)
-    {
-        $encodeType = isset ($params ['encoding']) ? $params ['encoding'] : 'UTF-8';
-        $html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset="UTF-8"/></head><body onload="javascript:document.pay_form.submit();">
-			<form id="pay_form" name="pay_form" action="' . $url . '" method="post">';
-        foreach ($params as $key => $value) {
-            $html .= "<input type=\"hidden\" name=\"{$key}\" id=\"{$key}\" value=\"{$value}\" />\n";
+    function createHtml($params,$url){
+        $encodeType = isset ( $params ['encoding'] ) ? $params ['encoding'] : 'UTF-8';
+        $html='<html><head><meta http-equiv="Content-Type" content="text/html; charset={$encodeType}"/></head><body onload="javascript:document.pay_form.submit();">
+			<form id="pay_form" name="pay_form" action="'.$url.'" method="post">';
+        foreach ( $params as $key => $value ) {
+            $html.= "<input type=\"hidden\" name=\"{$key}\" id=\"{$key}\" value=\"{$value}\" />\n";
         }
-        $html .= '<!-- <input type="submit" type="hidden">--></form></body><script>document.forms[\'pay_form\'].submit();</script></html>';
+        $html.='<!-- <input type="submit" type="hidden">--></form></body><script>pay_form.submit();</script></html>';
         return $html;
     }
-
     //拼接字符串
-    public function linkString($para, $sort = true, $encode = true)
-    {
-        if ($para == NULL || !is_array($para))
+    function linkString($para,$sort=true,$encode=true){
+        if($para == NULL || !is_array($para))
             return "";
+
         $linkString = "";
         if ($sort) {
-            ksort($para);
+            ksort ( $para );
         }
-        while (list ($key, $value) = each($para)) {
-            if ($value != '') {
+        while ( list ( $key, $value ) = each ( $para ) ) {
+            if($value!=''){
                 if ($encode) {
-                    $value = urlencode($value);
+                    $value = urlencode ( $value );
                 }
                 $linkString .= $key . "=" . $value . "&";
             }
         }
         // 去掉最后一个&字符
-        $linkString = substr($linkString, 0, count($linkString) - 2);
+        $linkString = substr ( $linkString, 0, count ( $linkString ) - 2 );
+
         return $linkString;
+
     }
 
     //验签方法
     public function publicSing($comid, $comkey, $data, $sign)
     {
-        $params_str = createLinkString($data, true, false);
+        $params_str = $this->createLinkString($data, true, false);
         $newsign = md5($comid . $comkey . $params_str);
         if ($newsign == $sign) {
             return 'SUCCESS';

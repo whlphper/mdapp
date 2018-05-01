@@ -16,6 +16,9 @@ class Order extends Validate
         'number|商品数量'   => 'require|number',
         'addressId|收货信息'   => 'require',
         'payType|支付方式'   => 'require',
+        'expressId|物流公司'   => 'require',
+        'expressCode|物流单号'   => 'require',
+        'id|订单编号'   => 'require',
     ];
 
     protected $message  =   [
@@ -25,5 +28,6 @@ class Order extends Validate
     protected $scene = [
         'insert'  =>  ['userId','productId'=>'require|unique:Carts,productId^userId','number'],//'url',
         'update'  =>  ['addressId','payType'],//,'url'
+        'sendOrder'  =>  ['id','expressId','expressCode'],//,'url'
     ];
 }

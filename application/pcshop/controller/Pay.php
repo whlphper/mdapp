@@ -309,8 +309,12 @@ class Pay extends Base
             if($trueSign != $md5Key){
                 // throw new \Exception('签名校验失败');
             }
+			$head = substr($data['orderNo'],0,10);
+			$foot = substr($data['orderNo'],10,strlen($data['orderNo']));
+			$data['orderNo'] = $foot;
+			$data['orderNoEnd'] = $head;
             // 插入crm过来订单
-            $oldOrder = model('Crmorderips')->getRow(['orderNo'=>$data['orderNo']],'a.id,a.orderNo');
+            $oldOrder = model('Crmorderips')->getRow(['orderNo'=>$foot],'a.id,a.orderNo');
             if($oldOrder['code'] == 0){
                 $orderRes = model('Crmorderips')->saveData($data,'Crmorderips','CRM订单-ipspay','0425');
                 if($orderRes['code'] == 0){
@@ -318,11 +322,13 @@ class Pay extends Base
                 }
             }
             $domain = Request::instance()->domain();
-            $pickUrl = $data['pickupUrl'];
+            $pickUrl = 'http://cn.unionpay.com/';//$data['pickupUrl'];
             $notify = $domain.url('pcshop/Pay/lwIpspayNoyify');
             $order['orderNo'] = $data['orderNo'];
             $order['orderAmount'] = $data['orderAmount'];
             $order['InFailUrl'] = $domain.url('pcshop/Order/orderFail');
+			$order['InAttach'] = '商品';
+            $order['InGoodsName'] = '商品';
             $ips = new Ips($notify,$pickUrl);
             $form = $ips->getPayParams($order);
             Log::notice('环迅支付表单信息'.$form);
@@ -368,8 +374,8 @@ class Pay extends Base
                         // LW md5key
                         $md5Key = '640835760195428';
                         $notifyUrl = $orderInfo['receiveUrl'];
-                        $trueSign = md5($orderInfo['signType'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$transcationId.'success'.$md5Key);
-                        $param = 'signType=MD5&orderNo='.$orderInfo['orderNo'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$transcationId.'&status=success&sign='.$trueSign;
+                        $trueSign = md5($orderInfo['signType'].$orderInfo['orderNoEnd'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$transcationId.'success'.$md5Key);
+                        $param = 'signType=MD5&orderNo='.$orderInfo['orderNoEnd'].$orderInfo['orderNo'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$transcationId.'&status=success&sign='.$trueSign;
                         // 回调我们的时候需要再次回调给Leanwork
                         /**********************************/
                         $regularUrl = $notifyUrl.'?'.$param;
@@ -499,7 +505,7 @@ class Pay extends Base
                 throw new \Exception('此订单已经交易成功了');
             }
             $domain = Request::instance()->domain();
-            $pickUrl = $domain.url('pcshop/Order/orderSuccess',['type'=>'yzh']);
+            $pickUrl = $domain.url('pcshop/Order/orderSuccess',['type'=>'yzh','orderNo'=>$orderInfo['data']['tradeNumber']]);
             $notify  = $domain.url('pcshop/Pay/yzhpayNoyify');
             $yzhPay = new yzhPay();
             $orderInfo['data']['orderNo'] = $orderInfo['data']['tradeNumber'];
@@ -508,7 +514,6 @@ class Pay extends Base
             $orderInfo['data']['pickUrl'] = $pickUrl;
             $orderInfo['data']['notify'] = $notify;
             $form = $yzhPay->getPayParams($orderInfo['data']);
-            Log::notice('易智慧支付表单信息'.$form);
             return ['code'=>1,'msg'=>'','data'=>$form];
         }catch(\Exception $e){
             mdLog($e);
@@ -592,7 +597,6 @@ class Pay extends Base
             $order['notify'] = $notify;
             $yzhpay = new yzhPay();
             $form = $yzhpay->getPayParams($order);
-            Log::notice('易智慧支付表单信息'.$form);
             echo $form;
         }catch(\Exception $e){
             mdLog($e);

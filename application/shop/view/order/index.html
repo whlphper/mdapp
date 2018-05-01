@@ -8,6 +8,54 @@
     $(document).ready(function () {
 
     });
+    //每行操作渲染
+    function actionFormatter(value, row, index) {
+        var action = '<div class="btn-group">';
+        switch (row.status){
+            case '待付款':
+                action = action + '';
+                break;
+            case '付款成功':
+                switch(row.progress){
+                    case '待发货':
+                        action = action + '<button class="btn bg-warning btn-sm send">发货</button>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        break;
+                    case '已经发货':
+                        action = action + '<button class="btn bg-info btn-sm route">查看物流</button>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        break;
+                }
+                break;
+        }
+        action = action + '<button class="btn bg-olive btn-sm detail">详情</button>&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+        return action;
+    }
+    //每行操作对应事件
+    window.actionEvents = {
+        'click .send': function (e, value, row, index) {
+            var url = "{:url('/shop/Order/send/id/"+row.id+"')}";
+            session("md{$ctrName}Id", row.id);
+            mdAjax($(this), url, {}, function (res) {
+                mdFormModal(res);
+                layer.closeAll('loading');
+            }, 'get', 'html');
+        },
+        'click .detail': function (e, value, row, index) {
+            var url = "{:url('/shop/Order/detail')}";
+            session("md{$ctrName}Id", row.id);
+            mdAjax($(this), url, {}, function (res) {
+                mdFormModal(res);
+                layer.closeAll('loading');
+            }, 'get', 'html');
+        },
+        'click .route': function (e, value, row, index) {
+            var url = "{:url('/shop/Order/route/id/"+row.id+"')}";
+            session("md{$ctrName}Id", row.id);
+            mdAjax($(this), url, {}, function (res) {
+                mdFormModal(res);
+                layer.closeAll('loading');
+            }, 'get', 'html');
+        },
+    };
 </script>
 <!--这里引入本页面需要的JS 以及脚本-->
 </head>

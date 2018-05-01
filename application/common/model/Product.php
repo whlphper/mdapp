@@ -83,4 +83,10 @@ class Product extends Base{
     {
 
     }
+
+    public function addProduct()
+    {
+        // 新增商品  这里需要看看是否是多规格的,需要生成此商品的SKU数据
+        // 先批量插入 md_sku_tem
+    }
 }

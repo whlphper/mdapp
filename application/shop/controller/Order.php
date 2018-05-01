@@ -22,4 +22,16 @@ class Order extends Base{
         $this->join = [];
         $this->model = model($this->modelName);
     }
+
+    public function sendOrder()
+    {
+        return $this->saveToTable(['progress'=>2]);
+    }
+
+    public function route($id)
+    {
+        $routeInfo = $this->model->getRoute($id);
+        echo '<pre>';
+        print_r($routeInfo);
+    }
 }

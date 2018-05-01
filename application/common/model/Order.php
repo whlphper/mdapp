@@ -8,6 +8,7 @@
  */
 namespace app\common\model;
 use app\common\model\Base;
+use kd100\Express as kd100;
 class Order extends Base{
 
     public function getStatusAttr($value)
@@ -25,7 +26,7 @@ class Order extends Base{
 
     public function getPayTypeAttr($value)
     {
-        $status = [1=>'支付宝',2=>'微信',3=>'银联支付',4=>'环迅支付'];
+        $status = [1=>'支付宝',2=>'微信',3=>'银联支付',4=>'环迅支付',5=>'易智慧支付'];
         return $status[$value];
     }
 
@@ -74,6 +75,46 @@ class Order extends Base{
             return $curOrder;
         }catch(\Exception $e){
             $this->rollback();
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
+
+    public function changeProgress($id,$progress=2,$expressId,$expressCode)
+    {
+        try{
+            if(empty($id)){
+                throw new \Exception('订单不存在');
+            }
+            $data['id'] = $id;
+            $data['progress'] = $progress;
+            $data['expressId'] = $expressId;
+            $data['expressCode'] = $expressCode;
+            $result = $this->saveData($data,'Order','订单发货','102');
+            if($result['code'] == 0){
+                throw new \Exception($result['msg']);
+            }
+            return $result;
+        }catch (\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
+
+    public function getRoute($id)
+    {
+        try{
+            if(empty($id)){
+                throw new \Exception('订单不存在');
+            }
+            $order = $this->getRow(['a.id'=>$id],'a.expressId,a.expressCode,b.name,b.code',[['Express b','a.expressId=b.id','left']]);
+            if($order['code'] == 0){
+                throw new \Exception($order['msg']);
+            }
+            $kd100 = new kd100();
+            $result = $kd100->getRoute($order['data']['expressCode'],$order['data']['code']);
+            return $result;
+        }catch (\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage()];
         }

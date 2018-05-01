@@ -436,7 +436,9 @@ function assign(data, formId) {
             case 'hidden':
             case 'date':
             case 'textarea':
-                $(this).val(data[inputName]);
+                if(data[inputName] != undefined){
+                    $(this).val(data[inputName]);
+                }
                 break;
             case 'checkbox':
                 if(data[inputName] && data[inputName] != ''){
@@ -678,6 +680,7 @@ function ajaxUpload(curObject,id,url,preview)
     var isMultyple = curObject.attr("multiple") ? true : false;
     var floder = curObject.attr('data-dir') ? curObject.attr('data-dir') : 'default';
     var size = curObject.attr('data-size') ? curObject.attr('data-size') : '0.8';
+    var thumb = curObject.attr('data-thumb') ? curObject.attr('data-thumb') : '';
     var curObject = curObject;
     //获取上传所有文件信息
     var files = curObject.get(0).files;
@@ -688,8 +691,9 @@ function ajaxUpload(curObject,id,url,preview)
         //装需要上传文件的数组
         data = new FormData();
         data.append("file", obj);
-        data.floder = floder;
-        data.size = size;
+        data.append("floder", floder);
+        data.append("size", size);
+        data.append("thumb", thumb);
         $.ajax({
             data: data,
             type: "POST",

@@ -24,6 +24,7 @@ class Base extends Model
         ];
         return isset($imgField[$table]) ? $imgField[$table] : [];
     }
+
     /*
      * 获取表格数据
      * @ $CurrentCon 查询条件

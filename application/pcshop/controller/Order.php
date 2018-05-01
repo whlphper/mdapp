@@ -142,7 +142,7 @@ class Order extends Base
     }
 
     // 银联 同步回调
-    public function orderSuccess($type=false)
+    public function orderSuccess($type=false,$orderNo=false)
     {
         try{
             /*$unionpay = new Unionpay();
@@ -164,12 +164,8 @@ class Order extends Base
                     $tradeNumber = $res['merBillNo'];
                 }
             }else if($type == 'yzh'){
-                $yzhpay = new yzhPay();
-                $res = $yzhpay->respond();
-                if($res['code'] == 0){
-                    throw new \Exception($res['msg']);
-                }
-                $tradeNumber = $res['orderNo'];
+                //$trade_status = $_POST['trade_status'];//支付状态
+                $tradeNumber = $orderNo;
             }else{
                 $response = $this->request->request();
                 $tradeNumber = $response['dealOrder'];

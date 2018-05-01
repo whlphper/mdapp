@@ -1,0 +1,66 @@
+{include file="admin@public/store"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+<body>
+<!-- Main content -->
+<!--主体内容-->
+<div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{:url('shop/Order/sendOrder')}" id="md{$ctrName}Form">
+            <input type="hidden" name="id" value="">
+            <input type="hidden" name="actionName" value="订单发货">
+            <input type="hidden" name="actionCode" value="sendOrder">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">订单发货</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>订单编号:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-send"></i>
+                            </div>
+                            <input type="text" name="tradeNumber" class="form-control" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>选择快递:</label>
+                        <div class="form-group">
+                            <select class="form-control expressList" type="select" name="expressId" required>
+                                <option value="">请选择</option>
+                                <option value="1">顺丰</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>物流单号:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-send"></i>
+                            </div>
+                            <input type="text" name="expressCode" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
+                            class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sys{$ctrName}Table"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->\
+</div>
+</body>
+<!-- /.content -->
+</html>

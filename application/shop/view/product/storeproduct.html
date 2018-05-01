@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <label>商品图片:</label>
                         <div class="input-group">
-                            <input type="file" class="add-btn" onchange="reayUpload($(this))" accept="image/*" multiple="multiple" capture="camera"  data-id="album" data-url="{:url('/admin/Index/uploadImage')}" data-preview="albumPreview">
+                            <input type="file" class="add-btn" onchange="reayUpload($(this))" accept="image/*" multiple="multiple" capture="camera"  data-thumb="true" data-id="album" data-url="{:url('/admin/Index/uploadImage')}" data-preview="albumPreview">
                             <input type="hidden" id="album" name="album" required value="" class="validata_hidden" placeholder="上传广告位图片">
                         </div>
                     </div>

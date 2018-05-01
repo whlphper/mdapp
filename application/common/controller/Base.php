@@ -91,14 +91,15 @@ class Base extends Controller
 
     /**
      * 新增/编辑数据
-     * @param request $request
      * @return array
      */
-    public function saveToTable(request $request)
+    public function saveToTable($extraData=[])
     {
+        $request = Request::instance();
         if (strtolower($request->method()) == 'post') {
             try {
                 $data = $request->post();
+                $data = array_merge($data,$extraData);
                 if(!empty($data['test'])){
                     unset($data['test']);
                 }
@@ -108,9 +109,15 @@ class Base extends Controller
                     $code = '';
                     $valiMsg = $this->validate($data, $this->modelName . '.insert');
                 } else {
-                    $name = '编辑' . $this->theme;;
-                    $code = '';
-                    $valiMsg = $this->validate($data, $this->modelName . '.update');
+                    if(!empty($data['actionName'])){
+                        $name = $data['actionName'];
+                        $code = $data['actionCode'];
+                        $valiMsg = $this->validate($data, $this->modelName . '.'.$code);
+                    }else{
+                        $name = '编辑' . $this->theme;;
+                        $code = '';
+                        $valiMsg = $this->validate($data, $this->modelName . '.update');
+                    }
                 }
                 if ($valiMsg !== true) {
                     throw new \Exception($valiMsg);
@@ -164,20 +171,20 @@ class Base extends Controller
             $levelModel = ['Menus', 'Roles', 'Category'];
             $data = $request->only('id');
             if (empty($data['id'])) {
-                throw new \think\Exception('数据不存在');
+                throw new \Exception('数据不存在');
             }
             if (in_array($this->modelName, $levelModel)) {
                 $list = model($this->modelName)->getCommonCollection(['pid' => $data['id']], 'id');
                 if ($list['code'] == 0) {
-                    throw new \think\Exception('父级' . $this->theme . '出错');
+                    throw new \Exception('父级' . $this->theme . '出错');
                 }
                 if (!empty($list['data'])) {
-                    throw new \think\Exception('存在子' . $this->theme . ',不可删除');
+                    throw new \Exception('存在子' . $this->theme . ',不可删除');
                 }
             }
             $result = model($this->modelName)->deleteData($data['id'], 'Menus', '删除' . $this->theme, '1002001');
             if ($result['code'] == 0) {
-                throw new \think\Exception('删除失败' . $result['msg']);
+                throw new \Exception('删除失败' . $result['msg']);
             }
             return ['code' => 1, 'msg' => $this->theme . '删除成功', 'data' => $data['id']];
         } catch (\Exception $e) {

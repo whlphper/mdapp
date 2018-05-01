@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 use app\common\controller\Base;
+use app\common\model\Log;
 use think\Request;
 
 /**
@@ -96,9 +97,13 @@ class Index extends Base{
         echo $html;
     }
 
-    public function uploadImage($folder = "default", $extType = "image", $defaultSize = 15)
+    public function uploadImage()
     {
-        $result = upload($folder,$extType,$defaultSize);
+        $thumb = !empty($_REQUEST['thumb']) ? true : false;
+        $folder = !empty($_REQUEST['floder']) ? $_REQUEST['floder'] : 'default';
+        $extType = !empty($_REQUEST['ext']) ? $_REQUEST['ext'] : 'image';
+        $defaultSize = !empty($_REQUEST['size']) ? $_REQUEST['size'] : '0.8';
+        $result = upload($folder,$extType,$defaultSize,$thumb);
         return $result;
     }
 }
