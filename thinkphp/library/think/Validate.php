@@ -20,7 +20,7 @@ class Validate
 
     // 自定义的验证类型
     protected static $type = [];
-
+    public $data = [];
     // 验证类型别名
     protected $alias = [
         '>' => 'gt', '>=' => 'egt', '<' => 'lt', '<=' => 'elt', '=' => 'eq', 'same' => 'eq',
@@ -42,6 +42,8 @@ class Validate
         'float'       => ':attribute must be float',
         'boolean'     => ':attribute must be bool',
         'email'       => ':attribute not a valid email address',
+        'mobile'      => ':attribute not a valid mobile',
+        'decimal'      => ':attribute not a valid mobile',
         'array'       => ':attribute must be a array',
         'accepted'    => ':attribute must be yes,on or 1',
         'date'        => ':attribute not a valid datetime',
@@ -252,7 +254,7 @@ class Validate
     public function check($data, $rules = [], $scene = '')
     {
         $this->error = [];
-
+        $this->data  = $data;
         if (empty($rules)) {
             // 读取验证规则
             $rules = $this->rule;
@@ -580,6 +582,18 @@ class Validate
     protected function is($value, $rule, $data = [])
     {
         switch ($rule) {
+            case 'decimal':
+                // 金额
+                $result = $this->regex($value, '/^[0-9]+(.[0-9]{1,2})?$/');
+                break;
+            case 'telephone':
+                // 电话
+                $result = $this->regex($value, '/^([0-9]{3,4}-)?[0-9]{7,8}$/');
+                break;
+            case 'mobile':
+                // 手机号
+                $result = $this->regex($value, "/^1[34578]{1}\d{9}$/");
+                break;
             case 'require':
                 // 必须
                 $result = !empty($value) || '0' == $value;
@@ -1195,7 +1209,7 @@ class Validate
             // 不是正则表达式则两端补上/
             $rule = '/^' . $rule . '$/';
         }
-        return is_scalar($value) && 1 === preg_match($rule, (string) $value);
+        return 1 === preg_match($rule, (string) $value);
     }
 
     /**

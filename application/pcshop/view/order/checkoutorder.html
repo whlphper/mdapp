@@ -3,14 +3,6 @@
 <script src="__PUBLIC__/pcshop/js/cart.js?debug=13"></script>
 <script src="__PUBLIC__/pcshop/js/cartStepNew.js?debug=13"></script>
 <script src="__PUBLIC__/pcshop/js/iSelect.js"></script>
-<!-- iCheck -->
-<link rel="stylesheet" href="__PUBLIC__/plugins/bootstrap-icheck/skins/all.css">
-<!--ickeck-->
-<script src="__PUBLIC__/plugins/bootstrap-icheck/icheck.js"></script>
-<!-- validate-->
-<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
-<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
 <style>
     .btn_1, .btn_2, .btn_3 {
         padding: 0 20px;
@@ -102,6 +94,7 @@
                 <li class="ui-border " onclick="cartStep.setPayId(this,2)" data-id="2">微信</li>
                 <li class="ui-border " id="unionpay" onclick="cartStep.setPayId(this,3)" data-id="3">银联支付</li>
                 <li class="ui-border " id="ipspay" onclick="cartStep.setPayId(this,4)" data-id="4">环迅支付</li>
+                <li class="ui-border " id="yzhpay" onclick="cartStep.setPayId(this,5)" data-id="5">易智慧支付</li>
             </ul>
         </div>
         <div class="clear"></div>
@@ -351,7 +344,7 @@
         {else}
         session('curOrderAddressId', {$address[0]['id']});
         {/if}}
-    );
+        );
 
     function editToAddr(obj, id) {
         var url = '{:url("/pcshop/Address/getRowData")}';
@@ -486,7 +479,29 @@
                     skin: 'layui-layer-rim', //加上边框
                     shadeClose: false, //开启遮罩关闭
                     area: '516px', //宽高
-                    title: '订单支付-银联支付',
+                    title: '订单支付-环迅支付',
+                    content: res.data,
+                });
+            })
+            return
+        }
+
+        if(pay == 5)
+        {
+            layer.msg('易智慧支付');
+            // 这里请求银联支付需要的表单
+            var payUrl = "{:url('pcshop/Pay/yzhPay')}";
+            var pdata = {};
+            pdata.orderId = $("#orderId").val();
+            mdAjax(false,payUrl,pdata,function (res) {
+                //layer.msg(res.msg, {icon: 1});
+                layer.closeAll('loading');
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    shadeClose: false, //开启遮罩关闭
+                    area: '516px', //宽高
+                    title: '订单支付-易智慧支付',
                     content: res.data,
                 });
             })

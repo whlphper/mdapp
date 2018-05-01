@@ -302,7 +302,7 @@ class Url
         foreach ($rule as $item) {
             list($url, $pattern, $domain, $suffix) = $item;
             if (empty($pattern)) {
-                return [rtrim($url, '$'), $domain, $suffix];
+                return [$url, $domain, $suffix];
             }
             $type = Config::get('url_common_param');
             foreach ($pattern as $key => $val) {

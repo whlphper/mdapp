@@ -15,6 +15,7 @@ use cbpay\Pay as cbPay;
 use think\Log;
 use ipsPay\Ips;
 use ipsPay\IpsPayNotify;
+use yzhpay\Pay as yzhPay;
 
 class Pay extends Base
 {
@@ -472,6 +473,186 @@ class Pay extends Base
                         exit;
                     }
                     break;
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * 易智慧-  PCSHOP
+     * @param int $orderId
+     * @return array|\think\response\Json
+     */
+    public function yzhPay($orderId=4)
+    {
+        try{
+            if(empty($orderId)){
+                throw new \Exception('订单数据不存在');
+            }
+            $orderInfo = model('Order')->getRow(['id'=>$orderId],'a.id,a.tradeNumber,a.payType,a.userId,a.product,a.desc,a.total,a.status,a.progress');
+            if($orderInfo['code'] == 0){
+                throw new \Exception('订单获取失败'.$orderInfo['msg']);
+            }
+            if($orderInfo['data']['status'] == 1){
+                throw new \Exception('此订单已经交易成功了');
+            }
+            $domain = Request::instance()->domain();
+            $pickUrl = $domain.url('pcshop/Order/orderSuccess',['type'=>'yzh']);
+            $notify  = $domain.url('pcshop/Pay/yzhpayNoyify');
+            $yzhPay = new yzhPay();
+            $orderInfo['data']['orderNo'] = $orderInfo['data']['tradeNumber'];
+            $orderInfo['data']['orderAmount'] = $orderInfo['data']['total'];
+            $orderInfo['data']['desc'] = $orderInfo['data']['desc'];
+            $orderInfo['data']['pickUrl'] = $pickUrl;
+            $orderInfo['data']['notify'] = $notify;
+            $form = $yzhPay->getPayParams($orderInfo['data']);
+            Log::notice('易智慧支付表单信息'.$form);
+            return ['code'=>1,'msg'=>'','data'=>$form];
+        }catch(\Exception $e){
+            mdLog($e);
+            return json(['code'=>0,'msg'=>$e->getMessage()]);
+        }
+    }
+
+    /**
+     * 易智慧回调  - PCSHOP
+     */
+    public function yzhpayNoyify()
+    {
+        try{
+            $domain = Request::instance()->domain();
+            $yzhPay = new yzhPay();
+            $res = $yzhPay->respond();
+            Log::notice('易智慧 pay 回调返回的数据'.json_encode($res));
+            if($res['code'] == 0){
+                throw new \Exception('易智慧支付失败');
+            }else{
+                // 订单金额
+                $dealFee = $res['total'];
+                $tradeNumber = $res['orderNo'];
+                // 判断订单是否已经支付成功了
+                $sucOrder = model('Order')->getRow(['tradeNumber'=>$tradeNumber],'a.id,a.tradeNumber,a.status,a.total');
+                if($sucOrder['code'] == 0){
+                    throw new \Exception('订单不存在');
+                }
+                if($sucOrder['data']['total'] != $dealFee){
+                    throw new \Exception('订单金额不一致');
+                }
+                if($sucOrder['data']['status'] != 1){
+                    // 修改订单状态
+                    $result = model('Order')->orderNoytify($tradeNumber,1);
+                    if($result['code'] == 0){
+                        throw new \Exception('订单状态修改失败'.$result['msg']);
+                    }
+                    file_put_contents("yzhpaySuccess.txt",json_encode($result));
+                    exit;
+                }
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * LEANWORD 易智慧支付
+     */
+    public function lwYzhPay()
+    {
+        try{
+            /***************************  对方的文档 */
+            $md5Key = '640835760195428';
+            $data = Request::instance()->only(['pickupUrl','receiveUrl','signType','orderNo','orderAmount','orderCurrency','customerId','sign']);
+            if(empty($data['orderNo'])){
+                throw new \Exception('请输入订单编号');
+            }
+            if(empty($data['orderAmount'])){
+                throw new \Exception('请输入订单金额');
+            }
+            $trueSign = md5($data['pickupUrl'].$data['receiveUrl'].$data['signType'].$data['orderNo'].$data['orderAmount'].$data['orderCurrency'].$data['customerId'].$md5Key);
+            if($trueSign != $md5Key){
+                // throw new \Exception('签名校验失败');
+            }
+            // 插入crm过来订单
+            $oldOrder = model('Crmorderyzh')->getRow(['orderNo'=>$data['orderNo']],'a.id,a.orderNo');
+            if($oldOrder['code'] == 0){
+                $orderRes = model('Crmorderyzh')->saveData($data,'Crmorderyzh','CRM订单-yzhpay','0426');
+                if($orderRes['code'] == 0){
+                    throw new \Exception('订单保存失败'.$orderRes['msg']);
+                }
+            }
+            $domain = Request::instance()->domain();
+            $pickUrl = $data['pickupUrl'];
+            $notify = $domain.url('pcshop/Pay/lwYzhpayNoyify');
+            $order['orderNo'] = $data['orderNo'];
+            $order['orderAmount'] = $data['orderAmount'];
+            $order['pickUrl'] = $pickUrl;
+            $order['notify'] = $notify;
+            $yzhpay = new yzhPay();
+            $form = $yzhpay->getPayParams($order);
+            Log::notice('易智慧支付表单信息'.$form);
+            echo $form;
+        }catch(\Exception $e){
+            mdLog($e);
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * 易智慧支付异步回调 - LW
+     */
+    public function lwYzhpayNoyify()
+    {
+        try{
+            $domain = Request::instance()->domain();
+            $pickUrl = $domain;
+            $notify = $domain.url('pcshop/Pay/lwIpspayNoyify');
+            $yzhpay = new yzhPay();
+            $res = $yzhpay->respond();
+            if($res['code'] == 1){
+                // 订单金额
+                $dealFee = $res['total'];
+                $tradeNumber = $res['orderNo'];
+                $transcationId = $res['transcationId'];
+                // 判断订单是否已经支付成功了
+                $sucOrder = model('Crmorderyzh')->getRow(['orderNo'=>$tradeNumber],'a.*');
+                Log::notice('LW-易智慧支付订单信息'.json_encode($sucOrder));
+                if($sucOrder['code'] == 0){
+                    throw new \Exception('订单不存在');
+                }
+                if($sucOrder['data']['orderAmount'] != $dealFee){
+                    throw new \Exception('订单金额不一致');
+                }
+                $orderInfo = $sucOrder['data'];
+                // 判断LeanWork是否处理成功了该笔订单
+                if($orderInfo['status'] != 'success'){
+                    // LW md5key
+                    $md5Key = '640835760195428';
+                    $notifyUrl = $orderInfo['receiveUrl'];
+                    $trueSign = md5($orderInfo['signType'].$orderInfo['orderNo'].$orderInfo['orderAmount'].$orderInfo['orderCurrency'].$transcationId.'success'.$md5Key);
+                    $param = 'signType=MD5&orderNo='.$orderInfo['orderNo'].'&orderAmount='.$orderInfo['orderAmount'].'&orderCurrency='.$orderInfo['orderCurrency'].'&transactionId='.$transcationId.'&status=success&sign='.$trueSign;
+                    // 回调我们的时候需要再次回调给Leanwork
+                    /**********************************/
+                    $regularUrl = $notifyUrl.'?'.$param;
+                    // 用curl代替file_get_contents
+                    $ch = curl_init();
+                    $timeout = 5;
+                    curl_setopt ($ch, CURLOPT_URL, $regularUrl);
+                    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+                    $file_contents = curl_exec($ch);
+                    if($file_contents){
+                        file_put_contents('lwYzhpayNoyify.txt',$file_contents);
+                        Log::notice('易智慧支付回调LW后的返回信息为'.$file_contents);
+                        // 写入订单状态
+                        model('Crmorderyzh')->save(['status'=>$file_contents],['id'=>$orderInfo['id']]);
+                    }
+                    curl_close($ch);
+                }
+            }else{
+                throw new \Exception('易智慧支付失败');
             }
         }catch(\Exception $e){
             mdLog($e);

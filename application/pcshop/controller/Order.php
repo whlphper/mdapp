@@ -13,6 +13,7 @@ use think\Db;
 use think\Exception;
 use unionpay\Unionpay;
 use ipsPay\Ips;
+use yzhpay\Pay as yzhPay;
 
 class Order extends Base
 {
@@ -162,6 +163,13 @@ class Order extends Base
                 if($res['code'] == 1){
                     $tradeNumber = $res['merBillNo'];
                 }
+            }else if($type == 'yzh'){
+                $yzhpay = new yzhPay();
+                $res = $yzhpay->respond();
+                if($res['code'] == 0){
+                    throw new \Exception($res['msg']);
+                }
+                $tradeNumber = $res['orderNo'];
             }else{
                 $response = $this->request->request();
                 $tradeNumber = $response['dealOrder'];

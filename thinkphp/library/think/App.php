@@ -555,11 +555,7 @@ class App
 
         // 获取操作名
         $actionName = strip_tags($result[2] ?: $config['default_action']);
-        if (!empty($config['action_convert'])) {
-            $actionName = Loader::parseName($actionName, 1);
-        } else {
-            $actionName = $convert ? strtolower($actionName) : $actionName;
-        }
+        $actionName = $convert ? strtolower($actionName) : $actionName;
 
         // 设置当前请求的控制器、操作
         $request->controller(Loader::parseName($controller, 1))->action($actionName);
@@ -585,13 +581,6 @@ class App
         if (is_callable([$instance, $action])) {
             // 执行操作方法
             $call = [$instance, $action];
-            // 严格获取当前操作方法名
-            $reflect    = new \ReflectionMethod($instance, $action);
-            $methodName = $reflect->getName();
-            $suffix     = $config['action_suffix'];
-            $actionName = $suffix ? substr($methodName, 0, -strlen($suffix)) : $methodName;
-            $request->action($actionName);
-
         } elseif (is_callable([$instance, '_empty'])) {
             // 空操作
             $call = [$instance, '_empty'];
