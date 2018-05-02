@@ -79,7 +79,8 @@ function listMenu(res, html) {
  * @param e
  * @param callBack
  */
-function mdBtnEvent(e, callBack) {
+function mdBtnEvent(e, callBack,extra) {
+    var extra = extra ? extra : false;
     if(typeof(e) == 'object'){
         // 获取表单
         var form = e.closest("form");
@@ -133,6 +134,9 @@ function mdBtnEvent(e, callBack) {
         }
         formJson.old = diffOldField;
         formJson.new = diffNewField;
+    }
+    if(extra){
+        formJson.extraData = extra;
     }
     mdAjax(e, action, formJson, callBack);
 }
@@ -793,5 +797,4 @@ function checkShopUserLogin()
         return shopUserId;
     }
 }
-
 

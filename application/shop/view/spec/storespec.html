@@ -1,0 +1,76 @@
+{include file="admin@public/store"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        var id = session("md{$ctrName}Id");
+        if (id) {
+            var url = "{:url('shop/Spec/detail')}";
+            var data = {};
+            data.id = id;
+            mdAjax(false, url, data, function (res) {
+                assign(res.data, 'md{$ctrName}Form');
+                // 渲染已经存在的规格值
+                for(var i=0;i<res.data.detail.length;i++){
+                    var ipt = '<div><input type="hidden"  name="specDetailId" value="'+res.data.detail[i].id+'"><input type="text" style="position: relative;" name="specValue" class="form-control" value="'+res.data.detail[i].value+'"required><i title="删除此值" class="fa fa-close delSpec" onclick="delSpec($(this))" style="color: red;font-weight: bolder;cursor: pointer;float: right;    z-index: 10;"></i></div>';
+                    $("#detailList").append(ipt);
+                }
+                layer.closeAll("loading");
+            });
+        }
+        $(".addSpec").click(function(){
+            layer.msg('addspec');
+            var ipt = '<div><input type="hidden"  name="specDetailId" value="0"><input type="text" style="position: relative;" name="specValue" class="form-control" required><i title="删除此值" class="fa fa-close delSpec" onclick="delSpec($(this))" style="color: red;font-weight: bolder;cursor: pointer;float: right;    z-index: 10;"></i></div>';
+            $(this).parent("label").parent(".form-group").find(".input-group").append(ipt);
+        });
+    });
+
+    function delSpec(obj)
+    {
+        obj.parent("div").remove();
+    }
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+<body>
+<!-- Main content -->
+<!--主体内容-->
+<div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{:url('shop/Spec/insertSpec')}" id="mdSpecForm">
+            <input type="hidden" name="id" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新增{$theme}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{$theme}名称:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{$theme}值:<i class="fa fa-plus-circle addSpec" style="color: red;font-weight: bolder;cursor: pointer"></i></label>
+                        <div class="input-group" id="detailList">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
+                            class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sysSpecTable"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->\
+</div>
+</body>
+<!-- /.content -->
+</html>

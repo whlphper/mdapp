@@ -60,7 +60,7 @@
             mdConfirmModal('modal-sm', '提示', '确定删除这些数据吗?删除后不可恢复,请谨慎操作', url, table);
         },
         'click .edit': function (e, value, row, index) {
-            var url = "{$fromSaveUrl}";
+            var url = "{$fromSaveUrl}"+'?id='+row.id;
             session("md{$ctrName}Id", row.id);
             mdAjax($(this), url, {}, function (res) {
                 mdFormModal(res);
