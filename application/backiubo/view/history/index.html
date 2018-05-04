@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/base.css" />
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/info-mgt.css" />
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/WdatePicker.css" />
+    <title></title>
+</head>
+
+<body>
+<div class="title"><h2>{$theme}</h2></div>
+<!--查询表单-->
+<div class="query">
+    <div class="query-conditions ue-clear">
+        <div class="conditions name ue-clear">
+            <label>流程名称：</label>
+            <div class="select-wrap">
+                <div class="select-title ue-clear"><span>请选择</span><i class="icon"></i></div>
+                <ul class="select-list">
+                    <li>呵呵</li>
+                    <li>哈哈</li>
+                    <li>嘻嘻</li>
+                </ul>
+            </div>
+        </div>
+        <div class="conditions operate-time ue-clear">
+            <label>操作时间：</label>
+            <div class="select-wrap">
+                <div class="select-title ue-clear"><span>大于或等于</span><i class="icon"></i></div>
+                <ul class="select-list">
+                    <li>呵呵</li>
+                    <li>哈哈</li>
+                    <li>嘻嘻</li>
+                </ul>
+            </div>
+            <div class="input-box ue-clear">
+                <input type="text" />
+                <span>小时</span>
+            </div>
+        </div>
+        <div class="conditions time ue-clear">
+            <label>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</label>
+            <div class="time-select">
+                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间" />
+                <i class="icon"></i>
+            </div>
+            <span class="line">-</span>
+            <div class="time-select">
+                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间" />
+                <i class="icon"></i>
+            </div>
+        </div>
+        <div class="conditions staff ue-clear">
+            <label>人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;员：</label>
+            <input type="text" placeholder="可以直接输入或选择" />
+            <a href="javascript:;" class="staff-select">选择</a>
+        </div>
+    </div>
+    <div class="query-btn ue-clear">
+        <a href="javascript:;" class="confirm">查询</a>
+        <a href="javascript:;" class="clear">清空条件</a>
+    </div>
+</div>
+<!--操作按钮-->
+<div class="table-operate ue-clear">
+    <a href="javascript:;" class="add">添加</a>
+    <a href="javascript:;" class="del">删除</a>
+    <a href="javascript:;" class="edit">编辑</a>
+    <a href="javascript:;" class="count">统计</a>
+    <a href="javascript:;" class="check">审核</a>
+</div>
+<div class="table-box">
+    <table data-url="{:url('/backiubo/History/getHistory')}">
+        <thead id="historyTableHead">
+        <tr>
+            <th data-field="account">账号</th>
+            <th data-field="timeopen">开仓时间</th>
+            <th data-field="ticket">订单号</th>
+            <th data-field="type">类型</th>
+            <th data-field="volume">手数</th>
+            <th data-field="symbol">品种</th>
+            <th data-field="priceopen">开仓价格</th>
+            <th data-field="timeclose">平仓时间</th>
+        </tr>
+        </thead>
+        <tbody id="historyTableBody">
+        <tr>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pagination ue-clear"></div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.pagination.js"></script>
+<!-- layer-->
+<script src="__PUBLIC__/plugins/layer/layer.js"></script>
+<script src="__PUBLIC__/core/global.js"></script>
+<script type="text/javascript">
+    $(".select-title").on("click",function(){
+        $(".select-list").hide();
+        $(this).siblings($(".select-list")).show();
+        return false;
+    })
+    $(".select-list").on("click","li",function(){
+        var txt = $(this).text();
+        $(this).parent($(".select-list")).siblings($(".select-title")).find("span").text(txt);
+    })
+    $(document).ready(function(){
+        $("body").find('table').each(function(){
+            var tableUrl = $(this).attr("data-url");
+            var obj = $(this);
+            mdAjax(false,tableUrl,{},function(res){
+                layer.closeAll('loading');
+                jqPageRender(obj,res.data);
+                $('.pagination').pagination(res.total,{
+                    callback: function(page){
+                        InitTable(obj,page,tableUrl);
+                    },
+                    display_msg: true,
+                    setPageNo: true
+                });
+            });
+        });
+
+    });
+
+    $("tbody").find("tr:odd").css("backgroundColor","#eff6fa");
+    showRemind('input[type=text], textarea','placeholder');
+    var pageSize = 10;
+
+    //请求数据
+    function InitTable(obj,pageIndex,tableUrl) {
+        var data = "pageIndex=" + (pageIndex) + "&pageSize=" + pageSize;
+        mdAjax(false,tableUrl,data,function (res) {
+            layer.closeAll('loading');
+            jqPageRender(obj,res.data);
+        });
+    }
+
+    function jqPageRender(obj,data)
+    {
+        obj.find("tbody").html('');
+        var allData = [];
+        // 获取需要数据中的哪些字段，循环表格head来找出
+        for(var j=0;j<data.length;j++){
+            var trHtml = '<tr>';
+            obj.find("thead").find("th").each(function(){
+                var field = $(this).attr("data-field");
+                trHtml= trHtml + '<td>'+data[j][field]+'</td>';
+            });
+            trHtml = trHtml + '</tr>';
+            allData.push(trHtml);
+        }
+        obj.find("tbody").append(allData.join(' '));
+    }
+</script>
+</html>

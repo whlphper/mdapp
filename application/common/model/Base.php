@@ -12,6 +12,10 @@ use think\Request;
  */
 class Base extends Model
 {
+    // 表格数据获取限制
+    public $tableCon = [];
+    // 是否是本系统数据表
+    public $isLimit = true;
     // 表对应需要处理图片的字段
     public function imgField($table='Advertisement')
     {
@@ -38,7 +42,7 @@ class Base extends Model
             if (!$join || $join == '') {
                 $join = array();
             }
-            $condition = array_merge($CurrentCon,[]);
+            $condition = $this->isLimit ? array_merge($CurrentCon,[],$this->tableCon,['a.deleted_at'=>null]) : array_merge($CurrentCon,[],$this->tableCon);
             $tableData = input("request.");
             if(isset($tableData['_tm'])){
                 unset($tableData['_tm']);
@@ -71,13 +75,13 @@ class Base extends Model
                     $condition['a.' . $fields] = ['like', "%$value%"];
                 }
             }
-            $list = $this->alias('a')->where($condition)->where('a.deleted_at',null)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select();
+            $list = $this->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select();
             /*$collation = [];
             foreach ($list as $k=>$v)
             {
                 $collation[] = $list[$k]->toArray();
             }*/
-            $total = $this->alias('a')->where($condition)->where('a.deleted_at',null)->join($join)->field('a.id')->count();
+            $total = $this->alias('a')->where($condition)->join($join)->field('a.id')->count();
             $curModelImg = $this->imgField($this->name);
             return ['total'=>$total,'rows'=>$list];
         }catch(\Exception $e){
@@ -99,7 +103,7 @@ class Base extends Model
             if (!$join || $join == '') {
                 $join = array();
             }
-            $condition = array_merge($CurrentCon, array('a.deleted_at' => null));
+            $condition = $this->isLimit ? array_merge($CurrentCon, array('a.deleted_at' => null)) :  array_merge($CurrentCon, []);
             $order = 'a.created_at desc';
             if (!empty($curOrder)) {
                 $order = $curOrder . ',' . $order;
@@ -146,7 +150,7 @@ class Base extends Model
     public function getCommonCollection($condition,$field='id',$order='',$join=[])
     {
         try{
-            if(empty($condition['a.deleted_at'])){
+            if(empty($condition['a.deleted_at']) && $this->isLimit){
                 $condition = array_merge($condition,['a.deleted_at'=>null]);
             }
             $list = self::all(function($query)use($condition,$field,$order,$join){
@@ -258,8 +262,10 @@ class Base extends Model
             $logData['ip'] = $request->ip();
             $logData['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
             if(empty($data['id'])){
-                $data['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
-                $data['created_user'] = session("userId");
+                if($this->isLimit){
+                    $data['created_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+                    $data['created_user'] = session("userId");
+                }
                 if($this->name == 'User'){
                     $data['account_number'] = $data['mobile'];
                     $data['password'] = md5($data['password']);
@@ -275,7 +281,9 @@ class Base extends Model
                 }
                 $dataId = $result->data['id'];
             }else{
-                $data['updated_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+                if($this->isLimit){
+                    $data['updated_at'] = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);
+                }
                 $result = self::allowField(true)->save($data,['id'=>$data['id']]);
                 if(!$result){
                     throw new \Exception($name.'失败，没有可以更改的数据');
@@ -366,7 +374,7 @@ class Base extends Model
      */
     public function getRow($condition=[],$field,$join=[],$order=''){
         try{
-            if(empty($condition['a.deleted_at'])){
+            if(empty($condition['a.deleted_at']) && $this->isLimit){
                 $condition = array_merge($condition,['a.deleted_at'=>null]);
             }
             $list = self::get(function($query)use($condition,$field,$order,$join){
@@ -412,7 +420,7 @@ class Base extends Model
     public function getField($condition=[],$field,$order='',$join=[])
     {
         try{
-            if(empty($condition['a.deleted_at'])){
+            if(empty($condition['a.deleted_at']) && $this->isLimit){
                 $condition = array_merge($condition,['a.deleted_at'=>null]);
             }
             $result = self::where($condition)->alias('a')->order($order)->join($join)->value($field);
@@ -432,7 +440,7 @@ class Base extends Model
     public function getColumn($condition=[],$field)
     {
         try{
-            if(empty($condition['a.deleted_at'])){
+            if(empty($condition['a.deleted_at']) && $this->isLimit){
                 $condition = array_merge($condition,['a.deleted_at'=>null]);
             }
             $result = self::where($condition)->alias('a')->column($field);
@@ -440,6 +448,37 @@ class Base extends Model
         }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage()];
+        }
+    }
+
+    /**
+     * 条件修改数据
+     * @param array $data
+     * @param array $condition
+     * @return array|false|int
+     */
+    public function saveByCondition($data=[],$condition=[])
+    {
+        try {
+            $result = $this->save($data,$condition);
+            return $result;
+        } catch (\Exception $e) {
+            mdLog($e);
+            return ['code' => 0, 'msg' => $e->getMessage(), 'data' => []];
+        }
+    }
+
+    public function getJQPage($condition=[],$field='a.*',$join=[],$order='')
+    {
+        try{
+            $offset = empty(input('pageIndex')) ? 0 : input('pageIndex')*10;
+            $limit  = 10;
+            $list = $this->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select()->toArray();
+            $total = $this->alias('a')->where($condition)->join($join)->count();
+            return ['code'=>1,'msg'=>'','data'=>$list,'total'=>$total];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
         }
     }
 }

@@ -1,0 +1,83 @@
+{include file="admin@public/store"}
+<!--这里引入本页面需要的JS 以及脚本-->
+<!-- 编辑器 -->
+<link rel="stylesheet" href="__PUBLIC__/plugins/summernote/summernote.css">
+<script src="__PUBLIC__/plugins/summernote/summernote.min.js"></script>
+<script src="__PUBLIC__/plugins/summernote/lang/summernote-zh-CN.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var backurl = "{:url('admin/Index/uploadImage')}";
+        $('#summernote').summernote({
+            height: 400,
+            tabsize: 3,
+            lang: 'zh-CN',
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+            focus: true,
+            // 重写图片上传
+            callbacks:{
+                onImageUpload:function(files, editor, $editable) {
+                    sendFile(backurl,files[0],editor,$editable);
+                }
+            }
+        });
+    });
+</script>
+<!--这里引入本页面需要的JS 以及脚本-->
+</head>
+<body>
+<!-- Main content -->
+<!--主体内容-->
+<div class="modal fade" id="mdFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{:url('shop/Help/saveToTable')}" id="md{$ctrName}Form">
+            <input type="hidden" name="id" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">新增{$theme}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{$theme}标题:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="title" class="form-control" required>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label>{$theme}排序:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-send"></i>
+                            </div>
+                            <input type="number" name="sort_order" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>文章内容:</label>
+                        <div class="input-group">
+                            <textarea name="content" id="summernote"  type="summernote" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i
+                            class="fa fa-remove"></i>&nbsp;&nbsp;&nbsp;关闭
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm form-submit" data-table="sys{$ctrName}Table"><i class="fa fa-save"></i>&nbsp;&nbsp;&nbsp;保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->\
+</div>
+</body>
+<!-- /.content -->
+</html>

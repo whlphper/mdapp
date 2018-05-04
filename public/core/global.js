@@ -479,7 +479,7 @@ function assign(data, formId) {
                     if(imgList != undefined){
                         for(var i=0;i<imgList.length;i++){
                             if(imgList[i].id && imgList[i].path){
-                                var html = '<div class="img col-lg-3"><img class="img-responsive" id="'+imgList[i].id+'" src="/public'+imgList[i].path+'"> <span class="close" onclick="removePreview($(this),'+imgList[i].id+',\'\'+dataId+\'\');"><i class="fa fa-remove"></i>删除</span></div>';
+                                var html = '<div class="img col-lg-3"><img class="img-responsive" id="'+imgList[i].id+'" src="/public'+imgList[i].path+'"> <span class="close" onclick="removePreview($(this),'+imgList[i].id+',\''+dataId+'\');"><i class="fa fa-remove"></i>删除</span></div>';
                                 $(this).parent('div').append(html);
                             }
                         }

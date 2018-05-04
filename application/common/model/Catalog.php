@@ -10,5 +10,7 @@ namespace app\common\model;
 use app\common\model\Base;
 class Catalog extends Base{
 
-
+    public $tableCon = [
+        'parent_id' => ['<>',0],
+    ];
 }
