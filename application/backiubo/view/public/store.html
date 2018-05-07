@@ -1,0 +1,24 @@
+<!--单选复选框-->
+<link rel="stylesheet" href="__PUBLIC__/bootstrap/css/build.css">
+<!-- validate-->
+<script src="__PUBLIC__/plugins/JQuery.validate/jquery.validate.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/additional-methods.js"></script>
+<script src="__PUBLIC__/plugins/JQuery.validate/zh_cn.js"></script>
+<script>
+    $(document).ready(function(){
+        /*|--表单提交--|*/
+        $(".form-submit").click(function(){
+            var table = $(this).attr("data-table");
+            mdBtnEvent($(this),function(res){
+                layer.closeAll("loading");
+                setTimeout(function () {
+                    window.history.go(-1);
+                },500)
+            });
+        });
+        $(".form-back").click(function(){
+            window.history.back();
+        });
+        /*|--表单提交--|*/
+    });
+</script>

@@ -249,4 +249,14 @@ class Base extends Controller
     }
 
 
+    public function fullyDel($field,$ids)
+    {
+        return $this->model->fullyDelete($field,$ids);
+    }
+
+    public function fullyStore()
+    {
+        $data = $this->request->post();
+        return $this->model->store($data,$this->theme);
+    }
 }

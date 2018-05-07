@@ -11,4 +11,10 @@ use app\common\model\Base;
 class History extends Base{
 
     public $isLimit = false;
+
+    public function getAccountList()
+    {
+        $sql = 'select distinct(account) from history';
+        return $this->query($sql);
+    }
 }

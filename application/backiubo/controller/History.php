@@ -11,6 +11,12 @@ use app\common\controller\Base;
 
 class History extends Base{
 
+    protected $beforeActionList = [
+        //'first',                                //在执行所有方法前都会执行first方法
+        //'second' => ['except' => 'hello'],       //除hello方法外的方法执行前都要先执行second方法
+        'getAccList' => ['only' => 'index,store'],
+    ];
+
     public function __construct()
     {
         parent::__construct();
@@ -27,5 +33,25 @@ class History extends Base{
     {
         $data = $this->model->getJQPage([],'a.*',[],'');
         return $data;
+    }
+
+    public function getAccList()
+    {
+        if(!empty($id = $this->request->param('id'))){
+            $data = model('History')->get($id)->toArray();
+            $this->assign('data',$data);
+            $this->assign('fromUri',url('backiubo/History/upHistory'));
+        }else{
+            $this->assign('fromUri',url('/backiubo/history/fullyStore'));
+        }
+        // 获取账号列表,用做搜索条件
+        $list = model('History')->getAccountList();
+        $this->assign('accList',$list);
+    }
+
+    public function upHistory()
+    {
+        $data = $this->request->post();
+        return $this->model->updated($data,['ticket'=>$data['ticket']],$this->theme);
     }
 }

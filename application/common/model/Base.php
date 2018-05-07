@@ -468,14 +468,98 @@ class Base extends Model
         }
     }
 
+    /**
+     * JQ PAGE
+     * @param array $condition
+     * @param string $field
+     * @param array $join
+     * @param string $order
+     * @return array
+     */
     public function getJQPage($condition=[],$field='a.*',$join=[],$order='')
     {
         try{
             $offset = empty(input('pageIndex')) ? 0 : input('pageIndex')*10;
             $limit  = 10;
+            $param = Request::instance()->except(['pageIndex','pageSize']);
+            foreach ($param as $k=>$v){
+                if(!empty($v)){
+                    $condition[$k] = ['like',"%$v%"];
+                }
+            }
             $list = $this->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select()->toArray();
             $total = $this->alias('a')->where($condition)->join($join)->count();
             return ['code'=>1,'msg'=>'','data'=>$list,'total'=>$total];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
+        }
+    }
+
+    /**
+     * 完全删除数据
+     * @param $field
+     * @param $idStr
+     * @return array
+     */
+    public function fullyDelete($field,$idStr)
+    {
+        try{
+            if(empty($field)){
+                throw new \Exception('删除条件不能为空');
+            }
+            if(empty($idStr)){
+                throw new \Exception('删除的数据为空');
+            }
+            $condition[$field] = ['in',$idStr];
+            $result = $this->where($condition)->delete();
+            if($result){
+                return ['code'=>1,'msg'=>'删除成功'];
+            }else{
+                throw new \Exception('删除失败');
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
+        }
+    }
+
+    /**
+     * 普通新增数据
+     * @param $data
+     * @param string $theme
+     * @return array
+     */
+    public function store($data,$theme='')
+    {
+        try{
+            if(empty($data) || !is_array($data)){
+                throw new \Exception('数据错误');
+            }
+            $result = $this->insert($data);
+            if($result){
+                return ['code'=>1,'msg'=>'新增'.$theme.'成功'];
+            }else{
+                throw new \Exception('新增'.$theme.'失败');
+            }
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
+        }
+    }
+
+    public function updated($data,$con,$theme)
+    {
+        try{
+            if(empty($data) || !is_array($data)){
+                throw new \Exception('数据错误');
+            }
+            $result = $this->save($data,$con);
+            if($result){
+                return ['code'=>1,'msg'=>'编辑'.$theme.'成功'];
+            }else{
+                throw new \Exception('编辑'.$theme.'失败');
+            }
         }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
