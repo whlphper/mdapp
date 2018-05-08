@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
     // 开始渲染表格
     $("body").find('table').each(function(){
@@ -43,7 +44,7 @@ $(document).ready(function(){
         var obj = $("#"+table);
         InitTable(obj,0,tableUrl,[]);
     });
-    
+
     // 批量删除
     $("body").find(".delMore").click(function () {
         // 获取表头第一列的字段名称
@@ -95,6 +96,7 @@ function InitTable(obj,pageIndex,tableUrl,extra) {
     if(extra){
         data = extra;
     }
+    var tableUrl = obj.attr("data-url");
     data.pageIndex = pageIndex;
     data.pageSize = pageSize;
     mdAjax(false,tableUrl,data,function (res) {
@@ -122,20 +124,19 @@ function jqPageRender(obj,data)
         obj.find("thead").find("th").each(function(){
             var field = $(this).attr("data-field");
             var keyF = $(this).attr("data-key");
-            if(field == 'checkbox' ){
-                trHtml = trHtml + '<td><input type="checkbox" value="'+data[j][keyF]+'"></td>';
+            var actionFunc = $(this).attr("data-action");
+            if(actionFunc && actionFunc != undefined && actionFunc != ''){
+                var curAction = renderAction(actionFunc,j,data);
+                trHtml= trHtml + '<td style="padding-left: 15px;">'+curAction+'</td>';
             }else{
-                if(data[j][field] != undefined){
-                    //if(data[j][field] && data[j][field] != '' && data[j][field]){
-                    trHtml= trHtml + '<td style="padding-left: 15px;">'+data[j][field]+'</td>';
-                    //}else{
-                    // trHtml= trHtml + '<td>-------</td>';
-                    //}
-                }
-                var actionFunc = $(this).attr("data-action");
-                if(actionFunc && actionFunc != undefined && actionFunc != ''){
-                    var curAction = renderAction(actionFunc,j,data);
-                    trHtml= trHtml + '<td style="padding-left: 15px;">'+curAction+'</td>';
+                if(field == 'checkbox' ){
+                    trHtml = trHtml + '<td><input type="checkbox" value="'+data[j][keyF]+'"></td>';
+                }else{
+                    if(data[j][field] == null || data[j][field] == ''){
+                        trHtml= trHtml + '<td style="padding-left: 15px;">-</td>';
+                    }else{
+                        trHtml= trHtml + '<td style="padding-left: 15px;">'+data[j][field]+'</td>';
+                    }
                 }
             }
         });

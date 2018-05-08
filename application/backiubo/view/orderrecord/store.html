@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/base.css" />
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/info-reg.css" />
+    <title></title>
+</head>
+
+<body>
+<div class="title"><h2>{$theme}</h2></div>
+
+<form action="{$fromUri}" id="historyForm">
+<div class="main">
+
+
+    <p class="long-input ue-clear">
+        <label>订单号：</label>
+        <input type="text" name="ticket"  required  {if !empty($data)} readonly {/if} placeholder="订单号" value="{$data.ticket|default=''}"/>
+    </p>
+    <p class="long-input ue-clear">
+        <label>账号：</label>
+        <input type="text" name="account" required placeholder="请输入账号" value="{$data.account|default=''}"/>
+    </p>
+    <p class="long-input ue-clear">
+        <label>源订单：</label>
+        <input type="text" name="ticketfrom" required placeholder="请输入源订单" value="{$data.ticketfrom|default=''}"/>
+    </p>
+    <p class="long-input ue-clear">
+        <label>源账号：</label>
+        <input type="text" name="accountfrom" required placeholder="请输入源账号号" value="{$data.accountfrom|default=''}"/>
+    </p>
+    <p class="long-input ue-clear">
+        <label>手数：</label>
+        <input type="text" name="volume" required placeholder="请输入手数" value="{$data.volume|default=''}" />
+    </p>
+    <p class="short-input ue-clear">
+        <label>品种：</label>
+        <input type="text" name="symbol" required placeholder="品种" value="{$data.symbol|default=''}" />
+    </p>
+    <p class="short-input ue-clear">
+        <label>类型：</label>
+        <input type="text" name="type" required placeholder="类型" value="{$data.type|default=''}" />
+    </p>
+
+
+</div>
+<div class="btn ue-clear">
+    <a href="javascript:;" class="confirm form-submit">确定</a>
+    <a href="javascript:;" class="clear form-back">返回</a>
+</div>
+</form>
+</body>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/WdatePicker.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.js"></script>
+<script src="__PUBLIC__/core/global.js"></script>
+{include file="backiubo@public/store"}
+</html>

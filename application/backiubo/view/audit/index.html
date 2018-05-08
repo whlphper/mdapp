@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/base.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/info-mgt.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/WdatePicker.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/font/font-awesome.min.css">
+    <title></title>
+    <style>
+        table-box td,.table-box th{
+            padding-left: 15px;
+        }
+        .table-box th{
+            background: #e8f1f7;
+
+        }
+        .table-box td{
+            border: none;
+        }
+        .table-box tbody tr:hover{
+            background: #e8eef2;
+        }
+    </style>
+</head>
+
+<body>
+<div class="title"><h2>{$theme}</h2></div>
+<!--查询表单-->
+<div class="query">
+    <form id="AuditSearchTable" data-table="AuditTable">
+        <div class="query-conditions ue-clear">
+            <div  class="conditions name ue-clear">
+                <label>审核状态：</label>
+                <div class="select-wrap">
+                    <select name="allow" class="select-title ue-clear" >
+                        <option value="">全部</option>
+                        <option value="1">审核通过</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="query-btn ue-clear">
+            <a href="javascript:;" class="confirm">查询</a>
+            <a href="javascript:;" class="clear">清空条件</a>
+        </div>
+    </form>
+</div>
+
+<div class="table-box">
+    <!--操作按钮-->
+    <div class="table-operate ue-clear">
+        <a href="javascript:;" class="del delMore" data-url="{:url('/backiubo/Audit/fullyDel')}">删除</a>
+    </div>
+    <table id="AuditTable" data-search="AuditSearchTable" data-url="{:url('/backiubo/Audit/getJqPage')}">
+        <thead id="AuditTableHead">
+        <tr>
+            <th data-field="checkbox" data-key="autoid"></th>
+            <th data-field="account">账号</th>
+            <th data-field="belongto">归属于</th>
+            <th data-field="multiple">跟单比例</th>
+            <th data-field="password">密码</th>
+            <th data-field="contact">联系方式</th>
+            <th data-field="email">邮箱</th>
+            <th data-field="idcard">身份证号</th>
+            <th data-field="allow">通过</th>
+            <th data-field="reason">拒绝理由</th>
+            <th data-action="commonAct">操作</th>
+        </tr>
+        </thead>
+        <tbody id="AuditTableBody">
+        <tr>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination ue-clear"></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.pagination.js"></script>
+<!-- layer-->
+<script src="__PUBLIC__/plugins/layer/layer.js"></script>
+<script src="__PUBLIC__/core/global.js"></script>
+<script src="__PUBLIC__/core/jq.page.js"></script>
+<script type="text/javascript">
+    function commonAct(index,data) {
+        var id = data[index].autoid;
+        switch (data[index].allow){
+            case '通过':
+                return '<span class="delete"  data-index="'+index+'" data-id="'+id+'" style="cursor: pointer"  title="删除{$theme}"><i class="fa fa-trash-o "></i>删除</span>';
+                break;
+            default:
+                return '<span class="pass"  data-index="'+index+'" data-id="'+id+'" style="cursor: pointer"  title="通过{$theme}"><i class="fa fa-hand-o-right"></i>通过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="audit" data-index="'+index+'" data-id="'+id+'" style="cursor: pointer" title="拒绝{$theme}"><i class="fa fa-frown-o" ></i>拒绝</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="delete"  data-index="'+index+'" data-id="'+id+'" style="cursor: pointer"  title="删除{$theme}"><i class="fa fa-trash-o "></i>删除</span>';
+                break;
+        }
+    }
+    var obj = $("#AuditTable");
+    // 在动态生成的节点如果需要事件 需要用“事件委托” 但是下面写的太多没用的东西
+    $(document).on("click", ".pass", function () {
+        var ticked = $(this).attr("data-id");
+        var url = "{:url('/backiubo/Audit/goAudit/id/"+ticked+"/status/1')}";
+        layer.confirm('确定通过审核吗？', {
+            btn: ['通过','取消'] //按钮
+        }, function(){
+            mdAjax($(this),url,{},function (res) {
+                InitTable(obj,0,tableUrl);
+            },'get');
+        });
+    })
+    $(document).on("click", ".audit", function () {
+        var ticked = $(this).attr("data-id");
+        layer.open({
+            type: 1,
+            title: '请填写拒绝理由',
+            shadeClose: true,
+            maxmin: false, //开启最大化最小化按钮
+            area: ['300px', '300px'],
+            content: '<textarea style="width: 94%;height: 50%;margin-left: 2%;" type="text" id="reasoncontent"  maxlength="50" placeholder="请填写拒绝理由，不能超过50字" id="refuseConetnt" ></textarea>',
+            btn: ['提交', '取消'],
+            btn1: function(index, layero){
+                var resson = $("#reasoncontent").val();
+                if(resson == ''){
+                    layer.msg('请填写拒绝理由',{icon:0});
+                    return
+                }
+                var url = "{:url('/backiubo/Audit/goAudit/id/"+ticked+"/status/null/reason/"+resson+"')}";
+                mdAjax($(this),url,{},function (res) {
+                    layer.closeAll();
+                    InitTable(obj,0);
+                },'get');
+            }
+        });
+    })
+    $(document).on("click", ".delete", function () {
+        var id = $(this).attr("data-id");
+        //询问框
+        var delUrl = "{:url('/backiubo/Audit/fullyDel')}";
+        delUrl = delUrl + '?field=autoid&ids='+id;
+        layer.confirm('确定删除数据吗？', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+            mdAjax($(this),delUrl,{},function (res) {
+                InitTable(obj,0);
+            },'get');
+        });
+    })
+</script>
+</body>
+</html>

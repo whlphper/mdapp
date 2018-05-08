@@ -28,35 +28,40 @@
 <div class="title"><h2>{$theme}</h2></div>
 <!--查询表单-->
 <div class="query">
-    <form id="historySearchTable" data-table="historyTable">
+    <form id="OrderrecordSearchTable" data-table="OrderrecordTable">
         <div class="query-conditions ue-clear">
             <div  class="conditions name ue-clear">
-                <label>所属账号：</label>
+                <label>源账户：</label>
                 <div class="select-wrap">
-                    <select name="account" class="select-title ue-clear" >
+                    <select name="accountfrom" class="select-title ue-clear" >
                         <option value="">全部</option>
                         {foreach $accList as $k=>$v}
-                        <option value="{$v.account}">{$v.account}</option>
+                        <option value="{$v.accountfrom}">{$v.accountfrom}</option>
                         {/foreach}
                     </select>
                 </div>
             </div>
-            <div class="conditions time ue-clear">
-                <label>开仓时间：</label>
-                <div class="time-select">
-                    <input type="text" name="timeopen" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间"/>
-                    <i class="icon"></i>
+            <div  class="conditions name ue-clear">
+                <label>源订单：</label>
+                <div class="select-wrap">
+                    <select name="ticketfrom" class="select-title ue-clear" >
+                        <option value="">全部</option>
+                        {foreach $orderList as $k=>$v}
+                        <option value="{$v.ticketfrom}">{$v.ticketfrom}</option>
+                        {/foreach}
+                    </select>
                 </div>
-                <!--<span class="line">-</span>
-                <div class="time-select">
-                    <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间"/>
-                    <i class="icon"></i>
-                </div>-->
             </div>
-            <div class="conditions staff ue-clear">
-                <label>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
-                <input type="text" name="ticked" placeholder="请输入订单号"/>
-                <!--<a href="javascript:;" class="staff-select">选择</a>-->
+            <div  class="conditions name ue-clear">
+                <label>源品种：</label>
+                <div class="select-wrap">
+                    <select name="symbol" class="select-title ue-clear" >
+                        <option value="">全部</option>
+                        {foreach $symbolList as $k=>$v}
+                        <option value="{$v.symbol}">{$v.symbol}</option>
+                        {/foreach}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="query-btn ue-clear">
@@ -69,28 +74,27 @@
 <div class="table-box">
     <!--操作按钮-->
     <div class="table-operate ue-clear">
-        <a href="javascript:;" class="add addData" data-url="{:url('/backiubo/History/store')}">添加</a>
-        <a href="javascript:;" class="del delMore" data-url="{:url('/backiubo/History/fullyDel')}">删除</a><!--
+        <a href="javascript:;" class="add addData" data-url="{:url('/backiubo/Orderrecord/store')}">添加</a>
+        <a href="javascript:;" class="del delMore" data-url="{:url('/backiubo/Orderrecord/fullyDel')}">删除</a><!--
     <a href="javascript:;" class="edit">编辑</a>
     <a href="javascript:;" class="count">统计</a>
     <a href="javascript:;" class="check">审核</a>-->
     </div>
-    <table id="historyTable" data-search="historySearchTable" data-url="{:url('/backiubo/History/getJqPage')}">
-        <thead id="historyTableHead">
+    <table id="OrderrecordTable" data-search="OrderrecordSearchTable" data-url="{:url('/backiubo/Orderrecord/getJqPage')}">
+        <thead id="OrderrecordTableHead">
         <tr>
             <th data-field="checkbox" data-key="ticket"></th>
-            <th data-field="account">账号</th>
-            <th data-field="timeopen">开仓时间</th>
             <th data-field="ticket">订单号</th>
-            <th data-field="type">类型</th>
+            <th data-field="account">账号</th>
+            <th data-field="ticketfrom">源订单</th>
+            <th data-field="accountfrom">源账户</th>
             <th data-field="volume">手数</th>
             <th data-field="symbol">品种</th>
-            <th data-field="priceopen">开仓价格</th>
-            <th data-field="timeclose">平仓时间</th>
+            <th data-field="type">TYPE</th>
             <th data-action="commonAct">操作</th>
         </tr>
         </thead>
-        <tbody id="historyTableBody">
+        <tbody id="OrderrecordTableBody">
         <tr>
 
         </tr>
@@ -123,17 +127,17 @@
         var id = data[index].ticket;
         return '<span class="edit" data-index="'+index+'" data-id="'+id+'" style="cursor: pointer" title="编辑{$theme}"><i class="fa fa-edit " ></i>编辑</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="delete"  data-index="'+index+'" data-id="'+id+'" style="cursor: pointer"  title="删除{$theme}"><i class="fa fa-trash-o "></i>删除</span>';
     }
-    var obj = $("#historyTable");
+
     // 在动态生成的节点如果需要事件 需要用“事件委托” 但是下面写的太多没用的东西
     $(document).on("click", ".edit", function () {
         var ticked = $(this).attr("data-id");
-        var url = "{:url('/backiubo/history/store/id/"+ticked+"')}";
+        var url = "{:url('/backiubo/Orderrecord/store/id/"+ticked+"')}";
         window.parent.$("#iframe").attr("src",url);
     })
     $(document).on("click", ".delete", function () {
         var id = $(this).attr("data-id");
         //询问框
-        var delUrl = "{:url('/backiubo/History/fullyDel')}";
+        var delUrl = "{:url('/backiubo/Orderrecord/fullyDel')}";
         delUrl = delUrl + '?field=ticked&ids='+id;
         layer.confirm('确定删除数据吗？', {
             btn: ['删除','取消'] //按钮

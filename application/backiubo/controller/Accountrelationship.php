@@ -2,26 +2,26 @@
 /**
  * Created by whlphper.
  * User: Administrator
- * Date: 2018/5/4 0004
- * Time: 15:22
- * Comment:
+ * Date: 2018/5/8 0008
+ * Time: 上午 11:18
+ * Desc:
  */
 namespace app\backiubo\controller;
 use app\common\controller\Base;
 
-class History extends Base{
+class Accountrelationship extends Base{
 
     protected $beforeActionList = [
         //'first',                                //在执行所有方法前都会执行first方法
         //'second' => ['except' => 'hello'],       //除hello方法外的方法执行前都要先执行second方法
-        'getAccList' => ['only' => 'index,store'],
+        'getBelongList' => ['only' => 'index,store'],
     ];
 
     public function __construct()
     {
         parent::__construct();
-        $this->modelName = 'History';
-        $this->theme = '历史交易记录';
+        $this->modelName = 'Mam';
+        $this->theme = '账户关系表';
         $this->order = '';
         $this->field = 'a.*';
         $this->join = [];
@@ -31,23 +31,23 @@ class History extends Base{
 
 
 
-    public function getAccList()
+    public function getBelongList()
     {
         if(!empty($id = $this->request->param('id'))){
-            $data = model('History')->get($id)->toArray();
+            $data = model('Mam')->get($id)->toArray();
             $this->assign('data',$data);
-            $this->assign('fromUri',url('backiubo/History/upHistory'));
+            $this->assign('fromUri',url('backiubo/Accountrelationship/upAccountrelationship'));
         }else{
-            $this->assign('fromUri',url('/backiubo/history/fullyStore'));
+            $this->assign('fromUri',url('/backiubo/Accountrelationship/fullyStore'));
         }
         // 获取账号列表,用做搜索条件
-        $list = model('History')->getAccountList();
-        $this->assign('accList',$list);
+        $list = model('Mam')->getBelongList();
+        $this->assign('belongList',$list);
     }
 
-    public function upHistory()
+    public function upAccountrelationship()
     {
         $data = $this->request->post();
-        return $this->model->updated($data,['ticket'=>$data['ticket']],$this->theme);
+        return $this->model->updated($data,['autoid'=>$data['autoid']],$this->theme);
     }
 }

@@ -1,0 +1,81 @@
+{include file="weiubo@public/header"}
+
+<body style="background-color: #F5F5F5;">
+
+<div class="nheader nheadertwo clearfloat box-s" id="header">
+    <div class="header-box">
+        <a href="{:url('/weiubo/Personal')}" class="fl">
+            <em class="usericon"></em>
+        </a>
+        <p class="fl">首页</p>
+        <a href="{:url('/weiubo/Follow/join')}" class="fr">
+            <em class="addicon"></em>
+        </a>
+    </div>
+</div>
+
+<!--container star-->
+<div class="header-menu clearfloat" id="main">
+    <div class="content clearfloat">
+        <div class="all-listcont">
+            {foreach $strong as $k=>$v}
+            <div class="listcont">
+                <div class="listhead">
+                    <div class="head-portrait">
+                        <a href="{:url('/weiubo/Strong/info',['account'=>$v.account])}"><img src="__PUBLIC__/weiubo/images/Bitmap.png" /></a>
+                    </div>
+                    <div class="user-name">
+                        <p class="name">{$v.name|default='该账号未设置名字'}</p>
+                        <p>{$v.comment|default='该账号未添加简介'}</p>
+                    </div>
+                    <div class="list-btn">
+                        <a href="{:url('/weiubo/Follow/index',['name'=>$v.name,'account'=>$v.account])}">跟单</a>
+                    </div>
+                </div>
+                <div class="list-data">
+                    <ul class="clear">
+                        <li>
+                            <p class="title">增长</p>
+                            <p class="main">{$v.growth|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">跟随人数</p>
+                            <p class="main">{$v.followers|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">余额</p>
+                            <p class="main">{$v.balance|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">盈利</p>
+                            <p class="main">{$v.profit|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">累计出金</p>
+                            <p class="main">{$v.depositall|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">累计入金</p>
+                            <p class="main">{$v.withdrawall|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">总隔夜费</p>
+                            <p class="main">{$v.swap|default=''}</p>
+                        </li>
+                        <li>
+                            <p class="title">总手续费</p>
+                            <p class="main">{$v.commission|default=''}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+
+    </div>
+</div>
+<!--container end-->
+
+
+</body>
+</html>

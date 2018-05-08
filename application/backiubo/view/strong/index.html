@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/base.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/info-mgt.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/WdatePicker.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/font/font-awesome.min.css">
+    <title></title>
+    <style>
+        table-box td,.table-box th{
+            padding-left: 15px;
+        }
+        .table-box th{
+            background: #e8f1f7;
+
+        }
+        .table-box td{
+            border: none;
+        }
+        .table-box tbody tr:hover{
+            background: #e8eef2;
+        }
+    </style>
+</head>
+
+<body>
+<div class="title"><h2>{$theme}</h2></div>
+<!--查询表单-->
+<div class="query">
+</div>
+<div class="table-box">
+    <table id="StrongTable" data-search="StrongSearchTable" data-url="{:url('/backiubo/Strong/getJqPage')}">
+        <thead id="StrongTableHead">
+        <tr>
+            <th data-field="name">账户名称</th>
+            <th data-field="comment">账户简介</th>
+            <th data-field="account">账号</th>
+            <th data-field="followers">跟单人数</th>
+            <th data-field="level">杠杆</th>
+            <th data-field="balance">当前余额</th>
+            <th data-field="depositall">累计入金</th>
+            <th data-field="withdrawall">累计出金</th>
+            <th data-field="profit">累计盈利</th>
+            <th data-field="growth">增长率</th>
+            <th data-field="totaltrades">总交易笔数</th>
+            <th data-field="winrate">胜率</th>
+            <th data-field="profitfactor">利润因子</th>
+            <th data-field="eddbalance">最大余额回撤</th>
+            <th data-field="eddequity">最大净值回撤</th>
+            <th data-field="commission">累计手续费</th>
+            <th data-field="swap">累计隔夜费</th>
+        </tr>
+        </thead>
+        <tbody id="StrongTableBody">
+        <tr>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination ue-clear"></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/WdatePicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.pagination.js"></script>
+<!-- layer-->
+<script src="__PUBLIC__/plugins/layer/layer.js"></script>
+<script src="__PUBLIC__/core/global.js"></script>
+<script src="__PUBLIC__/core/jq.page.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

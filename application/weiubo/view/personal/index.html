@@ -1,0 +1,182 @@
+{include file="weiubo@public/header"}
+<body style="background-color: #F5F5F5;">
+
+<div class="nheader nheadertwo clearfloat box-s" id="header">
+    <div class="header-box">
+        <p class="">个人中心</p>
+    </div>
+</div>
+
+<!--container star-->
+<div class="header-menu clearfloat" id="main">
+    <div class="content clearfloat">
+        <div class="all-listcont">
+            <div class="listcont perlist-cont on">
+                <em class="tag-icon"></em>
+                <div class="perlist">
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">账号：</span><span class="cont">60001234</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                        </div>
+                    </div>
+                    <em class="select-con"></em>
+                </div>
+                <div class="list-data on">
+                    <ul class="clear">
+                        <li>
+                            <p class="title">品种</p>
+                            <p class="main">USDJPY</p>
+                        </li>
+                        <li>
+                            <p class="title">手数</p>
+                            <p class="main">1</p>
+                        </li>
+                        <li>
+                            <p class="title">类型</p>
+                            <p class="main">SELL</p>
+                        </li>
+                        <li>
+                            <p class="title">开仓价格</p>
+                            <p class="main">489.0</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="listcont perlist-cont">
+                <em class="tag-icon"></em>
+                <div class="perlist">
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">账号：</span><span class="cont">60001234</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                        </div>
+                    </div>
+                    <em class="select-con"></em>
+                </div>
+                <div class="list-data">
+                    <ul class="clear">
+                        <li>
+                            <p class="title">品种</p>
+                            <p class="main">USDJPY</p>
+                        </li>
+                        <li>
+                            <p class="title">手数</p>
+                            <p class="main">1</p>
+                        </li>
+                        <li>
+                            <p class="title">类型</p>
+                            <p class="main">SELL</p>
+                        </li>
+
+                        <li>
+                            <p class="title">开仓价格</p>
+                            <p class="main">489.0</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="listcont perlist-cont">
+                <div class="perlist">
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">账号：</span><span class="cont">60001234</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                        </div>
+                    </div>
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">跟随账户：</span><span class="cont">超人不会飞</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">跟单比例：</span><span class="cont">20%</span>
+                        </div>
+                    </div>
+                    <em class="select-con"></em>
+                </div>
+                <div class="list-data">
+                    <ul class="clear">
+                        <li>
+                            <p class="title">品种</p>
+                            <p class="main">USDJPY</p>
+                        </li>
+                        <li>
+                            <p class="title">手数</p>
+                            <p class="main">1</p>
+                        </li>
+                        <li>
+                            <p class="title">类型</p>
+                            <p class="main">SELL</p>
+                        </li>
+                        <li>
+                            <p class="title">开仓价格</p>
+                            <p class="main">489.0</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="listcont perlist-cont on">
+                <div class="perlist">
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">账号：</span><span class="cont">60001234</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                        </div>
+                    </div>
+                    <div class="perlist-data">
+                        <div class="mod">
+                            <span class="title">跟随账户：</span><span class="cont">超人不会飞</span>
+                        </div>
+                        <div class="mod">
+                            <span class="title">跟单比例：</span><span class="cont">20%</span>
+                        </div>
+                    </div>
+                    <em class="select-con"></em>
+                </div>
+                <div class="list-data on">
+                    <ul class="clear">
+                        <li>
+                            <p class="title">品种</p>
+                            <p class="main">USDJPY</p>
+                        </li>
+                        <li>
+                            <p class="title">手数</p>
+                            <p class="main">1</p>
+                        </li>
+                        <li>
+                            <p class="title">类型</p>
+                            <p class="main">SELL</p>
+                        </li>
+                        <li>
+                            <p class="title">开仓价格</p>
+                            <p class="main">489.0</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!--container end-->
+
+
+</body>
+<script type="text/javascript">
+    $(function(){
+        $('.perlist').click(function(){
+            $(this).parents('.perlist-cont').toggleClass('on');
+            $(this).siblings('.list-data').slideToggle('on');
+        });
+    })
+</script>
+</html>

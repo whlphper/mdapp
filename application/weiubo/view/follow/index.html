@@ -1,0 +1,173 @@
+{include file="weiubo@public/header"}
+<body style="background-color: #F5F5F5;">
+
+<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">我要跟单</h1>
+</header>
+<!--sign star-->
+<div class="sign clearfloat mui-content" id="main">
+    <div class="split"></div>
+    <form action="{:url('/weiubo/Follow/sure')}" method="post" class="form" id="followForm">
+        <div class="sign-top clearfloat">
+
+            <ul>
+                <input type="hidden" name="belongto" value="{$account}">
+                <li class="box-s">
+                    <span>牛人名称</span>
+                    <input type="text"  id="user" value="{$bigName}" readonly class="mingzi" placeholder="请输入名称" />
+                </li>
+                <li class="box-s">
+                    <span>MT5账号</span>
+                    <input type="text" name="account" id="account" value="" class="mingzi" placeholder="请输入MT5账号" />
+                </li>
+                <li class="box-s mui-input-row">
+                    <span>MT5密码</span>
+                    <input type="password" name="password" id="pwd" value="" class="mingzi mui-input-password" placeholder="请输入MT5账号密码" />
+                </li>
+                <li class="box-s">
+                    <span>跟单比例</span>
+                    <input type="text" name="multiple" id="multiple" value="" class="mingzi" placeholder="请输入跟单比例(100表示100%)" />
+                </li>
+                <li class="box-s">
+                    <span>身份证号</span>
+                    <input type="text" name="idcard" id="idnum" value="" class="mingzi" placeholder="请输入身份证号" />
+                </li>
+                <li class="box-s">
+                    <span>手机号</span>
+                    <input type="text" name="contact" id="contact" value="" class="mingzi" placeholder="请输入手机号" />
+                </li>
+                <li class="box-s">
+                    <span>邮箱</span>
+                    <input type="text" name="email" id="emailnum" value="" class="mingzi" placeholder="请输入正确的邮箱" />
+                </li>
+                <li class="box-s">
+                    <span>验证码</span>
+                    <input type="text" name="verifycode" id="verifycode1" value="" class="mingzi" placeholder="请输入六位验证码" />
+                    <img id="verifycode" style="width: 40%;height: 70%;" class="verifycode" src="{:url('/weiubo/Follow/getCaptChar')}" onclick="refresh_check_code(this)" alt="CheckCode" style="margin-top:10px;  cursor: pointer;">
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="mui-content-padded">
+            <button id='layer.msgBtn' type="button" onclick="check($(this))" class="mui-btn mui-btn-primary mui-btn-block">提交审核</button>
+        </div>
+    </form>
+    <div class="prompt-cont">
+        <div class="bottom clearfloat">
+            <div class="shang clearfloat">
+                <span class="line"></span>
+                <span class="nr">注意事项</span>
+            </div>
+        </div>
+        <div class="prompt-p">
+            <p>1.提交绑定信息后，我们的客服人员核对后将与您取得联系，请确保您预留的联系方式正确。</p>
+            <p>2.如果您尚未注册MT5账号，请先注册账户后再提交申请。</p>
+            <p>3.如果在使用微信跟单系统前，应确认已熟知微信跟单系统的各项操作原理，跟单及平仓操作属于个人行为，与所属平台商无关。</p>
+            <p>4.客户在使用微信跟单系统进行跟单时，应仔细了解信号源详情，谨慎选择适合自身投资能力和风险承受能力的信号源。</p>
+            <p>5.IUBO负责提供微信跟单系统，且无偿为客户提供跟单社区问题交流及处理服务，客户需谨慎选择信号源，跟单盈亏自负，与IUBO无关。</p>
+        </div>
+    </div>
+</div>
+<!--sign end-->
+
+<script type="text/javascript">
+    function check(obj){
+        var account = document.getElementById("account");
+        if(account.value==''){
+            layer.msg('MT5账号不能为空');
+            account.focus();
+            return false;
+        }
+
+        var user = document.getElementById("user");
+        if(user.value==''){
+            layer.msg('牛人名称不能为空');
+            pwd.focus();
+            return false;
+        }
+
+        var pwd = document.getElementById("pwd");
+        if(pwd.value==''){
+            layer.msg('密码不能为空');
+            pwd.focus();
+            return false;
+        }
+
+        var multiple = document.getElementById("multiple");
+        if(multiple.value==''){
+            layer.msg('跟单比例不能为空');
+            multiple.focus();
+            return false;
+        }
+
+        var phone = document.getElementById('contact');
+        if(phone.value==''){
+            layer.msg('手机号码不能为空');
+            phone.focus();
+            return false;
+        }else{
+            var phone_reg = /^13[0-9]{1}[0-9]{8}$|15[0-9]{1}[0-9]{8}$|18[0-9]{1}[0-9]{8}|17[0-9]{1}[0-9]{8}$|14[0-9]{1}[0-9]{8}/;
+            var tel_reg = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+            if(!phone_reg.test(phone.value) && !tel_reg.test(phone.value)){
+                layer.msg('手机号码格式不正确');
+                phone.focus();
+                return false;
+            }
+        }
+
+        var idnum = document.getElementById('idnum');
+        if(idnum.value==''){
+            layer.msg('身份证号码不能为空');
+            idnum.focus();
+            return false;
+        }else{
+            var idnum_reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+            if(!idnum_reg.test(idnum.value)){
+                layer.msg('身份证号码格式不正确');
+                idnum.focus();
+                return false;
+            }
+        }
+
+        var email_reg =/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var email = document.getElementById('emailnum');
+        if(email.value==''){
+            layer.msg('邮箱不能为空');
+            email.focus();
+            return false;
+        }else if(!email_reg.test(email.value)){
+            layer.msg("邮箱格式不正确!");
+            email.focus();
+            return false;
+        }
+
+        var verifycode = document.getElementById("verifycode1");
+        if(verifycode.value==''){
+            layer.msg('验证码不能为空');
+            verifycode.focus();
+            return false;
+        }else{
+            if (verifycode.value.length != 6) {
+                layer.msg('验证码为六位');
+                verifycode.focus();
+                return false;
+            }
+        }
+        var url = "{:url('/weiubo/Follow/sure')}";
+        var data = getFormJson('followForm');
+        mdAjax(obj,url,data,function (res) {
+            var jump = "{:url('/weiubo/Index')}";
+            setTimeout(function () {
+                location.href = jump;
+            },600)
+        });
+    }
+    function refresh_check_code(ths) {
+        ths.src += '?';
+    }
+</script>
+
+
+</body>
+</html>

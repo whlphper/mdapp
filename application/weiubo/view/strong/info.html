@@ -1,0 +1,188 @@
+{include file="weiubo@public/header"}
+<body style="background-color: #f5f5f5;">
+<div class="user-page">
+    <div class="per-top">
+        <div class="per-img">
+            <img src="__PUBLIC__/weiubo/images/userimg.png">
+        </div>
+        <p class="name">{$data.name}</p>
+        <p class="synopsis">简介：{$data.comment}</p>
+    </div>
+    <div class="user-data">
+        <ul class="clear">
+            <li>
+                <div class="mod">
+                    <span class="title">跟随人数：</span><span class="cont">{$data.followers}</span>
+                </div>
+                <div class="mod">
+                    <span class="title">盈 利：</span><span class="cont">{$data.profit}</span>
+                </div>
+            </li>
+            <li>
+                <div class="mod">
+                    <span class="title">累计出金：</span><span class="cont">{$data.depositall}</span>
+                </div>
+                <div class="mod">
+                    <span class="title"> 累计入金：</span><span class="cont">{$data.withdrawall}</span>
+                </div>
+            </li>
+            <li>
+                <div class="mod">
+                    <span class="title">总隔夜费：</span><span class="cont">{$data.swap}</span>
+                </div>
+                <div class="mod">
+                    <span class="title">总手续费：</span><span class="cont">{$data.commission}</span>
+                </div>
+            </li>
+            <li>
+                <div class="mod">
+                    <span class="title">余&nbsp;&nbsp;&nbsp;&nbsp;额：</span><span class="cont">{$data.balance}</span>
+                </div>
+                <div class="mod">
+
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="usercharts">
+        <div class="usercharts-head">
+            <span>增长趋势</span>
+        </div>
+        <div class="charts-ts">
+            <div class="charts-icon">
+                <img src="__PUBLIC__/weiubo/images/charts1.png" />增长率
+            </div>
+        </div>
+        <div id="container" style="height: 250px;width: 98%;margin: 0 auto;"></div>
+    </div>
+
+    <div class="usercharts">
+        <div class="usercharts-head">
+            <span>历史记录</span>
+            <a class="lookmore" href="{:url('/weiubo/Strong/allRecord',['account'=>$data.account])}">查看更多</a>
+        </div>
+        <div class="history-table">
+            <table class="table">
+                <tr>
+                    <th>类型</th>
+                    <th>手数</th>
+                    <th>品种</th>
+                    <th class="algin-r">利润</th>
+                </tr>
+                {foreach $log as $K=>$v}
+                <tr>
+                    <td>{$v.type}</td>
+                    <td>{$v.volume}</td>
+                    <td>{$v.symbol}</td>
+                    <td class="algin-r">{$v.profit}</td>
+                </tr>
+                {/foreach}
+            </table>
+        </div>
+    </div>
+
+    <div ></div>
+</div>
+<div class="user-buybtn">
+    <a href="{:url('/weiubo/Follow/index',['name'=>$data.name,'account'=>$data.account])}" class="">跟单</a>
+</div>
+
+</body>
+<script type="text/javascript" src="__PUBLIC__/weiubo/js/highcharts.js" ></script>
+<script type="text/javascript">
+    $(function () {
+        var chart;
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',          //放置图表的容器
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                zoomType: 'xy' //支持图表放大缩小的范围
+            },
+            title: {
+                text: ''
+            },
+            subtitle: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: [{
+                categories: {$growthX},
+                tickLength: 0,
+                labels: {
+//                      rotation: -45, //字体倾斜
+                    align: 'center',
+                    style: { font: 'normal 10px PingFang SC' }
+                }
+            }],
+            yAxis: [{ // Primary yAxis
+                title: {
+                    text: '',
+                    style: {
+                        color: '#7db5ed'
+                    }
+                },
+                labels: {
+                    nabled:false
+                },
+                max: 100
+            }, { // Secondary yAxis
+                title: {
+                    text: '',
+                    style: {
+                        color: '#edaa7d'
+                    }
+                },
+                labels: {
+                    nabled:false
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true, //公用一个提示框
+                borderColor: '#8bbcee',
+                formatter: function() {
+                    return this.x +"<br>"
+                        + "<span style='color:#4572A7'>增长率：" + this.points[0].y +" %</span><br>"
+                        /*+ "<span style='color:#89A54E'>成功率：" + this.points[1].y +" %</span>"*/
+                        ;
+                }
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false
+                    }
+                },
+            },
+            //图例样式设置
+            legend: {
+                enabled: false
+            },
+            series: [{
+                name: '增长率',
+                color: '#7db5ed',
+                type: 'spline',
+                yAxis: 1,
+                data: {$growthY},
+                tooltip: {
+                    valueSuffix: '%'
+                }
+
+            }/*, {
+                name: '成功率',
+                color: '#edaa7d',
+                type: 'spline',
+                yAxis: 0,
+                data: [8, 22, 45, 20, 10],
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }*/]
+        });
+    });
+</script>
+</html>

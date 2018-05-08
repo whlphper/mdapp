@@ -17,4 +17,9 @@ class History extends Base{
         $sql = 'select distinct(account) from history';
         return $this->query($sql);
     }
+
+    public function getRate($account,$rateType='growth')
+    {
+        return $this->where('account',$account)->order('timeclose asc')->field($rateType.',timeclose')->select()->toArray();
+    }
 }

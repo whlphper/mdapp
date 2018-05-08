@@ -1,0 +1,527 @@
+body{
+	font-family:'PingFang SC','STHeiti','Microsoft YaHei',Helvetica,Arial,sans-serif
+}
+.clear{zoom: 1}
+.clear:before{ content: ""; display: block; clear: both;}
+.clear:after{ content: ""; display: block; clear: both;}
+.loginpage{padding-top: 2rem;}
+.headfont{
+	height: 1.2rem;
+	line-height: 1.2rem;
+	text-align: center;	
+	background-image: -webkit-gradient(linear, left 0, right 0, from(rgb(0, 148, 222)), to(rgb(0, 198, 241)));
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+	}
+.headfont>p{
+	font-size: 25px;
+}
+.pageimg1{
+	margin: 1rem 0 0;
+	text-align: center;
+}
+.pageimg1>img{vertical-align: middle;}
+.pagego{
+	margin-top: 1.3rem;
+	text-align: center;
+	height: 2rem;
+}
+.pagego button{
+	padding: 0;
+	width: 7.5rem;
+	height: 1.45rem;
+	line-height: 1.45rem;
+	color: #fff;
+	border: none;
+	font-size: 18px;
+	background: url(../images/Group2.png) no-repeat center center;
+	background-size: 100%;
+}
+
+/*besignal.html*/
+.split{
+	height: 0.1rem;
+	clear: both;
+	background: none;
+	}
+.mui-bar-nav{
+	background: linear-gradient(to right, #0094DE , #00C6F1);
+	background: -webkit-linear-gradient(left,  #0094DE , #00C6F1); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,  #0094DE, #00C6F1); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,  #0094DE, #00C6F1); /* Firefox 3.6 - 15 */ 
+}
+.mui-title{
+	font-size: 0.55rem !important;
+}
+.mui-content{
+	background-color: #F5F5F5 !important;
+}
+.sign-top ul li span{
+	display: inline-block;
+	width: 1.8rem;
+	font-size: 14px;
+	color: #999;
+}
+.sign-top ul li input.mingzi{
+	width: 80%;
+}
+.sign-top ul li input#verifycode1{
+	width: 35%;
+}
+.sign-top ul li{
+	position: relative;
+	padding: 0 3%;
+}
+.sign-top ul li .verifycode{
+	position: absolute;
+	right: 3%;
+}
+.mui-btn-block{
+	padding: 0px;
+	height: 1.4rem;
+	font-size: 16px;
+	border: none !important;
+	background: linear-gradient(to right, #0094DE , #00C6F1);
+	background: -webkit-linear-gradient(left,  #0094DE , #00C6F1); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,  #0094DE, #00C6F1); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,  #0094DE, #00C6F1); /* Firefox 3.6 - 15 */ 
+}
+.sign .bottom .shang{
+	width: 40%;
+}
+.sign .bottom .shang span.line{
+	border-bottom: 1px solid #D8D8D8;
+}
+.sign .bottom .shang span.nr{
+	background-color: #F5F5F5;
+	color: #FF0000;
+	width: 56%;
+}
+.prompt-p{
+padding: 0 3%;
+}
+.prompt-p p{
+	margin-bottom: 0.2rem;
+	color: #FF0000;
+	font-size: 12px;
+}
+
+/*result.html*/
+
+.result-page{
+	padding-top: 1.6rem;
+	text-align: center;
+}
+.result-img{
+	padding-top: 2rem;
+}
+.result-font{
+	padding-top: 1rem;
+}
+.result-font p{
+	font-size: 16px;
+	color: #666;
+	margin-bottom: 0.1rem;
+}
+.result-link{
+	padding-top: 1.5rem;
+}
+.result-link a{
+	font-size: 16px;
+	color: #0094DE;
+	padding: 0.3rem 1.4rem;
+	background: #F4FBFF;
+	border:1px solid #0094DE;
+	border-radius: 5px;
+}
+
+/*index.html*/
+.nheader{
+	background: linear-gradient(to right, #0094DE , #00C6F1);
+	background: -webkit-linear-gradient(left,  #0094DE , #00C6F1); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,  #0094DE, #00C6F1); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,  #0094DE, #00C6F1); /* Firefox 3.6 - 15 */ 
+}
+.header-box{
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 1.5rem;
+}
+.nheadertwo p{
+	width: 100%;
+	margin: 0;
+}
+.nheadertwo a{
+	position: absolute;
+	width: 0.6rem;
+	display: flex;
+	align-items: center;
+    flex: 1;
+    flex-direction: column;
+    align-content: flex-start;
+}
+.nheadertwo a.fr{
+	right: 0;
+}
+.nheadertwo a.fl{
+	left: 0;
+}
+.nheadertwo a:last-child{
+	text-align: center;
+}
+.addicon{
+	display: flex;	
+	width: 0.6rem;
+	height: 0.8rem;
+	background: url(../images/addicon.png) no-repeat center center;
+	background-size: 100%;
+}
+.usericon{
+	display: flex;	
+	width: 0.5rem;
+	height: 0.8rem;
+	background: url(../images/usericon.png) no-repeat center center;
+	background-size: 100%;
+}
+.nheadertwo a span{
+	font-size: 10px;
+}
+.nheadertwo a:active span{
+	color: #fff;
+}
+.all-listcont{
+	padding: 0.1rem 3% 0;
+}
+.listcont{
+	margin: 0 0 0.3rem;
+	background: #fff;
+ 
+    border-top-right-radius:0.1rem;
+}
+.listhead{
+	display: flex;
+	height: 1.7rem;
+	border-bottom: 1px solid #f5f5f5;
+	background: url(../images/pagebg.png) no-repeat left top;
+	padding-left: 0.4rem;
+	flex-direction: row;
+    align-items: center;
+    position: relative;
+    flex-direction: row;
+}
+.head-portrait{
+	width: 1.2rem;
+	height: 1.2rem;
+	margin-right: 0.2rem;
+}
+.head-portrait a{
+	display: flex;
+	width: 1.2rem;
+	height: 1.2rem;
+}
+.head-portrait a img{
+	border-radius: 50%;
+}
+.user-name>p{
+	margin: 0;
+	font-size: 12px;
+	color: #999;
+}
+.user-name>p.name{
+	font-size: 15px;
+	color: #333;
+}
+.list-btn{
+	display: flex;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 1.7rem;
+	height: 1.7rem;
+	align-items: center;
+	justify-content: center;
+	border-top-right-radius:0.1rem;
+	border-bottom-right-radius:0.1rem;
+	background: linear-gradient(to bottom, #0094DE , #00C6F1);
+	background: -webkit-linear-gradient(top,  #0094DE , #00C6F1); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom,  #0094DE, #00C6F1); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom,  #0094DE, #00C6F1); /* Firefox 3.6 - 15 */ 
+}
+.list-btn a{
+	color: #fff;
+	font-size: 15px;
+}
+.list-data ul{
+	clear: both;
+	margin: 0.3rem 0.4rem 0 0.3rem;
+}
+.list-data li{
+	width: 23%;
+	float: left;
+	margin: 0 0 0.2rem 2%;
+}
+.list-data li p{
+	margin: 0;
+	font-size: 12px;
+	color: #666;
+}
+.list-data li p.main{
+	font-size: 13px;
+	color: #80C3E5;
+}
+/*history.html*/
+.mui-tablecont{
+	background: #fff !important;
+}
+.table {
+	width: 100%;
+    color: #666;
+    font-size: .35rem;               
+}
+.table tr:nth-child(odd){
+	background: #F0FAFF;
+}
+.table td,.table th {
+    height: 1.2rem;
+    text-align: left;
+    padding: 0 0.3rem;
+}
+.table th {
+	background: #F0F0F0;
+	font-weight: normal;
+	font-size: 12px;
+	color: #999;
+}            
+.table tr.alter {
+    background-color: #f5fafe;
+}
+.algin-l{
+	text-align: left;
+}
+.table td.algin-c,.table th.algin-c{
+	text-align: center;
+}
+.table td.algin-r,.table th.algin-r{
+	text-align: right;
+}
+/*userinfo.html*/
+.user-page{
+	position: relative;
+	padding-bottom: 1.8rem;
+}
+.per-top {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 6.4rem;
+    background: url(../images/user1.png) no-repeat center center;
+    background-size: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    margin-bottom: 0.15rem;
+}
+
+.per-img {
+	margin-top: 0.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    position: relative;
+    background: #99dcf5;
+    border-radius: 50%;
+}
+.per-img img {
+    display: block;
+    margin: 2% auto;
+    width: 96%;
+    border-radius: 50%;
+}
+.per-top p.name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0.2rem 0 0;
+}
+.per-top p.synopsis {
+	width: 60%;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    margin-top: 0.2rem;
+}
+.user-data{
+	width: 94%;
+	margin: -1.6rem 3% 0;
+	padding: 0.2rem 0;
+	display: flex;
+	background: #fff;
+	border-radius: 0.2rem;
+    height: 4.4rem;
+    flex-direction: column;
+}
+.user-data ul li{
+	display: -webkit-flex;
+    align-items: center;
+    width: auto;
+    min-height: 1rem;
+    position: relative;
+}
+.user-data ul li .mod{
+	font-size: 0.28rem;
+	line-height: 1rem;
+    color: #333333;
+    flex: 1;
+    padding-left: 0.7rem;
+}
+.user-data ul li span{
+	font-size: 13px;
+	color: #333;
+}
+.user-data ul li span.title{
+	color: #9DB5C1;
+	margin-right: 0.1rem;
+}
+
+.usercharts{
+	background: #fff;
+	border-radius: 0.2rem;
+	margin: 0.3rem 3% 0;
+	border-radius: 0.2rem;
+	position: relative;
+}
+.usercharts-head{
+	font-size: 15px;
+	padding: 0.5rem 0.3rem 0.7rem;
+	color:#333;
+}
+.charts-ts{
+	position: absolute;
+	right: 0.5rem;
+	top: 0.5rem;
+}
+.charts-icon{
+	font-size: 12px;
+	color: #7DB5ED;
+	
+}
+.charts-icon img{
+	vertical-align: middle;
+	margin-right: 0.3rem;
+}
+.lookmore{
+	position: absolute;
+	top: 0.5rem;
+	right: 0.3rem;
+	padding-right: 0.3rem;
+	background: url(../images/more.png) no-repeat right center;
+	font-size: 13px;
+	color: #999;
+}
+.history-table{
+	padding: 0.2rem 0.3rem;
+}
+.history-table .table th{
+	font-size: 13px;
+	color: #666;
+	font-weight: normal;
+	background: #fff;
+}
+.history-table .table tr{
+	border-bottom: 1px solid #E8E8E8;
+}
+.history-table .table tr:last-child{
+	border: none;
+}
+.history-table .table tr:nth-child(odd){
+	background: #fff;
+}
+.history-table .table td,.history-table .table th {
+    padding: 0;
+}
+.user-buybtn{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 1.4rem;
+	background: linear-gradient(to right, #0094DE , #00C6F1);
+	background: -webkit-linear-gradient(left,  #0094DE , #00C6F1); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,  #0094DE, #00C6F1); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,  #0094DE, #00C6F1); /* Firefox 3.6 - 15 */ 
+}
+.user-buybtn a{
+	display: flex;
+	width: 100%;
+	height: 1.4rem;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 16px;
+}
+
+/*personal.html*/
+.perlist-cont{
+	border-radius: 3px;
+	position: relative;
+}
+.perlist-cont .list-data{
+	padding: 0.4em 0 0.2rem;
+	border-top: 1px solid #E8E8E8;
+	display: none;
+}
+.perlist-cont .list-data ul{
+	margin: 0 0.4rem;
+}
+.perlist{
+	display: flex;
+	position: relative;
+	padding: 0.2rem  0.4rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.perlist-data{
+	display: flex;
+	width:100% ;
+}
+.perlist .mod{
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+	line-height: 1rem;
+}
+.perlist .mod:nth-child(even) span.cont{
+	max-width: 58%;
+	overflow: hidden;
+}
+.perlist .mod span{
+	display: flex;
+	font-size: 14px;
+	color: #333;
+}
+.select-con{
+	display: flex;
+	width: 0.3rem;
+	height: 0.3rem;
+	background: url(../images/select-r.png) no-repeat center center;
+	position: absolute;
+	right: 0.35rem;
+	top: 50%;
+	margin-top: -0.15rem;
+}
+.tag-icon{
+	display: flex;
+	width: 0.8rem;
+	height: 0.8rem;
+	background: url(../images/titleicon.png) no-repeat left top;
+	background-size: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.perlist-cont.on .select-con{
+	background: url(../images/select-b.png) no-repeat center center;
+}
+.perlist-cont .list-data.on{
+	display: block;
+}
+

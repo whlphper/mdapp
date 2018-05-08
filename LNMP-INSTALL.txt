@@ -14,6 +14,16 @@
             nginx //启动
             nginx -s stop// 停止
             nginx -s reload // 重新加载
+    测试一下nginx是否安装成功，那么问题来了,虚拟机上可以访问nginx了，但是宿主机却不能，原因是防火墙没有开放80端口
+        firewall-cmd --zone=public --add-port=80/tcp --permanent
+        –zone #作用域
+        –add-port=80/tcp #添加端口，格式为：端口/通讯协议
+        –permanent #永久生效，没有此参数重启后失效
+
+        重启防火墙：
+        systemctl stop firewalld.service
+        systemctl start firewalld.service
+        OK
 #3
     安装PHP
         wget http://cn2.php.net/get/php-7.2.4.tar.gz/from/this/mirror
@@ -79,6 +89,7 @@
          firewall -cmd --reload
 #5
     MYSQL安装
+    wget  http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.30.tar.gz
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITH_MYISAM_STORAGE_ENGINE=1-DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MEMORY_STORAGE_ENGINE=1 -DWITH_READLINE=1 -DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock -DMYSQL_TCP_PORT=3306 -DENABLED_LOCAL_INFILE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
     make
     make install

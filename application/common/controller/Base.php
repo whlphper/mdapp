@@ -4,6 +4,7 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
+use think\captcha\Captcha;
 
 /*
  * 基层控制层,所有公共操作函数都在此函数
@@ -258,5 +259,48 @@ class Base extends Controller
     {
         $data = $this->request->post();
         return $this->model->store($data,$this->theme);
+    }
+
+    public function getJqPage()
+    {
+        $data = $this->model->getJQPage([],$this->field,[],$this->order);
+        return $data;
+    }
+
+    public function dataList()
+    {
+        return $this->model->listData();
+    }
+
+    /**
+     * 生产验证码
+     * @param string $type
+     * @param int $fontSize
+     * @param int $length
+     * @param bool $useNoise
+     * @return \think\Response
+     */
+    public function getCaptChar($type="num",$fontSize=30,$length=6,$useNoise=false)
+    {
+        switch($type){
+            case 'num':
+                $rType = '0123456789';
+                break;
+            case 'string':
+                $rType = '';
+                break;
+        }
+        $config =    [
+            'codeSet'=> $rType,
+            'useZh'=>   false,
+            // 验证码字体大小
+            'fontSize'    =>    $fontSize,
+            // 验证码位数
+            'length'      =>    $length,
+            // 关闭验证码杂点
+            'useNoise'    =>    $useNoise,
+        ];
+        $captcha = new Captcha($config);
+        return $captcha->entry();
     }
 }

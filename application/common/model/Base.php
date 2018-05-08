@@ -511,7 +511,11 @@ class Base extends Model
             if(empty($idStr)){
                 throw new \Exception('删除的数据为空');
             }
-            $condition[$field] = ['in',$idStr];
+            if(strpos($idStr,',')){
+                $condition[$field] = ['in',$idStr];
+            }else{
+                $condition[$field] = $idStr;
+            }
             $result = $this->where($condition)->delete();
             if($result){
                 return ['code'=>1,'msg'=>'删除成功'];
@@ -563,6 +567,20 @@ class Base extends Model
         }catch(\Exception $e){
             mdLog($e);
             return ['code'=>0,'msg'=>$e->getMessage(),'total'=>0];
+        }
+    }
+
+    public function listData($condition=[],$field='a.*',$order='',$join=[],$offset=0,$limit=10)
+    {
+        try{
+            $result = $this->alias('a')->where($condition)->field($field)->join($join)->order($order)->limit($offset.','.$limit)->select()->toArray();
+            if(!$result){
+                throw new \Exception('数据查询出错');
+            }
+            return ['code'=>1,'data'=>$result];
+        }catch(\Exception $e){
+            mdLog($e);
+            return ['code'=>0,'msg'=>$e->getMessage()];
         }
     }
 }

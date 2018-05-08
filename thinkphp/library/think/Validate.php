@@ -42,8 +42,12 @@ class Validate
         'float'       => ':attribute must be float',
         'boolean'     => ':attribute must be bool',
         'email'       => ':attribute not a valid email address',
+        /**********************************************/
         'mobile'      => ':attribute not a valid mobile',
         'decimal'      => ':attribute not a valid mobile',
+        'idCard'      => ':attribute not a valid idCard',
+        'captcha'      => ':attribute not a valid captcha',
+        /***************************************************/
         'array'       => ':attribute must be a array',
         'accepted'    => ':attribute must be yes,on or 1',
         'date'        => ':attribute not a valid datetime',
@@ -582,6 +586,14 @@ class Validate
     protected function is($value, $rule, $data = [])
     {
         switch ($rule) {
+            case 'captcha':
+                // 验证码
+                $result = captcha_check($value);
+                break;
+            case 'idCard':
+                // 身份证号
+                $result = $this->regex($value, '/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/');
+                break;
             case 'decimal':
                 // 金额
                 $result = $this->regex($value, '/^[0-9]+(.[0-9]{1,2})?$/');

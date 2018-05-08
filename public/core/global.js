@@ -74,6 +74,41 @@ function listMenu(res, html) {
     }
     return html;
 }
+
+// 获取表单数据
+function getFormJson(formId,isGET) {
+    var isGET = isGET ? true :false;
+    // 搜索参数搜集
+    var formData = $("#" + formId).serializeArray();
+    if(isGET){
+        var param = '';
+        $.each(formData, function() {
+            if(this.value != ''){
+                if (param == '') {
+                    param = '?'+this.name+'='+this.value;
+                } else {
+                    param = param + '&'+this.name+'='+this.value;
+                }
+            }
+        });
+        return param;
+    }else{
+        var o = {};
+        $.each(formData, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [ o[this.name] ];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                if(this.value && this.value != ''){
+                    o[this.name] = this.value || '';
+                }
+            }
+        });
+        return o;
+    }
+}
 /**
  * 点击事件
  * @param e

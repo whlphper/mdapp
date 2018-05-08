@@ -1,0 +1,42 @@
+{include file="weiubo@public/header"}
+<style>
+    .mui-bar-nav~.mui-content{
+        padding-top: 1.5rem !important;
+    }
+</style>
+<body style="background-color: #fff;">
+
+<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">历史记录</h1>
+</header>
+
+
+
+<div class="mui-content mui-tablecont">
+
+    <table width="100%" class="table" id="tablevalue">
+        <tr>
+            <th>类型</th>
+            <th>手数</th>
+            <th class="algin-c">品种</th>
+            <th>开仓价格</th>
+            <th>平仓价格</th>
+            <th class="algin-r">利润</th>
+        </tr>
+        {foreach $log as $K=>$v}
+        <tr>
+            <td>{$v.type}</td>
+            <td>{$v.volume}</td>
+            <td class="algin-c">{$v.symbol}</td>
+            <td>{$v.priceopen}</td>
+            <td>{$v.priceclose}</td>
+            <td class="algin-r">{$v.profit}</td>
+        </tr>
+        {/foreach}
+    </table>
+</div>
+
+
+
+</body>
+</html>
