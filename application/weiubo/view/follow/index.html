@@ -157,7 +157,7 @@
         var url = "{:url('/weiubo/Follow/sure')}";
         var data = getFormJson('followForm');
         mdAjax(obj,url,data,function (res) {
-            var jump = "{:url('/weiubo/Index')}";
+            var jump = "{:url('weiubo/Follow/success')}";
             setTimeout(function () {
                 location.href = jump;
             },600)
