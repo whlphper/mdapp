@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/base.css" />
+    <link rel="stylesheet" href="__PUBLIC__/backiubo/css/login.css" />
+    <title>微信跟单管理系统——登录</title>
+</head>
+<body>
+<div id="container">
+    <div id="bd">
+        <form action="" id="logonForm">
+        <div class="login1">
+            <div class="login-top"></div>
+            <div class="login-input">
+                <p class="user ue-clear">
+                    <label>用户名</label>
+                    <input type="text" id="name"/>
+                </p>
+                <p class="password ue-clear">
+                    <label>密&nbsp;&nbsp;&nbsp;码</label>
+                    <input type="text" id="pass" />
+                </p>
+                <!--<p class="yzm ue-clear">
+                    <label>验证码</label>
+                    <input type="text" />
+                    <cite>X394D</cite>
+                </p>-->
+            </div>
+            <div class="login-btn ue-clear">
+                <a href="javascript:login();" class="btn">登录</a>
+                <!--<div class="remember ue-clear">
+                    <input type="checkbox" id="remember" />
+                    <em></em>
+                    <label for="remember">记住密码</label>
+                </div>-->
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="ft">CopyRight&nbsp;2018&nbsp;&nbsp;版权所有&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/backiubo/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/core/global.js"></script>
+<script type="text/javascript" src="__PUBLIC__/core/global.js"></script>
+<!-- layer-->
+<script src="__PUBLIC__/plugins/layer/layer.js"></script>
+<script type="text/javascript">
+    var height = $(window).height();
+    $("#container").height(height);
+    $("#bd").css("padding-top",height/2 - $("#bd").height()/2);
+
+    $(window).resize(function(){
+        var height = $(window).height();
+        $("#bd").css("padding-top",$(window).height()/2 - $("#bd").height()/2);
+        $("#container").height(height);
+
+    });
+
+    $('#remember').focus(function(){
+        $(this).blur();
+    });
+
+    $('#remember').click(function(e) {
+        checkRemember($(this));
+    });
+
+    function checkRemember($this){
+        if(!-[1,]){
+            if($this.prop("checked")){
+                $this.parent().addClass('checked');
+            }else{
+                $this.parent().removeClass('checked');
+            }
+        }
+    }
+    
+    function login(obj) {
+        var name=$("#name").val();
+        var pass=$("#pass").val();
+        if(name == ''){
+            layer.msg('账号不能为空');
+            return;
+        }
+        if(pass == ''){
+            layer.msg('密码不能为空');
+            return;
+        }
+        var data = {};
+        data.name = name;
+        data.pass = pass;
+        var url = "{:url('/backiubo/Login/go')}";
+        mdAjax(obj,url,data,function (res) {
+            var jump = "{:url('/backiubo/Index')}";
+            location.href = jump;
+        })
+    }
+
+</script>
+</html>

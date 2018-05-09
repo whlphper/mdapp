@@ -103,7 +103,10 @@
     /etc/my.conf
     修改sockets
 
-
+    找到etc目录下profile文件，
+    vi ./profile在最后加上export PATH=/opt/lampp/bin:$PATH，
+    保存好后，
+    source下profile让其设置生效，此时，随意在某目录下都可以访问mysql。
 
 
 

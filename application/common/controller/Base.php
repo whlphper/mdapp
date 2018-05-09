@@ -5,6 +5,7 @@ namespace app\common\controller;
 use think\Controller;
 use think\Request;
 use think\captcha\Captcha;
+use wechat\auth\Auth as wAuth;
 
 /*
  * 基层控制层,所有公共操作函数都在此函数
@@ -58,6 +59,19 @@ class Base extends Controller
             case 'pcshop':
                 // 分类数据 以及导航数据  因为现在导航都是显示的分类
                 $this->getPcshopCommonData();
+                break;
+            case 'backiubo':
+                $backiubouser = session("backiuboUserId");
+                if(empty($backiubouser)){
+                    $this->redirect(url('/backiubo/Login'));
+                }
+                break;
+            case 'weiubo':
+                $weiuboOpenId = session("weiuboOpenId");
+                if(empty($weiuboOpenId)){
+                    $notify = url("/weiubo/User/saveOpenId");
+                    //$this->getWechatOpenId('appid','appsecret','notify');
+                }
                 break;
         }
 
@@ -302,5 +316,11 @@ class Base extends Controller
         ];
         $captcha = new Captcha($config);
         return $captcha->entry();
+    }
+
+    public function getWechatOpenId($appId,$appSecret,$notify)
+    {
+        $auth2 = new wAuth($appId,$appSecret,$notify);
+        $auth2->oauth2_access();
     }
 }

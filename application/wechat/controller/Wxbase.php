@@ -12,7 +12,7 @@ class Wxbase extends Controller
        cookie('openId', null);
        // 检查openId是否有效
        if(!cookie("openId")){
-           $this->redirect(url('wechat/Auth/oauth2_access'));
+           $this->redirect(url('wechat/auth/oauth2_access'));
        }
    }
 }

@@ -1,65 +1,44 @@
 <?php
-namespace app\wechat\controller;
+/**
+ * Created by whlphper.
+ * User: Administrator
+ * Date: 2018/5/9 0009
+ * Time: 下午 2:28
+ * Desc:
+ */
+namespace wechat\auth;
 
 use think\Controller;
 use think\Request;
 use think\Db;
 use think\Cache;
 
-class Auth extends Controller
-{
+class Auth extends Controller{
+
     private $appid = null;
     private $appsecret = null;
     private $authnotify = null;
 
-    public function __construct(){
-        parent::__construct();
+    public function __construct($appId,$appSecret,$notify=''){
         //获取微信所需参数
-        /*$this->appid = config('weixin.appId');
-        $this->appsecret = config('weixin.appSecret');*/
-        $this->appid = 'wx0e2195a85fb69f6f';
-        $this->appsecret = 'c15343dd89bb8c1f8699ef1a3c2175f4';
+        $this->appid = $appId;//config('weixin.appId');
+        $this->appsecret = $appSecret;//config('weixin.appSecret');
         // 授权的notify url
-        $this->authnotify = Request::instance()->domain().url('wechat/auth/saveUser');
+        $this->authnotify = $notify;
+        parent::__construct();
     }
 
     /**
      * 网页授权回调接口
      * @return array|\think\response\Json
      */
-    public function saveUser(){
-        Db::startTrans();
+    public function notify(){
         try{
             $code = input("get.code","");
             $accArr = $this->oauth2_access_token($code);
             $userInfo = $this->oauth2_get_user_info($accArr["access_token"],$accArr["openid"]);
-            $data["openId"] = $userInfo["openid"];
-            // user表暂时只有name  所以把微信昵称存到name字段了
-            $data["name"] = $userInfo["nickname"];
-            // 微信头像不知道存那个字段,暂时没存
-            $data['password'] = md5('888888');
-            $data['type'] = '8003002';//企业用户
-            $row = findById('user',['openId'=>$userInfo["openid"],'id,openId,mobile']);
-            if($row['code'] == 0){
-                // 不存在此openId
-            }else{
-                $data['id'] = $row['data']['id'];
-            }
-            $result = saveData('user',$data);
-            if($result['code'] == 0){
-                throw new \think\Exception('用户保存失败'.$result['msg']);
-            }
-            // 设置cookie
-            cookie("openId",$data["openId"]);
-            cookie("userId",$result['data']);
-            // 下面是测试信息 测试完删了就好
-            $noyify = '<h1>欢迎 '.$userInfo["nickname"].'; 你的openId=>'.$userInfo['openid'].'</h1>';
-            Db::rollback();
-            echo $noyify;
-            exit;
-            return ['code'=>0,'msg'=>'用户信息记录成功','data'=>$result['data']];
+            return ['code'=>0,'msg'=>'success','openId'=>$accArr["openid"],'baseInfo'=>$userInfo];
         }catch(\Exception $e){
-            Db::rollback();
             c_Log($e);
             return json(['code'=>0,'msg'=>$e->getMessage()]);
         }

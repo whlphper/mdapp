@@ -28,13 +28,21 @@ class Task extends Validate
 
     protected $scene = [
         'follow'  =>  ['account','belongto','contact','multiple','password','idcard','email','verifycode'],
-        'followStrong'  =>  ['account','contact','name','password','idcard','email','verifycode'],
+        'followStrong'  =>  ['account'=>'require|number|unique:Task|strongIn','contact','name','password','idcard','email','verifycode'],
     ];
 
     public function isStrong($value)
     {
         if(!model('Accinfo')->where('account',$value)->find()){
             return '跟随的大牛账号不存在,请重试';
+        }
+        return true;
+    }
+
+    public function strongIn($value)
+    {
+        if(model('Accinfo')->where('account',$value)->find()){
+            return '此大牛账号重复';
         }
         return true;
     }

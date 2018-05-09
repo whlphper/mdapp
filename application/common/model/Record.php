@@ -12,6 +12,12 @@ class Record extends Base{
 
     public $isLimit = false;
 
+    public function getTypeAttr($value)
+    {
+        $status = [0=>'SELL',1=>'BUY'];
+        return $status[$value];
+    }
+
     public function getAccountList()
     {
         $sql = 'select distinct(accountfrom) from record';

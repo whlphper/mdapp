@@ -45,7 +45,14 @@ class Strong extends Base{
         $limit = input("limit") ? input("limit") : 10;
         // 牛人操作历史记录
         $log = model('History')->listData(['account'=>$account],'a.*','',[],$offset,$limit);
-        $this->assign('log',$log['data']);
+        $this->assign('offset',$offset);
+        $this->assign('limit',$limit);
+        $this->assign('account',$account);
+        //$log['offset'] = $offset+$limit;
+        if(!empty($log['data'])){
+            $this->assign('log',$log['data']);
+            return $log['data'];
+        }
     }
 
     public function allRecord($account)
