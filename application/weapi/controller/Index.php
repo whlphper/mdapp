@@ -21,13 +21,13 @@ class Index extends Api{
 
     public function index()
     {
-        //$api = new Wpmapi();
         if (isset($_GET['echostr'])) {
             $this->valid();
         }
-        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        // 用php://input 代替 $GLOBALS['HTTP_RAW_POST_DATA']
+        $postStr = file_get_contents("php://input");
         if (!empty($postStr)){
-            file_put_contents('msg.txt',json_encode($postStr));
+            \think\Log::notice($postStr);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             // openid
             $fromUsername = $postObj->FromUserName;
@@ -105,7 +105,6 @@ class Index extends Api{
         // 记录下用户信息
         // 保存用户信息
         $this->saveWpmUser(json_decode($userInfo,true));
-        // file_put_contents('openInfo.txt',$userInfo);
         $type = Db::name('WpmAutoreply')->where('replyId',1)->value("type");
         if($type == 1){
             $detail = Db::name('WpmAutoreply')->where('replyId',1)->value("detail");

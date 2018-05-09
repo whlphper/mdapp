@@ -26,6 +26,8 @@ class User extends Controller {
             $baseInfo = $respond['baseInfo'];
             // 写入open表
             $res = model('Open')->addOpenId($openId);
+            // 设置session
+            session('weiuboOpenId',$openId);
         }catch(\Exception $e){
             echo $e->getMessage();
         }

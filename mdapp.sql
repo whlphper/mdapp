@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-05-09 15:45:31
+Date: 2018-05-09 17:42:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3606,29 +3606,32 @@ CREATE TABLE `mam` (
   `comment` varchar(255) DEFAULT '该账号未添加简介' COMMENT '备注信息',
   `regtime` datetime DEFAULT NULL COMMENT '注册时间',
   `clearinglast` datetime DEFAULT NULL COMMENT '最后一次结算时间',
+  `openId` varchar(128) NOT NULL,
   PRIMARY KEY (`autoid`),
   KEY `account` (`account`),
-  KEY `belongto` (`belongto`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+  KEY `belongto` (`belongto`),
+  KEY `openId` (`openId`),
+  CONSTRAINT `mam_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `open` (`openId`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of mam
 -- ----------------------------
-INSERT INTO `mam` VALUES ('1', '10018', '0', '0', '10018', '10018', '2018-04-29 11:26:04', null);
-INSERT INTO `mam` VALUES ('2', '90001', '0', '0', '测试', '巨化股份规划局', '2018-04-30 02:27:13', '2018-05-08 11:00:00');
-INSERT INTO `mam` VALUES ('4', '90002', '90001', '1', null, null, '2018-04-30 02:34:50', null);
-INSERT INTO `mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null);
-INSERT INTO `mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null);
-INSERT INTO `mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null);
-INSERT INTO `mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null);
-INSERT INTO `mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null);
-INSERT INTO `mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null);
-INSERT INTO `mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null);
-INSERT INTO `mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null);
-INSERT INTO `mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null);
-INSERT INTO `mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null);
-INSERT INTO `mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null);
-INSERT INTO `mam` VALUES ('20', '88888', '9999', '88888', '该账号未设置名字', '该账号未添加简介', '2018-05-08 11:00:00', '2018-05-08 11:00:00');
+INSERT INTO `mam` VALUES ('1', '10018', '0', '0', '10018', '10018', '2018-04-29 11:26:04', null, '111');
+INSERT INTO `mam` VALUES ('2', '90001', '0', '0', '测试', '巨化股份规划局', '2018-04-30 02:27:13', '2018-05-08 11:00:00', '111');
+INSERT INTO `mam` VALUES ('4', '90002', '90001', '1', null, null, '2018-04-30 02:34:50', null, '111');
+INSERT INTO `mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null, '111');
+INSERT INTO `mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null, '111');
+INSERT INTO `mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null, '111');
+INSERT INTO `mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null, '111');
+INSERT INTO `mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null, '111');
+INSERT INTO `mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null, '111');
+INSERT INTO `mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null, '111');
+INSERT INTO `mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null, '111');
+INSERT INTO `mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null, '111');
+INSERT INTO `mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null, '111');
+INSERT INTO `mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null, '111');
+INSERT INTO `mam` VALUES ('20', '88888', '9999', '88888', '该账号未设置名字', '该账号未添加简介', '2018-05-08 11:00:00', '2018-05-08 11:00:00', '111');
 
 -- ----------------------------
 -- Table structure for md_address
@@ -4476,6 +4479,30 @@ INSERT INTO `md_menus` VALUES ('29', '27', '订单列表', 'shop/Order/index', '
 INSERT INTO `md_menus` VALUES ('30', '21', '规格模板', 'shop/Spec/index', 'fa fa-asterisk', '1001001', '1', '1', '59', '1', '2018-05-02 09:53:09', null, null, '1');
 INSERT INTO `md_menus` VALUES ('31', '21', '商城配置', 'shop/Config/shop', 'fa fa-wrench', '1001001', '1', '1', '22', '1', '2018-05-04 10:11:38', null, null, '1');
 INSERT INTO `md_menus` VALUES ('32', '21', '帮助中心', 'shop/Help/index', 'fa fa-comment-o', '1001001', '1', '1', '10', '1', '2018-05-04 11:14:53', null, null, '1');
+
+-- ----------------------------
+-- Table structure for md_open_list
+-- ----------------------------
+DROP TABLE IF EXISTS `md_open_list`;
+CREATE TABLE `md_open_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openId` varchar(125) NOT NULL,
+  `nickname` varchar(20) DEFAULT NULL,
+  `sex` tinyint(1) DEFAULT NULL COMMENT '值为1时是男性，值为2时是女性，值为0时是未知',
+  `city` varchar(10) DEFAULT NULL,
+  `country` varchar(10) DEFAULT NULL,
+  `province` varchar(20) DEFAULT NULL,
+  `language` varchar(15) DEFAULT NULL,
+  `headimgurl` varchar(255) DEFAULT NULL,
+  `subscribe_time` varchar(20) DEFAULT NULL COMMENT '用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间',
+  `unionid` int(11) DEFAULT NULL,
+  `remark` varchar(10) DEFAULT NULL COMMENT '众号运营者对粉丝的备注',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of md_open_list
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for md_order
@@ -8519,6 +8546,7 @@ INSERT INTO `md_spec_detail` VALUES ('16', '13', 'V领', '2018-05-02 14:11:41', 
 DROP TABLE IF EXISTS `md_user`;
 CREATE TABLE `md_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `open_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT ' 微信OPENID',
   `franchisee_id` int(11) DEFAULT NULL COMMENT '加盟商ID-对应franchisee表',
   `roles_id` int(11) DEFAULT NULL COMMENT '所属角色',
   `account_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '账号',
@@ -8539,23 +8567,24 @@ CREATE TABLE `md_user` (
 -- ----------------------------
 -- Records of md_user
 -- ----------------------------
-INSERT INTO `md_user` VALUES ('1', null, '1', 'whlphper', '202cb962ac59075b964b07152d234b70', '', 'whlphper', null, '15369197307', '1001001', '王红亮', '2018-04-19 09:31:40', null, null, null);
-INSERT INTO `md_user` VALUES ('2', null, null, '15689923785', 'f46ef81f2464441ba58aeecbf654ee41', null, '15689923785', null, '15689923785', '1001004', null, '2018-04-23 14:11:03', null, null, null);
-INSERT INTO `md_user` VALUES ('3', null, null, '15020081046', 'f46ef81f2464441ba58aeecbf654ee41', null, '额呵呵西', null, '15020081046', '1001004', null, '2018-04-23 17:57:54', null, null, null);
-INSERT INTO `md_user` VALUES ('4', null, null, '15369696969', 'f46ef81f2464441ba58aeecbf654ee41', null, '嘻嘻嘻', null, '15369696969', '1001004', null, '2018-04-24 11:16:11', null, null, null);
+INSERT INTO `md_user` VALUES ('1', null, null, '1', 'whlphper', '202cb962ac59075b964b07152d234b70', '', 'whlphper', null, '15369197307', '1001001', '王红亮', '2018-04-19 09:31:40', null, null, null);
+INSERT INTO `md_user` VALUES ('2', null, null, null, '15689923785', 'f46ef81f2464441ba58aeecbf654ee41', null, '15689923785', null, '15689923785', '1001004', null, '2018-04-23 14:11:03', null, null, null);
+INSERT INTO `md_user` VALUES ('3', null, null, null, '15020081046', 'f46ef81f2464441ba58aeecbf654ee41', null, '额呵呵西', null, '15020081046', '1001004', null, '2018-04-23 17:57:54', null, null, null);
+INSERT INTO `md_user` VALUES ('4', null, null, null, '15369696969', 'f46ef81f2464441ba58aeecbf654ee41', null, '嘻嘻嘻', null, '15369696969', '1001004', null, '2018-04-24 11:16:11', null, null, null);
 
 -- ----------------------------
 -- Table structure for open
 -- ----------------------------
 DROP TABLE IF EXISTS `open`;
 CREATE TABLE `open` (
-  `openId` varchar(255) CHARACTER SET utf8mb4 DEFAULT '',
-  KEY `openId` (`openId`(191))
+  `openId` varchar(128) NOT NULL,
+  PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of open
 -- ----------------------------
+INSERT INTO `open` VALUES ('111');
 
 -- ----------------------------
 -- Table structure for position
@@ -8618,6 +8647,7 @@ INSERT INTO `record` VALUES ('101681', '90002', '101676', '90001', '1000', 'USOU
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
   `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
+  `openId` varchar(128) DEFAULT NULL,
   `account` int(11) unsigned NOT NULL COMMENT '账户',
   `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
   `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
@@ -8629,17 +8659,19 @@ CREATE TABLE `task` (
   `idcard` varchar(18) DEFAULT NULL COMMENT '身份证号',
   `allow` tinyint(1) DEFAULT '0' COMMENT '是否通过审核',
   `reason` text,
-  PRIMARY KEY (`autoid`)
-) ENGINE=MyISAM AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`autoid`),
+  KEY `openId` (`openId`),
+  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `open` (`openId`)
+) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
-INSERT INTO `task` VALUES ('19', '4294967295', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '啊啊啊啊');
-INSERT INTO `task` VALUES ('18', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '的点点滴滴多多');
-INSERT INTO `task` VALUES ('189', '66666', '10018', '20', null, null, 'whlphper', '15369197307', '761243073@qq.com', '130121199406181014', '0', null);
-INSERT INTO `task` VALUES ('190', '99999', '90005', '90', null, null, '99999', '15369197308', '7612430732-2@qq.com', '130121199506181024', null, '你是假的');
-INSERT INTO `task` VALUES ('191', '797979', '0', '1', '我是牛人', '啊啊啊啊啊', '7979797', '15369197309', '76124303@qq.com', '130121199406181015', '0', null);
+INSERT INTO `task` VALUES ('18', '111', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '的点点滴滴多多');
+INSERT INTO `task` VALUES ('19', '111', '4294967295', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '啊啊啊啊');
+INSERT INTO `task` VALUES ('189', '111', '66666', '10018', '20', null, null, 'whlphper', '15369197307', '761243073@qq.com', '130121199406181014', null, '');
+INSERT INTO `task` VALUES ('190', '111', '99999', '90005', '90', null, null, '99999', '15369197308', '7612430732-2@qq.com', '130121199506181024', null, '你是假的');
+INSERT INTO `task` VALUES ('191', '111', '797979', '0', '1', '我是牛人', '啊啊啊啊啊', '7979797', '15369197309', '76124303@qq.com', '130121199406181015', '1', '');
 
 -- ----------------------------
 -- Table structure for task_done

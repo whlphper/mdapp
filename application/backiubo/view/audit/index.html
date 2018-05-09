@@ -101,6 +101,7 @@
     $(document).on("click", ".pass", function () {
         var ticked = $(this).attr("data-id");
         var url = "{:url('/backiubo/Audit/goAudit/id/"+ticked+"/status/1')}";
+        var tableUrl = "{:url('/backiubo/Audit/getJqPage')}";
         layer.confirm('确定通过审核吗？', {
             btn: ['通过','取消'] //按钮
         }, function(){
@@ -138,11 +139,12 @@
         //询问框
         var delUrl = "{:url('/backiubo/Audit/fullyDel')}";
         delUrl = delUrl + '?field=autoid&ids='+id;
+        var tableUrl = "{:url('/backiubo/Audit/getJqPage')}";
         layer.confirm('确定删除数据吗？', {
             btn: ['删除','取消'] //按钮
         }, function(){
             mdAjax($(this),delUrl,{},function (res) {
-                InitTable(obj,0);
+                InitTable(obj,0,tableUrl);
             },'get');
         });
     })
