@@ -10,10 +10,43 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-05-07 17:56:58
+Date: 2018-05-09 15:45:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for accinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `accinfo`;
+CREATE TABLE `accinfo` (
+  `name` varchar(32) DEFAULT '该账号未设置名字',
+  `comment` varchar(255) DEFAULT '该账号未添加简介',
+  `account` int(10) unsigned NOT NULL COMMENT '账号',
+  `followers` int(11) DEFAULT '0' COMMENT '跟单人数',
+  `followermoney` double DEFAULT '0',
+  `level` int(11) DEFAULT '100' COMMENT '杠杆',
+  `balance` float(11,0) DEFAULT '0' COMMENT '余额',
+  `depositall` float DEFAULT '0',
+  `withdrawall` float DEFAULT '0',
+  `profit` float(11,0) DEFAULT '0' COMMENT '利润',
+  `growth` float DEFAULT '0',
+  `totaltrades` int(11) DEFAULT '0' COMMENT '交易笔数',
+  `winrate` float DEFAULT '0' COMMENT '胜率',
+  `profitfactor` float DEFAULT '0' COMMENT '利润因子',
+  `eddbalance` float DEFAULT '0' COMMENT '余额最大回撤',
+  `eddequity` float DEFAULT '0' COMMENT '净值最大回撤',
+  `commission` float DEFAULT '0' COMMENT '手续费',
+  `swap` float DEFAULT '0' COMMENT '隔夜费',
+  PRIMARY KEY (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of accinfo
+-- ----------------------------
+INSERT INTO `accinfo` VALUES ('10018', '10018', '10018', '2', '0', '100', '105047', '100000', '0', '28141', '0.025', '2086', '0', '0', '-0.0367', '0', '-22662.2', '-431.52');
+INSERT INTO `accinfo` VALUES ('测试', '巨化股份规划局', '90001', '5', '0', '100', '12189', '15300', '-806.59', '-558', '-0.266', '189', '0', '0', '-0.2667', '0', '-1736.9', '-9.36');
+INSERT INTO `accinfo` VALUES ('大牛', '阿萨德', '90005', '4', '0', '100', '22459', '23713.5', '0', '-487', '-0.1832', '55', '0', '0', '-0.1832', '0', '-767.2', '0');
 
 -- ----------------------------
 -- Table structure for history
@@ -43,21 +76,6 @@ CREATE TABLE `history` (
 -- ----------------------------
 -- Records of history
 -- ----------------------------
-INSERT INTO `history` VALUES ('10018', '2018-01-29 10:14:43', '5012', 'SELL', '1', 'USDJPY', '108.689', '2018-01-29 10:26:41', '108.667', '-11', '0', '20.25', '', '9961.61', '-0.0038', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-29 10:14:43', '5013', 'SELL', '1', 'USDJPY', '108.689', '2018-01-29 10:26:41', null, '0', '0', '0', null, '0', '0', '0');
-INSERT INTO `history` VALUES ('10018', '2018-01-29 10:26:46', '5014', 'SELL', '1', 'USDJPY', '108.669', '2018-01-30 11:23:28', '108.58', '-11', '-12.94', '81.97', '', '102572.27', '0.0223', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-29 10:26:48', '5015', 'SELL', '1', 'USDJPY', '108.669', '2018-01-30 11:23:28', '108.58', '-11', '-12.94', '81.97', '', '102630.3', '0.0229', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-29 10:26:50', '5016', 'SELL', '1', 'USDJPY', '108.669', '2018-01-30 11:23:27', '108.58', '-11', '-12.94', '81.97', '', '102514.24', '0.0217', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 11:13:16', '5087', 'SELL', '50', 'USDCAD', '1.23244', '2018-01-30 11:23:26', '1.23169', '-550', '0', '3044.6', '', '102456.21', '0.0211', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 11:23:36', '5092', 'SELL', '50', 'USDCAD', '1.2316', '2018-01-30 12:00:41', '1.23146', '-550', '0', '568.43', '', '102648.73', '0.0231', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:00:49', '5094', 'BUY', '50', 'USDCAD', '1.23135', '2018-01-30 12:04:11', '1.23153', '-550', '0', '730.8', '', '102829.53', '0.0249', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:07:35', '5098', 'SELL', '50', 'USDCAD', '1.23161', '2018-01-30 12:08:40', '1.23155', '-550', '0', '243.6', '', '102523.13', '0.0218', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:08:50', '5100', 'SELL', '1', 'USDJPY', '108.613', '2018-01-30 12:08:57', '108.618', '-11', '0', '-4.6', '', '102507.53', '0.0216', '-0.0116');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:09:04', '5102', 'SELL', '50', 'USDJPY', '108.623', '2018-01-30 12:46:45', '108.684', '-550', '0', '-2806.3', '', '99151.23', '-0.0118', '-0.0367');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:46:49', '5108', 'SELL', '50', 'USDJPY', '108.68', '2018-01-30 12:51:25', '108.616', '-550', '0', '2946.16', '', '101547.39', '0.0121', '-0.0367');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:51:30', '5110', 'BUY', '50', 'USDJPY', '108.619', '2018-01-30 13:00:54', '108.662', '-550', '0', '1978.61', '', '101827.53', '0.0149', '-0.0367');
-INSERT INTO `history` VALUES ('10018', '2018-01-30 12:52:05', '5111', 'BUY', '50', 'USDJPY', '108.623', '2018-01-30 12:52:17', '108.61', '-550', '0', '-598.47', '[so at 99.98% ]', '100398.92', '0.0007', '-0.0367');
-INSERT INTO `history` VALUES ('10018', '2018-01-31 06:01:42', '5145', 'BUY', '50', 'USDJPY', '108.693', '2018-02-01 04:10:10', '109.316', '-550', '484.95', '28495.37', '', '130257.85', '0.2983', '-0.0367');
 INSERT INTO `history` VALUES ('10018', null, '5147', 'Balance', null, null, '0', '2018-01-30 11:13:05', null, '0', '0', '90000', ' ', '99961.61', '-0.0038', '-0.0116');
 INSERT INTO `history` VALUES ('10018', '2018-02-01 07:48:47', '5867', 'SELL', '50', 'USDJPY', '109.615', '2018-02-01 08:03:17', '109.548', '-550', '0', '3058.02', '', '132765.87', '0.3233', '-0.0367');
 INSERT INTO `history` VALUES ('10018', '2018-02-01 08:03:22', '5880', 'BUY', '50', 'USDJPY', '109.552', '2018-02-01 09:56:43', '109.664', '-550', '0', '5106.51', '', '137322.38', '0.3687', '-0.0367');
@@ -3576,6 +3594,43 @@ INSERT INTO `history` VALUES ('90001', '2018-05-04 01:34:19', '101814', 'SELL', 
 INSERT INTO `history` VALUES ('61810698', '2018-05-07 17:00:00', '999999', 'SELL', '0.05', 'XAUUSD', '999.99', '2018-05-07 17:00:00', null, '0', '0', '0', null, '0', '0', '0');
 
 -- ----------------------------
+-- Table structure for mam
+-- ----------------------------
+DROP TABLE IF EXISTS `mam`;
+CREATE TABLE `mam` (
+  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
+  `account` int(11) unsigned NOT NULL COMMENT '账户',
+  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
+  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
+  `name` varchar(32) DEFAULT '该账号未设置名字' COMMENT '账户名称',
+  `comment` varchar(255) DEFAULT '该账号未添加简介' COMMENT '备注信息',
+  `regtime` datetime DEFAULT NULL COMMENT '注册时间',
+  `clearinglast` datetime DEFAULT NULL COMMENT '最后一次结算时间',
+  PRIMARY KEY (`autoid`),
+  KEY `account` (`account`),
+  KEY `belongto` (`belongto`)
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of mam
+-- ----------------------------
+INSERT INTO `mam` VALUES ('1', '10018', '0', '0', '10018', '10018', '2018-04-29 11:26:04', null);
+INSERT INTO `mam` VALUES ('2', '90001', '0', '0', '测试', '巨化股份规划局', '2018-04-30 02:27:13', '2018-05-08 11:00:00');
+INSERT INTO `mam` VALUES ('4', '90002', '90001', '1', null, null, '2018-04-30 02:34:50', null);
+INSERT INTO `mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null);
+INSERT INTO `mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null);
+INSERT INTO `mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null);
+INSERT INTO `mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null);
+INSERT INTO `mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null);
+INSERT INTO `mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null);
+INSERT INTO `mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null);
+INSERT INTO `mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null);
+INSERT INTO `mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null);
+INSERT INTO `mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null);
+INSERT INTO `mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null);
+INSERT INTO `mam` VALUES ('20', '88888', '9999', '88888', '该账号未设置名字', '该账号未添加简介', '2018-05-08 11:00:00', '2018-05-08 11:00:00');
+
+-- ----------------------------
 -- Table structure for md_address
 -- ----------------------------
 DROP TABLE IF EXISTS `md_address`;
@@ -3843,7 +3898,7 @@ CREATE TABLE `md_config` (
 -- ----------------------------
 INSERT INTO `md_config` VALUES ('1', '1', 'siteName', '众城商城', '站点名称-商城模块', '2018-04-23 09:03:09', null, null, null);
 INSERT INTO `md_config` VALUES ('2', '1', 'siteKeyword', '众城商城', '站点关键字', '2018-04-23 09:03:10', null, null, null);
-INSERT INTO `md_config` VALUES ('3', '1', 'siteDescription', '众城商城|的撒打算', '站点描述', '2018-05-04 10:57:24', null, null, null);
+INSERT INTO `md_config` VALUES ('3', '1', 'siteDescription', '众城商城', '站点描述', '2018-05-09 10:05:33', null, null, null);
 INSERT INTO `md_config` VALUES ('4', '1', 'siteCopryright', 'Copyright 2018, 北京汇众成信息技术服务有限公司', '站点版权信息', '2018-04-23 09:03:15', null, null, null);
 INSERT INTO `md_config` VALUES ('5', '1', 'siteRecord', '【京ICP备17066139号-1】', '站点备案号', '2018-04-23 09:03:16', null, null, null);
 INSERT INTO `md_config` VALUES ('6', '1', 'siteServicetime', '09:00-23:00', '站点服务时间', '2018-04-23 09:03:17', null, null, null);
@@ -4238,181 +4293,6 @@ INSERT INTO `md_item_sku` VALUES ('5', null, '153', '3,4', null, null, null, nul
 INSERT INTO `md_item_sku` VALUES ('6', null, '153', '3,5', null, null, null, null, null, null, null);
 
 -- ----------------------------
--- Table structure for md_iubo_accinfo
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_accinfo`;
-CREATE TABLE `md_iubo_accinfo` (
-  `name` varchar(32) DEFAULT '该账号未设置名字',
-  `comment` varchar(255) DEFAULT '该账号未添加简介',
-  `account` int(10) unsigned NOT NULL COMMENT '账号',
-  `followers` int(11) DEFAULT '0' COMMENT '跟单人数',
-  `followermoney` double DEFAULT '0',
-  `level` int(11) DEFAULT '100' COMMENT '杠杆',
-  `balance` float(11,0) DEFAULT '0' COMMENT '余额',
-  `depositall` float DEFAULT '0',
-  `withdrawall` float DEFAULT '0',
-  `profit` float(11,0) DEFAULT '0' COMMENT '利润',
-  `growth` float DEFAULT '0',
-  `totaltrades` int(11) DEFAULT '0' COMMENT '交易笔数',
-  `winrate` float DEFAULT '0' COMMENT '胜率',
-  `profitfactor` float DEFAULT '0' COMMENT '利润因子',
-  `eddbalance` float DEFAULT '0' COMMENT '余额最大回撤',
-  `eddequity` float DEFAULT '0' COMMENT '净值最大回撤',
-  `commission` float DEFAULT '0' COMMENT '手续费',
-  `swap` float DEFAULT '0' COMMENT '隔夜费',
-  PRIMARY KEY (`account`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of md_iubo_accinfo
--- ----------------------------
-INSERT INTO `md_iubo_accinfo` VALUES ('10018', '10018', '10018', '2', '0', '100', '105047', '100000', '0', '28141', '0.025', '2086', '0', '0', '-0.0367', '0', '-22662.2', '-431.52');
-INSERT INTO `md_iubo_accinfo` VALUES ('测试', '巨化股份规划局', '90001', '5', '0', '100', '12189', '15300', '-806.59', '-558', '-0.266', '189', '0', '0', '-0.2667', '0', '-1736.9', '-9.36');
-INSERT INTO `md_iubo_accinfo` VALUES ('大牛', '阿萨德', '90005', '4', '0', '100', '22459', '23713.5', '0', '-487', '-0.1832', '55', '0', '0', '-0.1832', '0', '-767.2', '0');
-
--- ----------------------------
--- Table structure for md_iubo_mam
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_mam`;
-CREATE TABLE `md_iubo_mam` (
-  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
-  `account` int(11) unsigned NOT NULL COMMENT '账户',
-  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
-  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
-  `name` varchar(32) DEFAULT '该账号未设置名字' COMMENT '账户名称',
-  `comment` varchar(255) DEFAULT '该账号未添加简介' COMMENT '备注信息',
-  `regtime` datetime DEFAULT NULL COMMENT '注册时间',
-  `clearinglast` datetime DEFAULT NULL COMMENT '最后一次结算时间',
-  PRIMARY KEY (`autoid`),
-  KEY `account` (`account`),
-  KEY `belongto` (`belongto`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of md_iubo_mam
--- ----------------------------
-INSERT INTO `md_iubo_mam` VALUES ('1', '10018', '0', '0', '10018', '10018', '2018-04-29 11:26:04', null);
-INSERT INTO `md_iubo_mam` VALUES ('2', '90001', '0', '0', '测试', '巨化股份规划局', '2018-04-30 02:27:13', null);
-INSERT INTO `md_iubo_mam` VALUES ('4', '90002', '90001', '1', null, null, '2018-04-30 02:34:50', null);
-INSERT INTO `md_iubo_mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null);
-INSERT INTO `md_iubo_mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null);
-INSERT INTO `md_iubo_mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null);
-INSERT INTO `md_iubo_mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null);
-INSERT INTO `md_iubo_mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null);
-INSERT INTO `md_iubo_mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null);
-INSERT INTO `md_iubo_mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null);
-INSERT INTO `md_iubo_mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null);
-INSERT INTO `md_iubo_mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null);
-INSERT INTO `md_iubo_mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null);
-INSERT INTO `md_iubo_mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null);
-
--- ----------------------------
--- Table structure for md_iubo_position
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_position`;
-CREATE TABLE `md_iubo_position` (
-  `ticket` int(11) NOT NULL COMMENT '订单号',
-  `account` int(11) NOT NULL COMMENT '账号',
-  `timeopen` datetime NOT NULL COMMENT '开仓时间',
-  `priceopen` float NOT NULL COMMENT '开仓价格',
-  `volume` float NOT NULL COMMENT '手数',
-  `type` varchar(32) NOT NULL COMMENT '持仓类型',
-  `symbol` varchar(32) NOT NULL COMMENT '品种',
-  PRIMARY KEY (`ticket`),
-  KEY `account` (`account`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of md_iubo_position
--- ----------------------------
-
--- ----------------------------
--- Table structure for md_iubo_record
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_record`;
-CREATE TABLE `md_iubo_record` (
-  `ticket` int(11) unsigned NOT NULL COMMENT '当前订单号',
-  `account` int(11) unsigned NOT NULL COMMENT '当前订单所属账户',
-  `ticketfrom` int(11) unsigned NOT NULL COMMENT '当前订单匹配的信号账户订单',
-  `accountfrom` int(11) unsigned NOT NULL COMMENT '当前账户跟随的信号账户',
-  `volume` int(10) unsigned NOT NULL,
-  `symbol` varchar(16) NOT NULL,
-  `type` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`ticket`),
-  KEY `FromID` (`account`),
-  KEY `ID` (`ticket`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of md_iubo_record
--- ----------------------------
-INSERT INTO `md_iubo_record` VALUES ('101680', '90003', '101676', '90001', '1000', 'USOUSD', '1');
-INSERT INTO `md_iubo_record` VALUES ('101679', '90004', '101676', '90001', '1000', 'USOUSD', '0');
-INSERT INTO `md_iubo_record` VALUES ('101678', '90006', '101676', '90001', '1000', 'USOUSD', '0');
-INSERT INTO `md_iubo_record` VALUES ('101677', '90007', '101676', '90001', '100', 'USOUSD', '0');
-INSERT INTO `md_iubo_record` VALUES ('101804', '90007', '101803', '90001', '100', 'EURGBP', '0');
-INSERT INTO `md_iubo_record` VALUES ('101808', '90002', '101803', '90001', '1000', 'EURGBP', '0');
-INSERT INTO `md_iubo_record` VALUES ('101807', '90003', '101803', '90001', '900', 'EURGBP', '1');
-INSERT INTO `md_iubo_record` VALUES ('101806', '90004', '101803', '90001', '1000', 'EURGBP', '0');
-INSERT INTO `md_iubo_record` VALUES ('101805', '90006', '101803', '90001', '1000', 'EURGBP', '0');
-INSERT INTO `md_iubo_record` VALUES ('101829', '90007', '101828', '90001', '100', 'XAUUSD', '1');
-INSERT INTO `md_iubo_record` VALUES ('101830', '90006', '101828', '90001', '1000', 'XAUUSD', '1');
-INSERT INTO `md_iubo_record` VALUES ('101833', '90002', '101828', '90001', '1000', 'XAUUSD', '1');
-INSERT INTO `md_iubo_record` VALUES ('101832', '90003', '101828', '90001', '1000', 'XAUUSD', '0');
-INSERT INTO `md_iubo_record` VALUES ('101831', '90004', '101828', '90001', '1000', 'XAUUSD', '1');
-INSERT INTO `md_iubo_record` VALUES ('101681', '90002', '101676', '90001', '1000', 'USOUSD', '0');
-
--- ----------------------------
--- Table structure for md_iubo_task
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_task`;
-CREATE TABLE `md_iubo_task` (
-  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
-  `account` int(11) unsigned NOT NULL COMMENT '账户',
-  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
-  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
-  `name` varchar(32) DEFAULT NULL COMMENT '账户名称',
-  `comment` varchar(255) DEFAULT NULL COMMENT '备注信息',
-  `password` varchar(32) DEFAULT NULL COMMENT '密码',
-  `contact` varchar(32) DEFAULT NULL COMMENT '联系方式',
-  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
-  `idcard` varchar(16) DEFAULT NULL COMMENT '身份证号',
-  `allow` tinyint(1) DEFAULT '0' COMMENT '是否通过审核',
-  `reason` text,
-  PRIMARY KEY (`autoid`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of md_iubo_task
--- ----------------------------
-INSERT INTO `md_iubo_task` VALUES ('19', '4294967295', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, null);
-INSERT INTO `md_iubo_task` VALUES ('18', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, null);
-
--- ----------------------------
--- Table structure for md_iubo_task_done
--- ----------------------------
-DROP TABLE IF EXISTS `md_iubo_task_done`;
-CREATE TABLE `md_iubo_task_done` (
-  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
-  `account` int(11) unsigned NOT NULL COMMENT '账户',
-  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
-  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
-  `name` varchar(32) DEFAULT NULL COMMENT '账户名称',
-  `comment` varchar(255) DEFAULT NULL COMMENT '备注信息',
-  `password` varchar(32) DEFAULT NULL COMMENT '密码',
-  `contact` varchar(32) DEFAULT NULL COMMENT '联系方式',
-  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
-  `idcard` varchar(16) DEFAULT NULL COMMENT '身份证号',
-  `allow` tinyint(1) DEFAULT '0' COMMENT '是否通过审核',
-  `reason` text,
-  PRIMARY KEY (`autoid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of md_iubo_task_done
--- ----------------------------
-
--- ----------------------------
 -- Table structure for md_jobs
 -- ----------------------------
 DROP TABLE IF EXISTS `md_jobs`;
@@ -4453,7 +4333,7 @@ CREATE TABLE `md_log` (
   PRIMARY KEY (`id`),
   KEY `操作人` (`created_user`) USING BTREE,
   KEY `操作码以及操作的数据表` (`code`,`table`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of md_log
@@ -4548,6 +4428,8 @@ INSERT INTO `md_log` VALUES ('95', '', '编辑帮助信息', 'shop/help/savetota
 INSERT INTO `md_log` VALUES ('96', '', '编辑帮助信息', 'shop/help/savetotable', '127.0.0.1', 'catalog', '5', '2018-05-04 11:27:39', null, null, '1', 'a:1:{s:0:\"\";s:13:\"关于商城2\";}', 'a:1:{s:0:\"\";s:12:\"关于商城\";}');
 INSERT INTO `md_log` VALUES ('97', '', '编辑帮助信息', 'shop/help/savetotable', '127.0.0.1', 'catalog', '5', '2018-05-04 11:27:55', null, null, '1', 'a:1:{s:0:\"\";s:12:\"关于商城\";}', 'a:1:{s:0:\"\";s:16:\"关于商城-aaa\";}');
 INSERT INTO `md_log` VALUES ('98', '', '编辑帮助信息', 'shop/help/savetotable', '127.0.0.1', 'catalog', '5', '2018-05-04 11:28:11', null, null, '1', 'a:1:{s:0:\"\";s:16:\"关于商城-aaa\";}', 'a:1:{s:0:\"\";s:12:\"关于商城\";}');
+INSERT INTO `md_log` VALUES ('99', '999', '用户下单', 'pcshop/Order/checkoutOrder', '127.0.0.1', 'order', '43', '2018-05-07 17:59:13', null, null, null, null, null);
+INSERT INTO `md_log` VALUES ('100', '', '编辑订单', 'pcshop/Order/saveToTable', '127.0.0.1', 'order', '43', '2018-05-07 17:59:17', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_menus
@@ -4618,7 +4500,7 @@ CREATE TABLE `md_order` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `progress` (`progress`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order
@@ -4652,6 +4534,7 @@ INSERT INTO `md_order` VALUES ('39', '2018050110053565', '1', '3', null, '66:1',
 INSERT INTO `md_order` VALUES ('40', '2018050110251535', '1', '3', null, '66:1', '汽车坐垫冬季大众四季通用车垫x1', '426.00', '0', '0', null, null, '2018-05-01 11:42:38', null, '0000-00-00 00:00:00', null);
 INSERT INTO `md_order` VALUES ('41', '2018050453539998', '4', '1', '1', '68:1', '紫风铃2016新款四季通用新款汽车全包坐垫x1', '438.00', '0', '0', null, null, '2018-05-04 10:58:20', '2018-05-04 10:58:19', '0000-00-00 00:00:00', null);
 INSERT INTO `md_order` VALUES ('42', '2018050450559854', '3', '1', '1', '68:1', '紫风铃2016新款四季通用新款汽车全包坐垫x1', '438.00', '0', '0', null, null, '2018-05-04 10:58:32', '2018-05-04 10:58:30', '0000-00-00 00:00:00', null);
+INSERT INTO `md_order` VALUES ('43', '2018050749505657', '4', '3', '5', '81:1', '宝马5系6系7系 X3 X4 X5 X6 原厂装全液晶仪表盘x1', '4500.00', '0', '0', null, null, '2018-05-07 17:59:18', '2018-05-07 17:59:17', null, null);
 
 -- ----------------------------
 -- Table structure for md_order_detail
@@ -4669,7 +4552,7 @@ CREATE TABLE `md_order_detail` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of md_order_detail
@@ -4717,6 +4600,7 @@ INSERT INTO `md_order_detail` VALUES ('40', '39', '66', '1', '426.00', '854.00',
 INSERT INTO `md_order_detail` VALUES ('41', '40', '66', '1', '426.00', '854.00', null, null, null, null);
 INSERT INTO `md_order_detail` VALUES ('42', '41', '68', '1', '438.00', '876.00', null, null, null, null);
 INSERT INTO `md_order_detail` VALUES ('43', '42', '68', '1', '438.00', '876.00', null, null, null, null);
+INSERT INTO `md_order_detail` VALUES ('44', '43', '81', '1', '4500.00', '9000.00', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for md_product
@@ -8659,3 +8543,153 @@ INSERT INTO `md_user` VALUES ('1', null, '1', 'whlphper', '202cb962ac59075b964b0
 INSERT INTO `md_user` VALUES ('2', null, null, '15689923785', 'f46ef81f2464441ba58aeecbf654ee41', null, '15689923785', null, '15689923785', '1001004', null, '2018-04-23 14:11:03', null, null, null);
 INSERT INTO `md_user` VALUES ('3', null, null, '15020081046', 'f46ef81f2464441ba58aeecbf654ee41', null, '额呵呵西', null, '15020081046', '1001004', null, '2018-04-23 17:57:54', null, null, null);
 INSERT INTO `md_user` VALUES ('4', null, null, '15369696969', 'f46ef81f2464441ba58aeecbf654ee41', null, '嘻嘻嘻', null, '15369696969', '1001004', null, '2018-04-24 11:16:11', null, null, null);
+
+-- ----------------------------
+-- Table structure for open
+-- ----------------------------
+DROP TABLE IF EXISTS `open`;
+CREATE TABLE `open` (
+  `openId` varchar(255) CHARACTER SET utf8mb4 DEFAULT '',
+  KEY `openId` (`openId`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of open
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for position
+-- ----------------------------
+DROP TABLE IF EXISTS `position`;
+CREATE TABLE `position` (
+  `ticket` int(11) NOT NULL COMMENT '订单号',
+  `account` int(11) NOT NULL COMMENT '账号',
+  `timeopen` datetime NOT NULL COMMENT '开仓时间',
+  `priceopen` float NOT NULL COMMENT '开仓价格',
+  `volume` float NOT NULL COMMENT '手数',
+  `type` varchar(32) NOT NULL COMMENT '持仓类型',
+  `symbol` varchar(32) NOT NULL COMMENT '品种',
+  PRIMARY KEY (`ticket`),
+  KEY `account` (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of position
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for record
+-- ----------------------------
+DROP TABLE IF EXISTS `record`;
+CREATE TABLE `record` (
+  `ticket` int(11) unsigned NOT NULL COMMENT '当前订单号',
+  `account` int(11) unsigned NOT NULL COMMENT '当前订单所属账户',
+  `ticketfrom` int(11) unsigned NOT NULL COMMENT '当前订单匹配的信号账户订单',
+  `accountfrom` int(11) unsigned NOT NULL COMMENT '当前账户跟随的信号账户',
+  `volume` int(10) unsigned NOT NULL,
+  `symbol` varchar(16) NOT NULL,
+  `type` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ticket`),
+  KEY `FromID` (`account`),
+  KEY `ID` (`ticket`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of record
+-- ----------------------------
+INSERT INTO `record` VALUES ('101679', '90004', '101676', '90001', '1000', 'USOUSD', '0');
+INSERT INTO `record` VALUES ('101678', '90006', '101676', '90001', '1000', 'USOUSD', '0');
+INSERT INTO `record` VALUES ('101677', '90007', '101676', '90001', '100', 'USOUSD', '0');
+INSERT INTO `record` VALUES ('101804', '90007', '101803', '90001', '100', 'EURGBP', '0');
+INSERT INTO `record` VALUES ('101808', '90002', '101803', '90001', '1000', 'EURGBP', '0');
+INSERT INTO `record` VALUES ('101807', '90003', '101803', '90001', '900', 'EURGBP', '1');
+INSERT INTO `record` VALUES ('101806', '90004', '101803', '90001', '1000', 'EURGBP', '0');
+INSERT INTO `record` VALUES ('101805', '90006', '101803', '90001', '1000', 'EURGBP', '0');
+INSERT INTO `record` VALUES ('101829', '90007', '101828', '90001', '100', 'XAUUSD', '1');
+INSERT INTO `record` VALUES ('101830', '90006', '101828', '90001', '1000', 'XAUUSD', '1');
+INSERT INTO `record` VALUES ('101833', '90002', '101828', '90001', '1000', 'XAUUSD', '1');
+INSERT INTO `record` VALUES ('101832', '90003', '101828', '90001', '1000', 'XAUUSD', '0');
+INSERT INTO `record` VALUES ('101831', '90004', '101828', '90001', '1000', 'XAUUSD', '1');
+INSERT INTO `record` VALUES ('101681', '90002', '101676', '90001', '1000', 'USOUSD', '0');
+
+-- ----------------------------
+-- Table structure for task
+-- ----------------------------
+DROP TABLE IF EXISTS `task`;
+CREATE TABLE `task` (
+  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
+  `account` int(11) unsigned NOT NULL COMMENT '账户',
+  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
+  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
+  `name` varchar(32) DEFAULT NULL COMMENT '账户名称',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `password` varchar(32) DEFAULT NULL COMMENT '密码',
+  `contact` varchar(32) DEFAULT NULL COMMENT '联系方式',
+  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
+  `idcard` varchar(18) DEFAULT NULL COMMENT '身份证号',
+  `allow` tinyint(1) DEFAULT '0' COMMENT '是否通过审核',
+  `reason` text,
+  PRIMARY KEY (`autoid`)
+) ENGINE=MyISAM AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of task
+-- ----------------------------
+INSERT INTO `task` VALUES ('19', '4294967295', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '啊啊啊啊');
+INSERT INTO `task` VALUES ('18', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '的点点滴滴多多');
+INSERT INTO `task` VALUES ('189', '66666', '10018', '20', null, null, 'whlphper', '15369197307', '761243073@qq.com', '130121199406181014', '0', null);
+INSERT INTO `task` VALUES ('190', '99999', '90005', '90', null, null, '99999', '15369197308', '7612430732-2@qq.com', '130121199506181024', null, '你是假的');
+INSERT INTO `task` VALUES ('191', '797979', '0', '1', '我是牛人', '啊啊啊啊啊', '7979797', '15369197309', '76124303@qq.com', '130121199406181015', '0', null);
+
+-- ----------------------------
+-- Table structure for task_done
+-- ----------------------------
+DROP TABLE IF EXISTS `task_done`;
+CREATE TABLE `task_done` (
+  `autoid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动生成的序号',
+  `account` int(11) unsigned NOT NULL COMMENT '账户',
+  `belongto` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '绑定的信号源,0表示其为信号账户',
+  `multiple` float NOT NULL DEFAULT '1' COMMENT '跟单比例',
+  `name` varchar(32) DEFAULT NULL COMMENT '账户名称',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `password` varchar(32) DEFAULT NULL COMMENT '密码',
+  `contact` varchar(32) DEFAULT NULL COMMENT '联系方式',
+  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
+  `idcard` varchar(16) DEFAULT NULL COMMENT '身份证号',
+  `allow` tinyint(1) DEFAULT '0' COMMENT '是否通过审核',
+  `reason` text,
+  PRIMARY KEY (`autoid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of task_done
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `openId` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT ' 微信号',
+  `roles_id` int(11) DEFAULT NULL COMMENT '所属角色',
+  `account_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '账号',
+  `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '密码-md5',
+  `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '头像',
+  `nick_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '昵称',
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '手机号',
+  `type` int(11) DEFAULT '1001002' COMMENT '用户身份-对应字典表1001',
+  `real_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '真实姓名',
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT NULL COMMENT '最后更新时间',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
+  `created_user` int(11) DEFAULT NULL COMMENT '添加人',
+  PRIMARY KEY (`id`),
+  KEY `openId` (`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('1', '', null, 'admin', 'Iubo2017', null, '', null, null, '1001002', null, null, null, null, null);
