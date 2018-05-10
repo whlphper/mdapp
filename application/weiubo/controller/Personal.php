@@ -18,7 +18,15 @@ class Personal extends Base{
         $this->theme = '个人中心';
         $this->model = model($this->modelName);
         $this->assign('theme',$this->theme);
+        session('weiuboOpenId','111');
     }
 
-
+    public function index()
+    {
+        // 获取当前微信用户的OPENID
+        $openId = session('weiuboOpenId');
+        // 去表里找此openid的记录
+        $userInfo = model('Mam')->getUserInfo($openId);
+        return view('',['data'=>$userInfo]);
+    }
 }

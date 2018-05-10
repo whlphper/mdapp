@@ -11,158 +11,94 @@
 <div class="header-menu clearfloat" id="main">
     <div class="content clearfloat">
         <div class="all-listcont">
-            <div class="listcont perlist-cont on">
-                <em class="tag-icon"></em>
-                <div class="perlist">
-                    <div class="perlist-data">
-                        <div class="mod">
-                            <span class="title">账号：</span><span class="cont">60001234</span>
-                        </div>
-                        <div class="mod">
-                            <span class="title">余额：</span><span class="cont">30958.89</span>
-                        </div>
-                    </div>
-                    <em class="select-con"></em>
-                </div>
-                <div class="list-data on">
-                    <ul class="clear">
-                        <li>
-                            <p class="title">品种</p>
-                            <p class="main">USDJPY</p>
-                        </li>
-                        <li>
-                            <p class="title">手数</p>
-                            <p class="main">1</p>
-                        </li>
-                        <li>
-                            <p class="title">类型</p>
-                            <p class="main">SELL</p>
-                        </li>
-                        <li>
-                            <p class="title">开仓价格</p>
-                            <p class="main">489.0</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            {foreach $data as $k=>$v}
+            {if $v.belongto eq 0}
+            <!--牛人账号信息-->
             <div class="listcont perlist-cont">
                 <em class="tag-icon"></em>
                 <div class="perlist">
                     <div class="perlist-data">
                         <div class="mod">
-                            <span class="title">账号：</span><span class="cont">60001234</span>
+                            <span class="title">账号：</span><span class="cont">{$v.account}</span>
                         </div>
                         <div class="mod">
-                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                            <span class="title">余额：</span><span class="cont">{$v.balance}</span>
                         </div>
                     </div>
                     <em class="select-con"></em>
                 </div>
                 <div class="list-data">
+                    {foreach $v.list as $k2=>$v2}
                     <ul class="clear">
                         <li>
                             <p class="title">品种</p>
-                            <p class="main">USDJPY</p>
+                            <p class="main">{$v2.symbol}</p>
                         </li>
                         <li>
                             <p class="title">手数</p>
-                            <p class="main">1</p>
+                            <p class="main">{$v2.volume/10000}</p>
                         </li>
                         <li>
                             <p class="title">类型</p>
-                            <p class="main">SELL</p>
+                            <p class="main">{$v2.type}</p>
                         </li>
 
                         <li>
                             <p class="title">开仓价格</p>
-                            <p class="main">489.0</p>
+                            <p class="main">{$v2.priceopen}</p>
                         </li>
                     </ul>
+                    {/foreach}
                 </div>
             </div>
+            {else}
+            <!--跟随用户信息-->
             <div class="listcont perlist-cont">
                 <div class="perlist">
                     <div class="perlist-data">
                         <div class="mod">
-                            <span class="title">账号：</span><span class="cont">60001234</span>
+                            <span class="title">账号：</span><span class="cont">{$v.account}</span>
                         </div>
                         <div class="mod">
-                            <span class="title">余额：</span><span class="cont">30958.89</span>
+                            <span class="title">余额：</span><span class="cont">{$v.balance}</span>
                         </div>
                     </div>
                     <div class="perlist-data">
                         <div class="mod">
-                            <span class="title">跟随账户：</span><span class="cont">超人不会飞</span>
+                            <span class="title">跟随账户：</span><span class="cont">{$v.follow}</span>
                         </div>
                         <div class="mod">
-                            <span class="title">跟单比例：</span><span class="cont">20%</span>
+                            <span class="title">跟单比例：</span><span class="cont">{$v.multiple*100/100*100}%</span>
                         </div>
                     </div>
                     <em class="select-con"></em>
                 </div>
                 <div class="list-data">
+                    {foreach $v.list as $k2=>$v2}
                     <ul class="clear">
                         <li>
                             <p class="title">品种</p>
-                            <p class="main">USDJPY</p>
+                            <p class="main">{$v2.symbol}</p>
                         </li>
                         <li>
                             <p class="title">手数</p>
-                            <p class="main">1</p>
+                            <p class="main">{$v2.volume/10000}</p>
                         </li>
                         <li>
                             <p class="title">类型</p>
-                            <p class="main">SELL</p>
+                            <p class="main">{$v2.type}</p>
                         </li>
-                        <li>
-                            <p class="title">开仓价格</p>
-                            <p class="main">489.0</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="listcont perlist-cont on">
-                <div class="perlist">
-                    <div class="perlist-data">
-                        <div class="mod">
-                            <span class="title">账号：</span><span class="cont">60001234</span>
-                        </div>
-                        <div class="mod">
-                            <span class="title">余额：</span><span class="cont">30958.89</span>
-                        </div>
-                    </div>
-                    <div class="perlist-data">
-                        <div class="mod">
-                            <span class="title">跟随账户：</span><span class="cont">超人不会飞</span>
-                        </div>
-                        <div class="mod">
-                            <span class="title">跟单比例：</span><span class="cont">20%</span>
-                        </div>
-                    </div>
-                    <em class="select-con"></em>
-                </div>
-                <div class="list-data on">
-                    <ul class="clear">
-                        <li>
-                            <p class="title">品种</p>
-                            <p class="main">USDJPY</p>
-                        </li>
-                        <li>
-                            <p class="title">手数</p>
-                            <p class="main">1</p>
-                        </li>
-                        <li>
-                            <p class="title">类型</p>
-                            <p class="main">SELL</p>
-                        </li>
-                        <li>
-                            <p class="title">开仓价格</p>
-                            <p class="main">489.0</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
+                        <li>
+                            <p class="title">开仓价格</p>
+                            <p class="main">{$v2.priceopen}</p>
+                        </li>
+                    </ul>
+                    {/foreach}
+                </div>
+            </div>
+            {/if}
+            {/foreach}
         </div>
 
     </div>

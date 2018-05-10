@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-05-09 17:42:24
+Date: 2018-05-10 11:36:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3611,7 +3611,7 @@ CREATE TABLE `mam` (
   KEY `account` (`account`),
   KEY `belongto` (`belongto`),
   KEY `openId` (`openId`),
-  CONSTRAINT `mam_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `open` (`openId`)
+  CONSTRAINT `mam_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `openid` (`openId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -3620,18 +3620,18 @@ CREATE TABLE `mam` (
 INSERT INTO `mam` VALUES ('1', '10018', '0', '0', '10018', '10018', '2018-04-29 11:26:04', null, '111');
 INSERT INTO `mam` VALUES ('2', '90001', '0', '0', '测试', '巨化股份规划局', '2018-04-30 02:27:13', '2018-05-08 11:00:00', '111');
 INSERT INTO `mam` VALUES ('4', '90002', '90001', '1', null, null, '2018-04-30 02:34:50', null, '111');
-INSERT INTO `mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null, '111');
-INSERT INTO `mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null, '111');
-INSERT INTO `mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null, '111');
-INSERT INTO `mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null, '111');
-INSERT INTO `mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null, '111');
-INSERT INTO `mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null, '111');
-INSERT INTO `mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null, '111');
-INSERT INTO `mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null, '111');
-INSERT INTO `mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null, '111');
-INSERT INTO `mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null, '111');
-INSERT INTO `mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null, '111');
-INSERT INTO `mam` VALUES ('20', '88888', '9999', '88888', '该账号未设置名字', '该账号未添加简介', '2018-05-08 11:00:00', '2018-05-08 11:00:00', '111');
+INSERT INTO `mam` VALUES ('6', '90003', '90001', '-1', null, null, '2018-04-30 02:40:38', null, '444');
+INSERT INTO `mam` VALUES ('8', '90004', '90001', '1', null, null, '2018-04-30 02:52:00', null, '555');
+INSERT INTO `mam` VALUES ('9', '90005', '0', '0', '大牛', '阿萨德', '2018-04-30 04:48:34', null, '666');
+INSERT INTO `mam` VALUES ('10', '90002', '90005', '1', null, null, '2018-04-30 04:49:46', null, '777');
+INSERT INTO `mam` VALUES ('11', '61810697', '10018', '1', null, null, '2018-04-30 05:09:42', null, '888');
+INSERT INTO `mam` VALUES ('12', '90006', '90001', '1', null, null, '2018-04-30 05:13:38', null, '999');
+INSERT INTO `mam` VALUES ('14', '61810698', '10018', '-1', '', '', null, null, '1010');
+INSERT INTO `mam` VALUES ('15', '90002', '90005', '1', null, 'admin', '2018-04-30 15:25:00', null, '45444');
+INSERT INTO `mam` VALUES ('16', '90003', '90005', '1', null, 'admin', '2018-04-30 15:31:31', null, '485955');
+INSERT INTO `mam` VALUES ('17', '90004', '90005', '1', null, 'admin', '2018-04-30 15:35:32', null, '685447');
+INSERT INTO `mam` VALUES ('18', '90007', '90001', '1', null, null, '2018-05-02 12:39:40', null, 'add45d');
+INSERT INTO `mam` VALUES ('20', '88888', '9999', '88888', '该账号未设置名字', '该账号未添加简介', '2018-05-08 11:00:00', '2018-05-08 11:00:00', '125445');
 
 -- ----------------------------
 -- Table structure for md_address
@@ -8573,38 +8573,61 @@ INSERT INTO `md_user` VALUES ('3', null, null, null, '15020081046', 'f46ef81f246
 INSERT INTO `md_user` VALUES ('4', null, null, null, '15369696969', 'f46ef81f2464441ba58aeecbf654ee41', null, '嘻嘻嘻', null, '15369696969', '1001004', null, '2018-04-24 11:16:11', null, null, null);
 
 -- ----------------------------
--- Table structure for open
+-- Table structure for openid
 -- ----------------------------
-DROP TABLE IF EXISTS `open`;
-CREATE TABLE `open` (
+DROP TABLE IF EXISTS `openid`;
+CREATE TABLE `openid` (
   `openId` varchar(128) NOT NULL,
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of open
+-- Records of openid
 -- ----------------------------
-INSERT INTO `open` VALUES ('111');
+INSERT INTO `openid` VALUES ('');
+INSERT INTO `openid` VALUES ('1010');
+INSERT INTO `openid` VALUES ('111');
+INSERT INTO `openid` VALUES ('121231');
+INSERT INTO `openid` VALUES ('125445');
+INSERT INTO `openid` VALUES ('222');
+INSERT INTO `openid` VALUES ('333');
+INSERT INTO `openid` VALUES ('444');
+INSERT INTO `openid` VALUES ('45444');
+INSERT INTO `openid` VALUES ('485955');
+INSERT INTO `openid` VALUES ('555');
+INSERT INTO `openid` VALUES ('666');
+INSERT INTO `openid` VALUES ('685447');
+INSERT INTO `openid` VALUES ('777');
+INSERT INTO `openid` VALUES ('888');
+INSERT INTO `openid` VALUES ('999');
+INSERT INTO `openid` VALUES ('add45d');
 
 -- ----------------------------
 -- Table structure for position
 -- ----------------------------
 DROP TABLE IF EXISTS `position`;
 CREATE TABLE `position` (
-  `ticket` int(11) NOT NULL COMMENT '订单号',
   `account` int(11) NOT NULL COMMENT '账号',
+  `balance` double NOT NULL COMMENT '账户余额',
+  `ticket` int(11) NOT NULL COMMENT '订单号',
   `timeopen` datetime NOT NULL COMMENT '开仓时间',
   `priceopen` float NOT NULL COMMENT '开仓价格',
   `volume` float NOT NULL COMMENT '手数',
   `type` varchar(32) NOT NULL COMMENT '持仓类型',
   `symbol` varchar(32) NOT NULL COMMENT '品种',
+  `profit` double NOT NULL COMMENT '持仓利润',
   PRIMARY KEY (`ticket`),
   KEY `account` (`account`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of position
 -- ----------------------------
+INSERT INTO `position` VALUES ('10018', '11000.25', '27897', '2018-05-10 00:00:00', '1310.02', '10000', '0', 'XAUUSD', '256.5');
+INSERT INTO `position` VALUES ('6180697', '4877', '27898', '2018-05-10 00:00:00', '1310.02', '500', '0', 'XAUUSD', '12.83');
+INSERT INTO `position` VALUES ('90001', '151515', '27879', '2018-05-17 10:01:29', '1310.02', '540', '0', 'XAUUSD', '12.83');
+INSERT INTO `position` VALUES ('90002', '151515', '27880', '2018-05-17 10:01:29', '1310.02', '540', '0', 'XAUUSD', '12.83');
+INSERT INTO `position` VALUES ('90001', '166666', '27881', '2018-05-11 10:05:09', '1444', '1500', '1', 'XAUUSD', '199');
 
 -- ----------------------------
 -- Table structure for record
@@ -8661,13 +8684,13 @@ CREATE TABLE `task` (
   `reason` text,
   PRIMARY KEY (`autoid`),
   KEY `openId` (`openId`),
-  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `open` (`openId`)
+  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`openId`) REFERENCES `openid` (`openId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
-INSERT INTO `task` VALUES ('18', '111', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '的点点滴滴多多');
+INSERT INTO `task` VALUES ('18', '111', '90008', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, 'aaa');
 INSERT INTO `task` VALUES ('19', '111', '4294967295', '90001', '1', null, null, '2016545641', '17685865789', null, null, null, '啊啊啊啊');
 INSERT INTO `task` VALUES ('189', '111', '66666', '10018', '20', null, null, 'whlphper', '15369197307', '761243073@qq.com', '130121199406181014', null, '');
 INSERT INTO `task` VALUES ('190', '111', '99999', '90005', '90', null, null, '99999', '15369197308', '7612430732-2@qq.com', '130121199506181024', null, '你是假的');
