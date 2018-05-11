@@ -42,9 +42,9 @@ class Accountrelationship extends Base{
         }
         // 获取账号列表,用做搜索条件
         $list = model('Mam')->getBelongList();
-        $accList = model('Mam')->getAccList();
+        //$accList = model('Mam')->getAccList();
         $this->assign('belongList',$list);
-        $this->assign('accList',$accList);
+        //$this->assign('accList',$accList);
     }
 
     public function upAccountrelationship()

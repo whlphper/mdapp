@@ -41,16 +41,10 @@
                     </select>
                 </div>
             </div>
-            <div  class="conditions name ue-clear">
-                <label>账户：</label>
-                <div class="select-wrap">
-                    <select name="account" class="select-title ue-clear" >
-                        <option value="">全部</option>
-                        {foreach $accList as $k=>$v}
-                        <option value="{$v.account}">{$v.account}</option>
-                        {/foreach}
-                    </select>
-                </div>
+            <div class="conditions staff ue-clear">
+                <label>账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
+                <input type="text" name="account" placeholder="请输入账号"/>
+                <!--<a href="javascript:;" class="staff-select">选择</a>-->
             </div>
         </div>
         <div class="query-btn ue-clear">
