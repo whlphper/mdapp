@@ -25,6 +25,7 @@ class Follow extends Base{
                 unset($data['action']);
                 $msg = '您的申请已经提交,请等待审核';
             }else{
+
                 $valiMsg = $this->validate($data,'Task.follow');
                 $msg = '跟单成功,请等待审核';
             }
@@ -32,6 +33,9 @@ class Follow extends Base{
                 throw new \Exception($valiMsg);
             }
             unset($data['verifycode']);
+            if(!empty($data['multiple'])){
+                $data['multiple'] = $data['multiple']/100;
+            }
             $result = model('Task')->insert($data);
             return ['code'=>1,'msg'=>$msg];
         }catch(\Exception $e){

@@ -41,7 +41,17 @@
                     </select>
                 </div>
             </div>
-
+            <div  class="conditions name ue-clear">
+                <label>账户：</label>
+                <div class="select-wrap">
+                    <select name="account" class="select-title ue-clear" >
+                        <option value="">全部</option>
+                        {foreach $accList as $k=>$v}
+                        <option value="{$v.account}">{$v.account}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="query-btn ue-clear">
             <a href="javascript:;" class="confirm">查询</a>
@@ -53,13 +63,13 @@
 <div class="table-box">
     <!--操作按钮-->
     <div class="table-operate ue-clear">
-        <a href="javascript:;" class="add addData" data-url="{:url('/backiubo/Accountrelationship/store')}">添加</a>
-        <a href="javascript:;" class="del delMore" data-url="{:url('/backiubo/Accountrelationship/fullyDel')}">删除</a><!--
+        <a href="javascript:;" class="add addData" data-url="{:url('/iubo/Accountrelationship/store')}">添加</a>
+        <a href="javascript:;" class="del delMore" data-url="{:url('/iubo/Accountrelationship/fullyDel')}">删除</a><!--
     <a href="javascript:;" class="edit">编辑</a>
     <a href="javascript:;" class="count">统计</a>
     <a href="javascript:;" class="check">审核</a>-->
     </div>
-    <table id="AccountrelationshipTable" data-search="AccountrelationshipSearchTable" data-url="{:url('/backiubo/Accountrelationship/getJqPage')}">
+    <table id="AccountrelationshipTable" data-search="AccountrelationshipSearchTable" data-url="{:url('/iubo/Accountrelationship/getJqPage')}">
         <thead id="AccountrelationshipTableHead">
         <tr>
             <th data-field="checkbox" data-key="autoid"></th>
@@ -99,13 +109,13 @@
     // 在动态生成的节点如果需要事件 需要用“事件委托” 但是下面写的太多没用的东西
     $(document).on("click", ".edit", function () {
         var ticked = $(this).attr("data-id");
-        var url = "{:url('/backiubo/Accountrelationship/store/id/"+ticked+"')}";
+        var url = "{:url('/iubo/Accountrelationship/store/id/"+ticked+"')}";
         window.parent.$("#iframe").attr("src",url);
     })
     $(document).on("click", ".delete", function () {
         var id = $(this).attr("data-id");
         //询问框
-        var delUrl = "{:url('/backiubo/Accountrelationship/fullyDel')}";
+        var delUrl = "{:url('/iubo/Accountrelationship/fullyDel')}";
         delUrl = delUrl + '?field=autoid&ids='+id;
         layer.confirm('确定删除数据吗？', {
             btn: ['删除','取消'] //按钮

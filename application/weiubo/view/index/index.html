@@ -36,7 +36,7 @@
                     <ul class="clear">
                         <li>
                             <p class="title">增长</p>
-                            <p class="main">{$v.growth|default=''}</p>
+                            <p class="main"><?php echo $v['growth']*100 ?>%</p>
                         </li>
                         <li>
                             <p class="title">跟随人数</p>

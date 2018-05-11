@@ -479,15 +479,20 @@ class Base extends Model
     public function getJQPage($condition=[],$field='a.*',$join=[],$order='')
     {
         try{
-            $offset = empty(input('pageIndex')) ? 0 : input('pageIndex')*10;
-            $limit  = 10;
+            $offset = empty(input('pageIndex')) ? 0 : input('pageIndex')*100;
+            $limit  = 100;
             $param = Request::instance()->except(['pageIndex','pageSize']);
             foreach ($param as $k=>$v){
-                if(!empty($v)){
-                    $condition[$k] = ['like',"%$v%"];
+                if($v !== '' || $v === '0'){
+                    if($k == 'belongto'){
+                        $condition[$k] = $v;
+                    }else{
+                        $condition[$k] = ['like',"%$v%"];
+                    }
                 }
             }
             $list = $this->alias('a')->where($condition)->join($join)->order($order)->field($field)->limit($offset . ',' . $limit)->select()->toArray();
+
             $total = $this->alias('a')->where($condition)->join($join)->count();
             return ['code'=>1,'msg'=>'','data'=>$list,'total'=>$total];
         }catch(\Exception $e){

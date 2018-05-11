@@ -11,6 +11,19 @@
 <div class="header-menu clearfloat" id="main">
     <div class="content clearfloat">
         <div class="all-listcont">
+
+            {if count($data) == 0}
+            <!--sign star-->
+            <div class="result-page" >
+                <div class="result-font">
+                    <p>尚未绑定！</p>
+                </div>
+                <div class="result-link">
+                    <a href="{:url('/weiubo')}">去首页</a>
+                </div>
+            </div>
+            <!--sign end-->
+            {/if}
             {foreach $data as $k=>$v}
             {if $v.belongto eq 0}
             <!--牛人账号信息-->

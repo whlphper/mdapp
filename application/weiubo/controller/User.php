@@ -22,10 +22,11 @@ class User extends Controller {
             }
             // openid
             $openId = $respond['openId'];
+            $nickname = $respond['nickname'];
             // baseInfo
             $baseInfo = $respond['baseInfo'];
             // 写入open表
-            $res = model('Open')->addOpenId($openId);
+            $res = model('Open')->addOpenId($openId,$nickname);
             // 设置session
             session('weiuboOpenId',$openId);
         }catch(\Exception $e){

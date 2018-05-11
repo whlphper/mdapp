@@ -13,15 +13,17 @@ class Open extends Base{
     /*
      * 新增微信用户
      */
-    public function addOpenId($openId)
+    public function addOpenId($openId,$nickname)
     {
         if(empty($openId)){
             throw new \Exception('openId为空');
         }
         $data['openId'] = $openId;
-        $result = $this->insert($data);
-        if(!$result){
-            throw new \Exception('openId写入失败');
+        $data['nickname'] = $nickname;
+        if($this->where('openid',$openId)->find()){
+            $result = $this->save($data,['openid'=>$openId]);
+        }else{
+            $result = $this->insert($data);
         }
         return true;
     }

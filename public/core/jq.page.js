@@ -1,5 +1,5 @@
-
 $(document).ready(function(){
+    var pageSize = 100;
     // 开始渲染表格
     $("body").find('table').each(function(){
         var tableUrl = $(this).attr("data-url");
@@ -12,7 +12,8 @@ $(document).ready(function(){
                     InitTable(obj,page,tableUrl);
                 },
                 display_msg: true,
-                setPageNo: true
+                setPageNo: true,
+                items_per_page:100
             });
         });
     });
@@ -86,9 +87,7 @@ $(document).ready(function(){
         layer.closeAll('loading');
     })
 });
-
-var pageSize = 10;
-
+var pageSize = 100;
 //请求数据
 function InitTable(obj,pageIndex,tableUrl,extra) {
     var extra = extra ? extra :false;
@@ -108,7 +107,8 @@ function InitTable(obj,pageIndex,tableUrl,extra) {
                     InitTable(obj,page,tableUrl);
                 },
                 display_msg: true,
-                setPageNo: true
+                setPageNo: true,
+                items_per_page:100
             });
         }
     },'get');

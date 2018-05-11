@@ -18,6 +18,12 @@ class Mam extends Base{
         return $this->query($sql);
     }
 
+    public function getAccList()
+    {
+        $sql = 'select distinct(account) from mam';
+        return $this->query($sql);
+    }
+
     public function getUserInfo($openId)
     {
         if(empty($openId)){

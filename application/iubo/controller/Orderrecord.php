@@ -6,7 +6,7 @@
  * Time: 上午 10:56
  * Desc:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use app\common\controller\Base;
 
 class Orderrecord extends Base{
@@ -36,9 +36,9 @@ class Orderrecord extends Base{
         if(!empty($id = $this->request->param('id'))){
             $data = model('Record')->get($id)->toArray();
             $this->assign('data',$data);
-            $this->assign('fromUri',url('/backiubo/Orderrecord/upRecord'));
+            $this->assign('fromUri',url('/iubo/Orderrecord/upRecord'));
         }else{
-            $this->assign('fromUri',url('/backiubo/Orderrecord/fullyStore'));
+            $this->assign('fromUri',url('/iubo/Orderrecord/fullyStore'));
         }
         $list = model('Record')->getAccountList();
         $this->assign('accList',$list);
@@ -53,4 +53,6 @@ class Orderrecord extends Base{
         $data = $this->request->post();
         return $this->model->updated($data,['ticket'=>$data['ticket']],$this->theme);
     }
+
+
 }

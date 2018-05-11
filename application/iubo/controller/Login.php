@@ -6,7 +6,7 @@
  * Time: 下午 2:06
  * Desc:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use think\Controller;
 class Login extends Controller{
 
@@ -27,6 +27,7 @@ class Login extends Controller{
                 throw new \Exception('密码错误');
             }
             session('backiuboUserId',$user['id']);
+            session('backiuboUser',$user);
             return ['code'=>1,'msg'=>'success'];
         }catch(\Exception $e){
             return ['code'=>0,'msg'=>$e->getMessage()];
@@ -36,6 +37,6 @@ class Login extends Controller{
     public function logout()
     {
         session('backiuboUserId',null);
-        $this->redirect(url('/backiubo/Login'));
+        $this->redirect(url('/iubo/Login'));
     }
 }

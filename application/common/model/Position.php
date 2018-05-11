@@ -12,11 +12,11 @@ class Position extends Base{
 
     public $isLimit = false;
 
-    public function getTypeAttr($value)
+    /*public function getTypeAttr($value)
     {
         $status = [1=>'SELL',0=>'BUY'];
         return $status[$value];
-    }
+    }*/
 
 
 }

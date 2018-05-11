@@ -60,10 +60,10 @@ class Base extends Controller
                 // 分类数据 以及导航数据  因为现在导航都是显示的分类
                 $this->getPcshopCommonData();
                 break;
-            case 'backiubo':
+            case 'iubo':
                 $backiubouser = session("backiuboUserId");
                 if(empty($backiubouser)){
-                    $this->redirect(url('/backiubo/Login'));
+                    $this->redirect(url('/iubo/Login'));
                 }
                 break;
             case 'weiubo':

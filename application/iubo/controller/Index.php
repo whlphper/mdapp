@@ -6,7 +6,7 @@
  * Time: 14:33
  * Comment:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use app\common\controller\Base;
 
 class Index extends Base{

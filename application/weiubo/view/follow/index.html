@@ -12,7 +12,7 @@
 
             <ul>
                 <input type="hidden" name="belongto" value="{$account}">
-                <input type="hidden" name="openId" value="{$Think.session.weiuboOpenId}">
+                <input type="hidden" name="openid" value="{$Think.session.weiuboOpenId}">
                 <li class="box-s">
                     <span>牛人名称</span>
                     <input type="text"  id="user" value="{$bigName}" readonly class="mingzi" placeholder="请输入名称" />
@@ -44,7 +44,7 @@
                 <li class="box-s">
                     <span>验证码</span>
                     <input type="text" name="verifycode" id="verifycode1" value="" class="mingzi" placeholder="请输入六位验证码" />
-                    <img id="verifycode" style="width: 40%;height: 70%;" class="verifycode" src="{:url('/weiubo/Follow/getCaptChar')}" onclick="refresh_check_code(this)" alt="CheckCode" style="margin-top:10px;  cursor: pointer;">
+                    <img id="verifycode" style="width: 40%;height: 70%;cursor: pointer;"  title="点击刷新"  class="verifycode" src="{:url('/weiubo/Follow/getCaptChar')}" onclick="refresh_check_code(this)" alt="CheckCode" style="margin-top:10px;  cursor: pointer;">
                 </li>
 
             </ul>

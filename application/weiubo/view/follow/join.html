@@ -10,7 +10,7 @@
         <div class="sign-top clearfloat">
             <ul>
                 <input type="hidden" name="action" value="joinStrong">
-                <input type="hidden" name="openId" value="{$Think.session.weiuboOpenId}">
+                <input type="hidden" name="openid" value="{$Think.session.weiuboOpenId}">
                 <li class="box-s">
                     <span>MT5账号</span>
                     <input type="text" name="account" id="account" value="" class="mingzi" placeholder="请输入MT5账号" />
@@ -42,7 +42,7 @@
                 <li class="box-s">
                     <span>验证码</span>
                     <input type="text" name="verifycode" id="verifycode1" value="" class="mingzi" placeholder="请输入六位验证码" />
-                    <img id="verifycode" style="width: 40%;height: 70%;"  class="verifycode" src="{:url('/weiubo/Follow/getCaptChar')}" onclick="refresh_check_code(this)" alt="CheckCode" style="margin-top:10px;  cursor: pointer;">
+                    <img id="verifycode" style="width: 40%;height: 70%;cursor: pointer;"  title="点击刷新"  class="verifycode" src="{:url('/weiubo/Follow/getCaptChar')}" onclick="refresh_check_code(this)" alt="CheckCode" style="margin-top:10px;  cursor: pointer;">
                 </li>
 
             </ul>

@@ -6,7 +6,7 @@
  * Time: 上午 11:18
  * Desc:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use app\common\controller\Base;
 
 class Accountrelationship extends Base{
@@ -36,13 +36,15 @@ class Accountrelationship extends Base{
         if(!empty($id = $this->request->param('id'))){
             $data = model('Mam')->get($id)->toArray();
             $this->assign('data',$data);
-            $this->assign('fromUri',url('backiubo/Accountrelationship/upAccountrelationship'));
+            $this->assign('fromUri',url('iubo/Accountrelationship/upAccountrelationship'));
         }else{
-            $this->assign('fromUri',url('/backiubo/Accountrelationship/fullyStore'));
+            $this->assign('fromUri',url('/iubo/Accountrelationship/fullyStore'));
         }
         // 获取账号列表,用做搜索条件
         $list = model('Mam')->getBelongList();
+        $accList = model('Mam')->getAccList();
         $this->assign('belongList',$list);
+        $this->assign('accList',$accList);
     }
 
     public function upAccountrelationship()
@@ -50,4 +52,6 @@ class Accountrelationship extends Base{
         $data = $this->request->post();
         return $this->model->updated($data,['autoid'=>$data['autoid']],$this->theme);
     }
+
+
 }

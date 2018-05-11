@@ -6,7 +6,7 @@
  * Time: 15:22
  * Comment:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use app\common\controller\Base;
 
 class History extends Base{
@@ -36,9 +36,9 @@ class History extends Base{
         if(!empty($id = $this->request->param('id'))){
             $data = model('History')->get($id)->toArray();
             $this->assign('data',$data);
-            $this->assign('fromUri',url('backiubo/History/upHistory'));
+            $this->assign('fromUri',url('/iubo/History/upHistory'));
         }else{
-            $this->assign('fromUri',url('/backiubo/history/fullyStore'));
+            $this->assign('fromUri',url('/iubo/history/fullyStore'));
         }
         // 获取账号列表,用做搜索条件
         $list = model('History')->getAccountList();

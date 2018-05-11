@@ -50,9 +50,9 @@
 <div class="table-box">
     <!--操作按钮-->
     <div class="table-operate ue-clear">
-        <a href="javascript:;" class="del delMore" data-url="{:url('/backiubo/Audit/fullyDel')}">删除</a>
+        <a href="javascript:;" class="del delMore" data-url="{:url('/iubo/Audit/fullyDel')}">删除</a>
     </div>
-    <table id="AuditTable" data-search="AuditSearchTable" data-url="{:url('/backiubo/Audit/getJqPage')}">
+    <table id="AuditTable" data-search="AuditSearchTable" data-url="{:url('/iubo/Audit/getJqPage')}">
         <thead id="AuditTableHead">
         <tr>
             <th data-field="checkbox" data-key="autoid"></th>
@@ -88,7 +88,7 @@
     function commonAct(index,data) {
         var id = data[index].autoid;
         switch (data[index].allow){
-            case '通过':
+            case '<p style="color: darkgreen">通过</p>':
                 return '<span class="delete"  data-index="'+index+'" data-id="'+id+'" style="cursor: pointer"  title="删除{$theme}"><i class="fa fa-trash-o "></i>删除</span>';
                 break;
             default:
@@ -100,12 +100,13 @@
     // 在动态生成的节点如果需要事件 需要用“事件委托” 但是下面写的太多没用的东西
     $(document).on("click", ".pass", function () {
         var ticked = $(this).attr("data-id");
-        var url = "{:url('/backiubo/Audit/goAudit/id/"+ticked+"/status/1')}";
-        var tableUrl = "{:url('/backiubo/Audit/getJqPage')}";
+        var url = "{:url('/iubo/Audit/goAudit/id/"+ticked+"/status/1')}";
+        var tableUrl = "{:url('/iubo/Audit/getJqPage')}";
         layer.confirm('确定通过审核吗？', {
             btn: ['通过','取消'] //按钮
         }, function(){
             mdAjax($(this),url,{},function (res) {
+                //window.parent.$("#iframe").attr('src',window.parent.$("#iframe").attr("src"));
                 InitTable(obj,0,tableUrl);
             },'get');
         });
@@ -126,7 +127,7 @@
                     layer.msg('请填写拒绝理由',{icon:0});
                     return
                 }
-                var url = "{:url('/backiubo/Audit/goAudit/id/"+ticked+"/status/null/reason/"+resson+"')}";
+                var url = "{:url('/iubo/Audit/goAudit/id/"+ticked+"/status/null/reason/"+resson+"')}";
                 mdAjax($(this),url,{},function (res) {
                     layer.closeAll();
                     InitTable(obj,0);
@@ -137,9 +138,9 @@
     $(document).on("click", ".delete", function () {
         var id = $(this).attr("data-id");
         //询问框
-        var delUrl = "{:url('/backiubo/Audit/fullyDel')}";
+        var delUrl = "{:url('/iubo/Audit/fullyDel')}";
         delUrl = delUrl + '?field=autoid&ids='+id;
-        var tableUrl = "{:url('/backiubo/Audit/getJqPage')}";
+        var tableUrl = "{:url('/iubo/Audit/getJqPage')}";
         layer.confirm('确定删除数据吗？', {
             btn: ['删除','取消'] //按钮
         }, function(){

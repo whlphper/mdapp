@@ -72,7 +72,6 @@ class Template
         $this->config['taglib_end']          = $this->stripPreg($this->config['taglib_end']);
         $this->config['tpl_begin']           = $this->stripPreg($this->config['tpl_begin']);
         $this->config['tpl_end']             = $this->stripPreg($this->config['tpl_end']);
-
         // 初始化模板编译存储器
         $type          = $this->config['compile_type'] ? $this->config['compile_type'] : 'File';
         $class         = false !== strpos($type, '\\') ? $type : '\\think\\template\\driver\\' . ucwords($type);

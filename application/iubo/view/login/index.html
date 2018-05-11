@@ -91,9 +91,9 @@
         var data = {};
         data.name = name;
         data.pass = pass;
-        var url = "{:url('/backiubo/Login/go')}";
+        var url = "{:url('/iubo/Login/go')}";
         mdAjax(obj,url,data,function (res) {
-            var jump = "{:url('/backiubo/Index')}";
+            var jump = "{:url('/iubo/Index')}";
             location.href = jump;
         })
     }

@@ -6,7 +6,7 @@
  * Time: 上午 9:01
  * Desc:
  */
-namespace app\backiubo\controller;
+namespace app\iubo\controller;
 use app\common\controller\Base;
 
 class Audit extends Base{
