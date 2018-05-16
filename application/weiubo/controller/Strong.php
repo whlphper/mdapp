@@ -26,6 +26,9 @@ class Strong extends Base{
     {
         // 牛人基本信息
         $data = $this->model->where('account',$account)->find()->toArray();
+        // 牛人头像
+        $headimg = model('Mam')->alias('a')->where('account',$account)->field('b.headimgurl')->join([['Openid b','a.openid=b.openid','left']])->find();
+        $data['headimgurl'] = $headimg['headimgurl'];
         // 10条操作记录
         $this->getLog($account);
         // 增长率曲线

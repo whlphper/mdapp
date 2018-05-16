@@ -175,7 +175,7 @@ class AsyncTcpConnection extends TcpConnection
         $this->_status           = self::STATUS_CONNECTING;
         $this->_connectStartTime = microtime(true);
         if ($this->transport !== 'unix') {
-            // Open socket connection asynchronously.
+            // Openid socket connection asynchronously.
             if ($this->_contextOption) {
                 $context = stream_context_create($this->_contextOption);
                 $this->_socket = stream_socket_client("tcp://{$this->_remoteHost}:{$this->_remotePort}",

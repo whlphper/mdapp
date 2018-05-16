@@ -2196,7 +2196,7 @@ var menu = $.widget( "ui.menu", {
 						this.mouseHandled = true;
 					}
 
-					// Open submenu on click
+					// Openid submenu on click
 					if ( target.has( ".ui-menu" ).length ) {
 						this.expand( event );
 					} else if ( !this.element.is( ":focus" ) && $( this.document[ 0 ].activeElement ).closest( ".ui-menu" ).length ) {

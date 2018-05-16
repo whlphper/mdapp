@@ -23,6 +23,10 @@ class Index extends Base{
     public function index()
     {
         $strong = $this->model->listData();
+        foreach($strong['data'] as $k=>$v){
+            $headimg = model('Mam')->alias('a')->where('account',$v['account'])->field('b.headimgurl')->join([['Openid b','a.openid=b.openid','left']])->find();
+            $strong['data'][$k]['headimgurl'] = $headimg['headimgurl'];
+        }
         return view('',['strong'=>$strong['data']]);
     }
 }

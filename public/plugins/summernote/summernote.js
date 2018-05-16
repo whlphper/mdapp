@@ -1757,7 +1757,7 @@ $$1.extend($$1.summernote.lang, {
             edit: 'Edit',
             textToDisplay: 'Text to display',
             url: 'To what URL should this link go?',
-            openInNewWindow: 'Open in new window'
+            openInNewWindow: 'Openid in new window'
         },
         table: {
             table: 'Table',

@@ -81,7 +81,7 @@ $.AdminLTE.options = {
     boxWidgetIcons: {
       //Collapse icon
       collapse: 'fa-minus',
-      //Open icon
+      //Openid icon
       open: 'fa-plus',
       //Remove icon
       remove: 'fa-times'
@@ -414,7 +414,7 @@ function _init() {
         //Get the parent li
         var parent_li = $this.parent("li");
 
-        //Open the target menu and add the menu-open class
+        //Openid the target menu and add the menu-open class
         checkElement.slideDown(animationSpeed, function () {
           //Add the class active to the parent li
           checkElement.addClass('menu-open');
@@ -456,7 +456,7 @@ function _init() {
         //If the sidebar is not open
         if (!sidebar.hasClass('control-sidebar-open')
             && !$('body').hasClass('control-sidebar-open')) {
-          //Open the sidebar
+          //Openid the sidebar
           _this.open(sidebar, o.slide);
         } else {
           _this.close(sidebar, o.slide);
@@ -477,7 +477,7 @@ function _init() {
         }
       }
     },
-    //Open the control sidebar
+    //Openid the control sidebar
     open: function (sidebar, slide) {
       //Slide over content
       if (slide) {

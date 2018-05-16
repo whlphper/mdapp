@@ -14949,7 +14949,7 @@ function program17(depth0,data) {
     link: {
       insert: 'Insert link',
       cancel: 'Cancel',
-      target: 'Open link in new window'
+      target: 'Openid link in new window'
     },
     image: {
       insert: 'Insert image',

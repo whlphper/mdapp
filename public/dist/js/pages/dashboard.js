@@ -171,7 +171,7 @@ $(function () {
     pointSize: 4,
     pointStrokeColors: ["#efefef"],
     gridLineColor: "#efefef",
-    gridTextFamily: "Open Sans",
+    gridTextFamily: "Openid Sans",
     gridTextSize: 10
   });
 

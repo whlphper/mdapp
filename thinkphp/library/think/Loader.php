@@ -290,7 +290,6 @@ class Loader
             'behavior' => LIB_PATH . 'behavior' . DS,
             'traits'   => LIB_PATH . 'traits' . DS,
         ]);
-
         // 加载类库映射文件
         if (is_file(RUNTIME_PATH . 'classmap' . EXT)) {
             self::addClassMap(__include_file(RUNTIME_PATH . 'classmap' . EXT));

@@ -49,7 +49,7 @@
         edit: 'Wijzigen',
         textToDisplay: 'Tekst van link',
         url: 'Naar welke URL moet deze link verwijzen?',
-        openInNewWindow: 'Open in nieuw venster'
+        openInNewWindow: 'Openid in nieuw venster'
       },
       table: {
         table: 'Tabel',
